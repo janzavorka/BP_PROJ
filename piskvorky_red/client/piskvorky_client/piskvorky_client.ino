@@ -16,12 +16,9 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
 };
 unsigned int localPort = 3333;      // local port to listen on
-//IP adresa z DHCP serveru
 EthernetClient client;
 bool clientConnected = false;
 bool serverReady = false;
-// buffer pro příchozí data
-char packetBuffer[100];  
 
 //Client 
 IPAddress serverAddress(192,168,0,180);
@@ -78,21 +75,22 @@ unsigned long long refreshTouchScreen;
 int TSx, TSy = 0;
 TSPoint touchPoint;
 bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabránění vícedotykům najednou
-const byte myNum = 2;
+const byte myNum = 2; //Číslo v herním poli "board"
 
 /* ----------Piškvorky----------*/
-byte packetLength = 95;
+byte packetLength = 95; 
 byte board [95]; //0: nikdo, 1: hráč 1; 2: hráč 2
-byte gamePhase = 0; 
+byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)
 bool gameMyRound = 0; //hraju já nebo portivník
-bool screenRefresh = false;
+bool screenRefresh = false; //Zda se má obrazovka překreslit
 byte crossNum = 5; //Počet koleček vedle sebe pro výhru
 
+//Barvy hráčů
 uint16_t clientColor = RED;
 uint16_t serverColor = GREEN;
 
 
-void drawMainFrame(void);
+void drawMainFrame(void); //Vykreslí základní rámeček
 void drawMesh (uint16_t); //Vykreslí základní hrací mřížku (argument je barva)
 void drawPoints(void); //Vykreslí puntíky podle board
 void checkWin(byte); //Zkontroluje zda nějaký hráč nevyhrál (argument je políčko, na které bylo vloženo kolečko)
@@ -132,7 +130,7 @@ void setup() {
  * >>>>>>>>>> LOOP <<<<<<<<<<
  */
 void loop() {
-  if (screenRefresh){
+  if (screenRefresh){ //Překreslování obrazovky
     switch(gamePhase){
       case 0:
         drawPage(0);
@@ -172,7 +170,7 @@ void loop() {
      Serial.print("\tY = "); Serial.print(touchPoint.y);
      Serial.print("\tPressure = "); Serial.println(touchPoint.z);
      touchScreenAct = false;
-     if (gamePhase == 1){
+     if (gamePhase == 1){ //Místo v hracím poli
       byte row = 0;
       byte column = 0;
         for(int i = 0; i < meshX; i++){
@@ -188,29 +186,29 @@ void loop() {
             break;
           }
         }
-      if(board[meshX*row + column]==0){
-        board[meshX*row + column] = 2;
-        drawPoints();
-        board[89]++;
-        gamePhase = 2;
+      if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam druhý hráč) 
+        board[meshX*row + column] = 2; //Zabrat pole
+        drawPoints(); //Překreslí puntíky 
+        board[89]++; //Posune herní kolo
+        gamePhase = 2; //Nastaví fázi 2 (hraje druhý hráč)
         drawPage(2);
         screenRefresh = true;
-        checkWin(meshX*row + column);
+        checkWin(meshX*row + column); //Zkontroluje, zda nedošlo k výhře (kontrola se provádí pouze pro vepsaný puntík (sloupec, řádek, křížem)
 
         //Odesíláni
         client.write(board, packetLength);
-        checkStatus(board[90]);
+        checkStatus(board[90]); //Zkontroluje kód (podle hodnoty výhra,prohra, pokračování)
       }
         
      }
      
    }
 }
-if(!clientConnected){
+if(!clientConnected){ //Připojování k serveru
   Serial.println("Pripojuji");
   if (client.connect(serverAddress, 3333)){
   Serial.println("pripojeno");
-  client.write(1);
+  client.write(1); //Aby připojení server správně zaznamenal
   clientConnected = true;
   screenRefresh = true;
   drawMainFrame();
@@ -219,7 +217,7 @@ if(!clientConnected){
   }
 }
 
-if(clientConnected && gamePhase == 2){
+if(clientConnected && gamePhase == 2){ //fáze 2: čekání na příjem
     byte index = 0;
     while (index < packetLength){
       if(client.available() > 0){
@@ -230,7 +228,7 @@ if(clientConnected && gamePhase == 2){
     }
     screenRefresh = true;
     gamePhase = 1;
-    checkStatus(board[90]);
+    checkStatus(board[90]); //Kontrola kódu
    }
   
   delay(10);
@@ -272,8 +270,9 @@ void drawMesh(uint16_t color){
 //------------------------------------------------------------------------------------------------------
 //>>>>> Vykreslení danou obrazovku podle ID <<<<<
  /*   Princip:   
-  *    - 0: základní nastavení: Client nebo server
-  *    - velikost 11x8 polí
+  *    - 0: čekání na server
+  *    - 1: hraji
+  *    - 2: hraje druhý hráč
   */
 
   void drawPage (byte id){
@@ -337,7 +336,7 @@ void drawPoints(){
 //------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------------
-//>>>>> vypisuje hlášení podle chyby <<<<<
+//>>>>> vypisuje hlášení podle kodu <<<<<
  /*   Princip:   
   *    - 
   *    
@@ -402,7 +401,7 @@ void prepareNewGame(){
   }
   board[90] = 100; //vše OK
   drawMainFrame();
-  gamePhase = 2;
+  gamePhase = 2; //Záčíná server - přepnutí do fáze 2
   drawPage(2);
   screenRefresh = true;
 }
@@ -411,16 +410,16 @@ void prepareNewGame(){
 //------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------------
-//>>>>> Připraví novou hru <<<<<
+//>>>>> Kontrola výhry/stavu <<<<<
  /*   Princip:   
-  *    - 
+  *    - pro zadaný puntík v poli
   *    
   */
 void checkWin(byte pole){
   byte row = 0;
   byte column = 0;
-  byte count = 0;
-   if (board[89] >= 88) {//Pole je plná => remíza
+  byte count = 0; //počet puntíků za sebou
+   if (board[89] >= 88) {//Pole je plné => remíza
       board[90] = 200;
    }
 
