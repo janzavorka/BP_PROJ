@@ -183,11 +183,12 @@ void setup() {
   LCD.setFont(SmallFont);
 
   //Úvodní obrazovka
-  drawMainFrame();
+  LCD.crlScr();
+  /*drawMainFrame();
   LCD.setTextColor(YELLOW, BLACK);
   LCD.setTextSize(3);
   LCD.setCursor(130, 10);
-  LCD.println("Piskvorky");
+  LCD.println("Piskvorky");*/
   //Sériová linka
   //Ethernet
   Ethernet.begin(mac, serverAddress); //**********

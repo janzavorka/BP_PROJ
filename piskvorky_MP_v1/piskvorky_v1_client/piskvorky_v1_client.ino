@@ -15,7 +15,7 @@
 extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 #endif
 
-/* ----------Nastavení ethernetu----------*/ (ZMĚNIT)
+/* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
@@ -23,12 +23,22 @@ byte mac[] = {
 
 //Client 2
 /*byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
+  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xDD
 };*/
 
 //Client 3
 /*byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
+  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xCD
+};*/
+
+//Client 4
+/*byte mac[] = {
+  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xBD
+};*/
+
+//Client 5
+/*byte mac[] = {
+  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xAD
 };*/
 
 
@@ -113,7 +123,7 @@ TouchScreen Touch(XP, YP, XM, YM, 300);
 #define meshY 8
 
 /* ----------Herní data----------*/
-const byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení 
+byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení 
 byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, 1: připojování k serveru, 2: čekání na tah, 3: tah)
 
 /* ----------Piškvorky----------*/
@@ -122,8 +132,8 @@ byte board [95]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, clienti vyplňují svá čísla)
  *  90:     Hlášení prostřednictvím kódu 
- *            0:    vše OK
- *            1:    připravit novou hru
+ *            0:    vše OK, hraje se
+ *            1:    připravit novou hru, čekání na hráče
  *            100:  hra skončila remízou  
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
@@ -147,17 +157,65 @@ byte board [95]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_actPlayer  91
 #define gb_filled     92
 #define gb_round      93
+#define gb_PC1        95  
+#define gb_PC2        97
+#define gb_PC3        99
+#define gb_PC4        100
+#define gb_PC5        102
 
 bool screenRefresh = false; //Zda se má obrazovka překreslit
 
+/* ----------Tlačítka----------*/
+//Pole tlačítek
+#define max_buttRect 2
+byte button_index = 0;
+
+
+class buttonRect{
+  private:
+    int x1 = 0;
+    int x2 = 0;
+    int y1 = 0;
+    int y2 = 0;
+    byte id = 0;
+  public:
+    buttonRect();
+    buttonRect(int corX1, int corX2, int corY1, int corY2, byte idecko, byte mode);
+    bool isTouched (int touchX, int touchY);
+    byte getID (void);
+};
+
+buttonRect::buttonRect(){}
+buttonRect::buttonRect(int corX1, int corX2, int corY1, int corY2, byte idecko, byte mode){
+  x1 = corX1;
+  x2 = corX2;
+  y1 = corY1;
+  y2 = corY2;
+  id = idecko;
+  switch(mode){
+    case 0:
+      break;
+
+    case 1:
+      LCD.setColor(LIGHTGREY);
+      LCD.fillRect(x1,y1,x2,y2);
+      LCD.setColor(WHITE);
+      LCD.drawRect(x1,y1,x2,y2); 
+      break; 
+  }
+  button_index++;
+}
+
+//Pole tlačítek
+buttonRect buttons[max_buttRect];
+
 //DOTAŽENO SEM
 
-void drawMainFrame(void); //Vykreslí základní rámeček
+void drawMainFrame(uint16_t); //Vykreslí základní rámeček (v dané barvě)
 void drawMesh (uint16_t); //Vykreslí základní hrací mřížku (argument je barva)
 void drawPoints(void); //Vykreslí puntíky podle board
 void checkWin(byte); //Zkontroluje zda nějaký hráč nevyhrál (argument je políčko, na které bylo vloženo kolečko)
 void chechStatus(byte); //KOntroluje oznamovací kód (umístěn v board[90])
-void prepareNewGame(void); //Vytvoří novou hru (zůstává staré spojení - nenavazuje se nové)
 
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
@@ -305,12 +363,11 @@ if(clientConnected && gamePhase == 2){ //fáze 2: čekání na příjem
  /*   Princip:   
   *    - Vykreslí modrý rámeček kolem celého displeje
   */
-void drawMainFrame(){
-  LCD.setColor(0, 0, 255); //Nastavení barvy
+void drawMainFrame(uint16_t color){
+  LCD.setColor(color); //Nastavení barvy
   LCD.drawRect(0, 0, 320, 240); //Vykreslení čtverce (souřadnice levý horní a pravý dolní roh)
   LCD.drawRect(1, 1, 319, 239);
-  LCD.setColor(0, 0, 0);
-  LCD.fillRect(2, 2, 318, 238);
+  
 }
 
 //------------------------------------------------------------------------------------------------------
@@ -446,30 +503,6 @@ void checkStatus(byte code){
   }
 }
 
-
-//------------------------------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------------------------------
-//>>>>> Připraví novou hru <<<<<
- /*   Princip:   
-  *    - 
-  *    
-  */
-void prepareNewGame(){
-   //Nulování herní desky
-  Serial.println("Nulovani pole pro herni desku");
-  for (int i = 0; i <packetLength; i++){
-    board[i] = 0;
-  }
-  board[90] = 100; //vše OK
-  drawMainFrame();
-  gamePhase = 2; //Záčíná server - přepnutí do fáze 2
-  drawPage(2);
-  screenRefresh = true;
-}
-
-
-//------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------------
 //>>>>> Kontrola výhry/stavu <<<<<
