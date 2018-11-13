@@ -1,1 +1,5 @@
 typ: Huawei EchoLife HG520i
+IP: 10.0.0.138
+
+nastavit IP piškvorkovému serveru: 10.0.0.1
+ostatní IP přidělovány od:1 0.0.0.139
