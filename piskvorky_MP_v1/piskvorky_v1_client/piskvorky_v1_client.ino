@@ -130,7 +130,7 @@ TouchScreen Touch(XP, YP, XM, YM, 300);
 
 /* ----------Herní data----------*/
 byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení 
-byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, 1: připojování k serveru, 2: čekání na tah, 3: tah)
+byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, připojení k serveru, 1: připojování k serveru, 2: čekání na instrukce, 3: tah)
 const byte maxPlayers = 5;
 
 /* ----------Piškvorky----------*/
@@ -299,7 +299,7 @@ void loop() {
         }
         break;
 
-     case 2:
+     case 2: //Nová hra
       byte index = 0;
       while (index < packetLength){
         if(client.available() > 0){
@@ -310,7 +310,43 @@ void loop() {
       }
       processBoard();
       break;
-    }
+      
+    case 3: //Běžící hra
+      drawPage(2);
+      byte index = 0;
+      while (index < packetLength){
+        if(client.available() > 0){
+          board[index] = client.read();
+          index++;
+        }
+        delay(5);
+      }
+      processBoard();
+      break;
+
+    case 4: //Můj tah
+      byte row = 0;
+      byte column = 0;
+      for(int i = 0; i < meshX; i++){ //Zjištění místa v hracím poli
+        if(i*resX/meshX<= TSx && (i+1)*resX/meshX >= TSx){
+          column = i;
+          break;
+         }
+       }
+
+        for(int i = 0; i < meshY; i++){
+          if(i*resY/meshY<= TSy && (i+1)*resY/meshY >= TSy){
+            row = i;
+            break;
+          }
+        }
+        if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam druhý hráč) 
+        //Odesíláni
+        client.write(meshX*row + column);
+        gamePhase = 2;
+        }
+      break;
+   }
  
   
   
@@ -463,6 +499,21 @@ void drawMesh(uint16_t color){
         buttons[button_index] = buttonRect(50, 100, 200, 150, 1, 1);
         screenRefresh = false;
         break;
+
+      case 2:
+        LCD.clrScr();
+        button_index = 0;
+        drawMainFrame(BLUE);
+        LCD.setTextColor(YELLOW, BLACK);
+        LCD.setTextSize(3);
+        LCD.setCursor(50, 10);
+        LCD.println("Piskvorky");
+        LCD.setCursor(50, 70);
+        LCD.setTextSize(2);
+        LCD.println("Cekam na zahajeni hry");
+        buttons[button_index] = buttonRect(50, 100, 200, 150, 1, 1);
+        screenRefresh = false;
+        break;
     }
   }
 
@@ -510,7 +561,13 @@ void processBoard(){
       drawPoints();
       break;
 
-    case 2:
+    case 2: //Vložení kolečka do herní desky
+      gamePhase = 4;
+      break;
+
+    case 3:
+      gamePhase = 2; 
+      screenRefresh = true;
       break;
   }
 }
@@ -596,6 +653,16 @@ void buttonPressed(int x, int y){
           screenRefresh = true;
           break;
       }
+
+    case 2:
+      switch(id){
+        case 1:
+          gamePhase = 0;
+          screenRefresh = true;
+          break;
+      }
+
+    
   }
   
 }
