@@ -131,12 +131,13 @@ TouchScreen Touch(XP, YP, XM, YM, 300);
 /* ----------Herní data----------*/
 byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení 
 byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, 1: připojování k serveru, 2: čekání na tah, 3: tah)
+const byte maxPlayers = 5;
 
 /* ----------Piškvorky----------*/
 byte packetLength = 95; 
 byte board [103]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
- *  0-89:   Obsazení herních polí (standadně 0, clienti vyplňují svá čísla)
+ *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
  *  90:     Hlášení prostřednictvím kódu 
  *            0:    vše OK, hraje se, překresli obrazovku
  *            2:    hraj (vyplň pole)
@@ -241,6 +242,7 @@ void chechStatus(byte); //KOntroluje oznamovací kód (umístěn v board[90])
 bool connectToServer(void); //Začne se spojovat se serverem
 void buttonPressed(int, int); //Argumentem souřadnice bodu, systém vyhodnotí stisk
 void processBoard(void); //Zpracuje novou přijatou herní desku
+uint16_t getPlayerColor(byte); //Zjistí barvu hráče, argument je číslo pozice v poli, kde údaj začíná
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
@@ -461,11 +463,6 @@ void drawMesh(uint16_t color){
         buttons[button_index] = buttonRect(50, 100, 200, 150, 1, 1);
         screenRefresh = false;
         break;
-  
-      case 2:
-        drawMesh(LIGHTGREY);
-        screenRefresh = false;
-        break;
     }
   }
 
@@ -480,23 +477,21 @@ void drawMesh(uint16_t color){
 void drawPoints(){
   byte row = 0;
   byte column = 0;
+  byte colorAddr[] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5} 
+  uint16_t colors[maxPlayer];
 
-  for (int i = 0; i < 88; i++){
-        if(board [i] == 1){
-          row = i/11;
-          column = i - row*11;
-          //LCD.setColor(serverColor);
-          LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
-          
-        }
-        else if (board [i] == 2){
-          row = i/11;
-          column = i - row*11;
-          //LCD.setColor(clientColor);
-          LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
-          
-        }
+  for(int i = 0; i < maxPlayers; i++){ //Zjištění jednotlivých barev
+    colors[i] = getPlayerColor(colorAddr[i]);
+  }
+
+  for (int i = 0; i < meshX*meshY; i++){ //Překreslí všechny puntíky
+      if(board[i] != 0){
+        row = i/meshX;
+        column = i - row*meshX;
+        LCD.setColor(colors[board[i] +1); //Nastaví barvu hráče podle čísla v poli
+        LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       }
+   }
 }
 
 
@@ -508,7 +503,16 @@ void drawPoints(){
   */
 
 void processBoard(){
-  
+  switch(board[gb_cpde]){
+    case 0: //Jen překreslit
+      drawMainFrame(LIGHTGREY);
+      drawMesh(LIGHTGREY);
+      drawPoints();
+      break;
+
+    case 2:
+      break;
+  }
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> vypisuje hlášení podle kodu <<<<<
@@ -568,22 +572,30 @@ void checkStatus(byte code){
   *    
   */
 void buttonPressed(int x, int y){
-  byte id;
-  switch(gamePhase){
-    case 0:
-      for(int i = 0; i < button_index; i++){
+  byte id = 0;
+  for(int i = 0; i < button_index; i++){
         if(buttons[i].isTouched(x, y)){
           id = buttons[i].getID();
           break;
         }
-      }
+  }
+  switch(gamePhase){
+    case 0:
       switch(id){
-        case 0:
+        case 1:
           gamePhase = 1;
           screenRefresh = true;
           break;
       }
       break;
+
+    case 1:
+      switch(id){
+        case 1:
+          gamePhase = 0;
+          screenRefresh = true;
+          break;
+      }
   }
   
 }
@@ -591,7 +603,7 @@ void buttonPressed(int x, int y){
 //------------------------------------------------------------------------------------------------------
 //>>>>> Připojení k serveru <<<<<
  /*   Princip:   
-  *    - nekonečná smyčka nažící se připojit k serveru
+  *    - nekonečná smyčka snaží cí se připojit k serveru
   *    - pokud je připojení úspěšné, změní se fáze hry
   *    - v případě úspěšného spoojení vrátí true
   *    - hodnoty vrácené serverem: 0 = spojení odmítnuto (třeba z důvodu běžící hry); 1-5 = přiřazené číslo hráče
@@ -612,6 +624,9 @@ bool connectToServer(){
             return true;
           }
           else{
+            Serial.println("Spojeni odmitnuto");
+            clientConnected = false;
+            client.stop();
             return false;
           }
         }
@@ -620,4 +635,14 @@ bool connectToServer(){
   }
 }
 
+//------------------------------------------------------------------------------------------------------
+//>>>>> Zjištění barvy hráče <<<<<
+ /*   Princip:   
+  *    - argument je index v poli board, podle něho je zjištěna daná barva 
+  *    - návratová hodnota je ona barva
+  */
+
+uint16_t getPlayerColor(byte start){
+  return uint16_t(board[start] << 8 | board[start+1]);
+}
 //------------------------------------------------------------------------------------------------------
