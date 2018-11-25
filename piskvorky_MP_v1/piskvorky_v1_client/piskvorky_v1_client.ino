@@ -299,19 +299,7 @@ void loop() {
         }
         break;
 
-     case 2: //Nová hra
-      byte index = 0;
-      while (index < packetLength){
-        if(client.available() > 0){
-          board[index] = client.read();
-          index++;
-        }
-        delay(5);
-      }
-      processBoard();
-      break;
-      
-    case 3: //Běžící hra
+     case 2:{ //Nová hra
       drawPage(2);
       byte index = 0;
       while (index < packetLength){
@@ -321,7 +309,22 @@ void loop() {
         }
         delay(5);
       }
+      LCD.clrScr();
       processBoard();
+     }
+      break;
+      
+    case 3:{ //Běžící hra
+      byte index = 0;
+      while (index < packetLength){
+        if(client.available() > 0){
+          board[index] = client.read();
+          index++;
+        }
+        delay(5);
+      }
+      processBoard();
+      }
       break;
 
     case 4: //Můj tah
@@ -343,7 +346,7 @@ void loop() {
         if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam druhý hráč) 
         //Odesíláni
         client.write(meshX*row + column);
-        gamePhase = 2;
+        gamePhase = 3;
         }
       break;
    }
@@ -528,8 +531,8 @@ void drawMesh(uint16_t color){
 void drawPoints(){
   byte row = 0;
   byte column = 0;
-  byte colorAddr[] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5} 
-  uint16_t colors[maxPlayer];
+  byte colorAddr[] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5};
+  uint16_t colors[maxPlayers];
 
   for(int i = 0; i < maxPlayers; i++){ //Zjištění jednotlivých barev
     colors[i] = getPlayerColor(colorAddr[i]);
@@ -539,7 +542,7 @@ void drawPoints(){
       if(board[i] != 0){
         row = i/meshX;
         column = i - row*meshX;
-        LCD.setColor(colors[board[i] +1); //Nastaví barvu hráče podle čísla v poli
+        LCD.setColor(colors[board[i] +1]); //Nastaví barvu hráče podle čísla v poli
         LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       }
    }
@@ -554,11 +557,12 @@ void drawPoints(){
   */
 
 void processBoard(){
-  switch(board[gb_cpde]){
+  switch(board[gb_code]){
     case 0: //Jen překreslit
       drawMainFrame(LIGHTGREY);
       drawMesh(LIGHTGREY);
       drawPoints();
+      gamePhase = 3;
       break;
 
     case 2: //Vložení kolečka do herní desky
