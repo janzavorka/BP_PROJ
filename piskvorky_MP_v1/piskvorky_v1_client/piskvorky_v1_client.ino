@@ -48,7 +48,7 @@ bool clientConnected = false;
 bool serverReady = false;
 
 //Herní server
-IPAddress serverAddress(10,0,0,1);
+IPAddress serverAddress(10,0,0,8);
 
 /* ----------Nastavení dotykové plochy----------*/
 #define YP A1  // must be an analog pin, use "An" notation!
@@ -71,10 +71,10 @@ bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabráněn�
 //Kalibrace jednotlivých displajů (ZMĚNIT)
 
 //Client 1
-#define TOUCH_XMIN 
-#define TOUCH_XMAX
-#define TOUCH_YMIN
-#define TOUCH_YMAX
+#define TOUCH_XMIN 132
+#define TOUCH_XMAX 959
+#define TOUCH_YMIN 146
+#define TOUCH_YMAX 950
 
 //Client 2
 /*#define TOUCH_XMIN 
@@ -93,7 +93,7 @@ bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabráněn�
 #define touchScreenOff 500 //Po jakou dobu bude dotyková plocha deaktivována (zabrání multidotykům)
 unsigned long long refreshTouchScreen = 0;
 
-#define tryReconnect 2000 //Po jaké době se client pokusí znovu spojit se serverem
+#define tryReconnect 5000 //Po jaké době se client pokusí znovu spojit se serverem
 unsigned long long lastReconnect = 0;
 
 /* ----------Barvy----------*/
@@ -172,11 +172,13 @@ byte board [103]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_PC4        100
 #define gb_PC5        102
 
+const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
+
 bool screenRefresh = false; //Zda se má obrazovka překreslit
 
 /* ----------Tlačítka----------*/
 //Pole tlačítek
-#define max_buttRect 2
+#define max_buttRect 3
 byte button_index = 0;
 
 
@@ -220,6 +222,7 @@ byte buttonRect::getID(){
 }
 
 bool buttonRect::isTouched(int touchX, int touchY){
+  Serial.print("Kontrola stisku x: "); Serial.print(y1);; Serial.print(" y: "); Serial.print(y2); Serial.print(" s id: "); Serial.println(id);
   if(touchX >= x1 && touchX <= x2 && touchY >= y1 && touchY <= y2){
     return true;
   }
@@ -281,16 +284,18 @@ void loop() {
     switch(gamePhase){
       case 0:
         if(screenRefresh){
+          Serial.println("Faze 0");
           drawPage(0);
         }
         break;
 
       case 1:
         if(screenRefresh){
+          Serial.println("Faze 1");
           drawPage(1);
         }
         if ((millis() - lastReconnect > tryReconnect)){ //Pokus o znovuspojení
-          refreshTouchScreen = millis();
+          lastReconnect = millis();
           if(connectToServer()){
             gamePhase = 2;
             clientConnected = true;
@@ -328,26 +333,7 @@ void loop() {
       break;
 
     case 4: //Můj tah
-      byte row = 0;
-      byte column = 0;
-      for(int i = 0; i < meshX; i++){ //Zjištění místa v hracím poli
-        if(i*resX/meshX<= TSx && (i+1)*resX/meshX >= TSx){
-          column = i;
-          break;
-         }
-       }
-
-        for(int i = 0; i < meshY; i++){
-          if(i*resY/meshY<= TSy && (i+1)*resY/meshY >= TSy){
-            row = i;
-            break;
-          }
-        }
-        if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam druhý hráč) 
-        //Odesíláni
-        client.write(meshX*row + column);
-        gamePhase = 3;
-        }
+      Serial.println("Faze 4");
       break;
    }
  
@@ -369,22 +355,24 @@ void loop() {
   // we have some minimum pressure we consider 'valid'
   // pressure of 0 means no pressing!
   if (touchPoint.z > MINPRESSURE && touchPoint.z < MAXPRESSURE && touchScreenAct) {
-     TSx = map(touchPoint.x, 139, 680, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
-     TSy = map(touchPoint.y, 905, 360, 0 ,240);
+     TSx = map(touchPoint.y, TOUCH_XMAX, TOUCH_XMIN, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
+     TSy = map(touchPoint.x, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
      Serial.print("X = "); Serial.print(touchPoint.x);
      Serial.print("\tY = "); Serial.print(touchPoint.y);
+     Serial.print("\tXpix = "); Serial.print(TSx);
+     Serial.print("\tYpix = "); Serial.print(TSy);
      Serial.print("\tPressure = "); Serial.println(touchPoint.z);
      buttonPressed(TSx, TSy);
      touchScreenAct = false;
-     if (gamePhase == 1){ //Místo v hracím poli
+     if (gamePhase == 4){ //Místo v hracím poli
       byte row = 0;
       byte column = 0;
-        for(int i = 0; i < meshX; i++){
-          if(i*resX/meshX<= TSx && (i+1)*resX/meshX >= TSx){
-            column = i;
-            break;
-          }
-        }
+      for(int i = 0; i < meshX; i++){ //Zjištění místa v hracím poli
+        if(i*resX/meshX<= TSx && (i+1)*resX/meshX >= TSx){
+          column = i;
+          break;
+         }
+       }
 
         for(int i = 0; i < meshY; i++){
           if(i*resY/meshY<= TSy && (i+1)*resY/meshY >= TSy){
@@ -392,20 +380,11 @@ void loop() {
             break;
           }
         }
-      if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam druhý hráč) 
-        board[meshX*row + column] = 2; //Zabrat pole
-        drawPoints(); //Překreslí puntíky 
-        board[89]++; //Posune herní kolo
-        gamePhase = 2; //Nastaví fázi 2 (hraje druhý hráč)
-        //drawPage(2);
-        screenRefresh = true;
-        //checkWin(meshX*row + column); //Zkontroluje, zda nedošlo k výhře (kontrola se provádí pouze pro vepsaný puntík (sloupec, řádek, křížem)
-
+        if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam druhý hráč) 
         //Odesíláni
-        client.write(board, packetLength);
-        //checkStatus(board[90]); //Zkontroluje kód (podle hodnoty výhra,prohra, pokračování)
-      }
-        
+        client.write(meshX*row + column);
+        gamePhase = 3;
+        }
      }
      
    }
@@ -478,14 +457,25 @@ void drawMesh(uint16_t color){
         drawMainFrame(BLUE);
         LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(3);
-        LCD.setCursor(50, 10);
+        LCD.setCursor(80, 10);
         LCD.println("Piskvorky");
-        LCD.setCursor(50, 70);
+        LCD.setColor(BLACK);
+        LCD.fillRect(20, 40, 310, 90);
+        LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(2);
+        LCD.setCursor(20, 45);
+        LCD.println("Moje IP: ");
+        LCD.setCursor(150, 45);
+        LCD.println(Ethernet.localIP());
+        LCD.setCursor(20, 70);
         LCD.println("Server IP: ");
         LCD.setCursor(150, 70);
         LCD.println(serverAddress);
-        buttons[button_index] = buttonRect(50, 100, 200, 150, 1, 1);
+        buttons[button_index] = buttonRect(50, 270, 150, 210, 1, 1);
+        LCD.setTextColor(BLACK, LIGHTGREY);
+        LCD.setTextSize(3);
+        LCD.setCursor(90,170);
+        LCD.println("PRIPOJIT");
         screenRefresh = false;
         break;
   
@@ -494,12 +484,19 @@ void drawMesh(uint16_t color){
         drawMainFrame(BLUE);
         LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(3);
-        LCD.setCursor(50, 10);
+        LCD.setCursor(80, 10);
         LCD.println("Piskvorky");
-        LCD.setCursor(50, 70);
+        LCD.setColor(BLACK);
+        LCD.fillRect(20, 40, 310, 90);
+        LCD.setTextColor(YELLOW, BLACK);
+        LCD.setCursor(20, 50);
         LCD.setTextSize(2);
         LCD.println("Pripojuji se k serveru");
-        buttons[button_index] = buttonRect(50, 100, 200, 150, 1, 1);
+        buttons[button_index] = buttonRect(50, 270, 150, 210, 11, 1);
+        LCD.setTextColor(RED, LIGHTGREY);
+        LCD.setTextSize(3);
+        LCD.setCursor(90,170);
+        LCD.println("PRERUSIT");
         screenRefresh = false;
         break;
 
@@ -509,12 +506,21 @@ void drawMesh(uint16_t color){
         drawMainFrame(BLUE);
         LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(3);
-        LCD.setCursor(50, 10);
+        LCD.setCursor(80, 10);
         LCD.println("Piskvorky");
-        LCD.setCursor(50, 70);
+        LCD.setColor(BLACK);
+        LCD.fillRect(20, 40, 310, 90);
+        LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(2);
+        LCD.setCursor(90, 50);
+        LCD.println("Pripojeno");
+        LCD.setCursor(20, 70);
         LCD.println("Cekam na zahajeni hry");
-        buttons[button_index] = buttonRect(50, 100, 200, 150, 1, 1);
+        buttons[button_index] = buttonRect(50, 270, 150, 210, 21, 1);
+        LCD.setTextColor(BLACK, LIGHTGREY);
+        LCD.setTextSize(3);
+        LCD.setCursor(100,170);
+        LCD.println("ODPOJIT");
         screenRefresh = false;
         break;
     }
@@ -531,7 +537,6 @@ void drawMesh(uint16_t color){
 void drawPoints(){
   byte row = 0;
   byte column = 0;
-  byte colorAddr[] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5};
   uint16_t colors[maxPlayers];
 
   for(int i = 0; i < maxPlayers; i++){ //Zjištění jednotlivých barev
@@ -566,6 +571,8 @@ void processBoard(){
       break;
 
     case 2: //Vložení kolečka do herní desky
+      drawMainFrame(BLUE);
+      drawMesh(BLUE);
       gamePhase = 4;
       break;
 
@@ -633,40 +640,30 @@ void checkStatus(byte code){
   *    
   */
 void buttonPressed(int x, int y){
-  byte id = 0;
+  byte cislo = 0;
   for(int i = 0; i < button_index; i++){
         if(buttons[i].isTouched(x, y)){
-          id = buttons[i].getID();
+          Serial.println("Stisknuto");
+          cislo = buttons[i].getID();
           break;
         }
   }
-  switch(gamePhase){
-    case 0:
-      switch(id){
-        case 1:
-          gamePhase = 1;
-          screenRefresh = true;
-          break;
-      }
+  Serial.print("cislo tlacitka: "); Serial.println(cislo);
+  switch(cislo){
+    case 1:
+      gamePhase = 1;
+      screenRefresh = true;
       break;
 
-    case 1:
-      switch(id){
-        case 1:
-          gamePhase = 0;
-          screenRefresh = true;
-          break;
-      }
+    case 11:
+      gamePhase = 0;
+      screenRefresh = true;
+      break;
 
-    case 2:
-      switch(id){
-        case 1:
-          gamePhase = 0;
-          screenRefresh = true;
-          break;
-      }
-
-    
+    case 21:
+      gamePhase = 0;
+      screenRefresh = true;
+      break;
   }
   
 }
@@ -683,10 +680,12 @@ bool connectToServer(){
   byte server_code = 0;
   if(!clientConnected){
     Serial.println("Pokus o spojeni");
-    if (client.connect(serverAddress, 3333)){
+    client.connect(serverAddress, 3333);
+    delay(20);
+    if (client.connected()){
       Serial.println("Pripojuji");
       client.write(33); //Aby připojení server správně zaznamenal (kód 33: chci se připojit)
-      while(1){ //Čekání na příjem potvrzovacího kódu
+      while(client.connected()){ //Čekání na příjem potvrzovacího kódu
         if(client.available()){
           server_code = client.read();
           if(server_code > 0){
@@ -702,7 +701,11 @@ bool connectToServer(){
           }
         }
       }
-    }  
+    }
+    else{
+        Serial.println("NEPRIPOJENO");
+        return false;
+    }
   }
 }
 
