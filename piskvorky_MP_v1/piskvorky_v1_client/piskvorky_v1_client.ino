@@ -364,7 +364,7 @@ void loop() {
      Serial.print("\tPressure = "); Serial.println(touchPoint.z);
      buttonPressed(TSx, TSy);
      touchScreenAct = false;
-     if (gamePhase == 4){ //Místo v hracím poli
+     if (gamePhase == 4){ //POkud je client na tahu
       byte row = 0;
       byte column = 0;
       for(int i = 0; i < meshX; i++){ //Zjištění místa v hracím poli
@@ -380,7 +380,7 @@ void loop() {
             break;
           }
         }
-        if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam druhý hráč) 
+        if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam jiný hráč) 
         //Odesíláni
         client.write(meshX*row + column);
         gamePhase = 3;
@@ -391,20 +391,6 @@ void loop() {
 }
 
 
-if(clientConnected && gamePhase == 2){ //fáze 2: čekání na příjem
-    byte index = 0;
-    while (index < packetLength){
-      if(client.available() > 0){
-        board[index] = client.read();
-        index++;
-      }
-     delay(5);
-    }
-    screenRefresh = true;
-    gamePhase = 1;
-    //checkStatus(board[90]); //Kontrola kódu
-   }
-  
   delay(10);
   
 }
