@@ -17,9 +17,9 @@ extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
-byte mac[] = {
+/*byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
-};
+};*/
 
 //Client 2
 /*byte mac[] = {
@@ -27,9 +27,9 @@ byte mac[] = {
 };*/
 
 //Client 3
-/*byte mac[] = {
+byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xCD
-};*/
+};
 
 //Client 4
 /*byte mac[] = {
