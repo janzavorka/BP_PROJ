@@ -256,13 +256,19 @@ void setup() {
   Serial.begin(9600);
   LCD.InitLCD();
   LCD.setFont(SmallFont);
-
-  //Úvodní obrazovka
   LCD.clrScr(); //Vyčištění obrazovky (vyplnění černou)
-  //Sériová linka
+  
   //Ethernet
-  Ethernet.begin(mac); //IP adresa z DHCP serveru
+  LCD.setTextColor(YELLOW, BLACK);
+    LCD.setTextSize(2);
+    LCD.setCursor(20, 45);
+    LCD.println("Zkontrolujte pripojeni     kabelu");
+  while(!Ethernet.begin(mac)){ //IP adresa z DHCP serveru
+    Serial.println("Zkontrolujte pripojeni kabelu");
+    delay(1000);
+  }
   delay(50);
+  LCD.clrScr();
   Serial.print("Ziskana IP adresa: ");
   Serial.println(Ethernet.localIP());
   
