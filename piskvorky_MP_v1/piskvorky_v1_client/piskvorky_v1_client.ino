@@ -135,12 +135,11 @@ const byte maxPlayers = 5;
 
 /* ----------Piškvorky----------*/
 byte packetLength = 95; 
-byte board [103]; //0: nikdo, 1: hráč 1; 2: hráč 2
+byte board [120]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
  *  90:     Hlášení prostřednictvím kódu 
  *            0:    vše OK, hraje se, překresli obrazovku
- *            2:    hraj (vyplň pole)
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
  *            9:    odpojuji
  *            100:  hra skončila remízou  
@@ -153,13 +152,18 @@ byte board [103]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *            202: ....
  *            205: problémy s hráčem 5
  *  91:     Číslo hrajícího hráče
- *  92:     Číslo vyplněného pole (vyplňuje client)
+ *  92:     Číslo vyplněného pole (vyplňuje client) //NEPLATí
  *  93:     Počet odehraných kol, zvyšuje se na straně serveru
  *  95-96:  Barva hráče 1
  *  97-98:  Barva hráče 2
  *  99-100: Barva hráče 3
  *  100-101:Barva hráče 4
  *  102-103:Barva hráče 5
+ *  104-107:IP hráče 1
+ *  108-111:IP hráče 2
+ *  112-115:IP hráče 3
+ *  116-119:IP hráče 4
+ *  120-123:IP hráče 5
  */
 //Označení pozic
 #define gb_code       90
@@ -173,6 +177,7 @@ byte board [103]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_PC5        102
 
 const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
+const byte IPaddr [] = {104, 108, 112, 116, 120}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu 
 
 bool screenRefresh = false; //Zda se má obrazovka překreslit
 
@@ -246,6 +251,7 @@ bool connectToServer(void); //Začne se spojovat se serverem
 void buttonPressed(int, int); //Argumentem souřadnice bodu, systém vyhodnotí stisk
 void processBoard(void); //Zpracuje novou přijatou herní desku
 uint16_t getPlayerColor(byte); //Zjistí barvu hráče, argument je číslo pozice v poli, kde údaj začíná
+byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí -1
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
@@ -272,11 +278,6 @@ void setup() {
   Serial.print("Ziskana IP adresa: ");
   Serial.println(Ethernet.localIP());
   
-  //Nulování herní desky
-  //Serial.println("Nulovani pole pro herni desku");
-  for (int i = 0; i < packetLength; i++){
-    board[i] = 0;
-  }
   screenRefresh = true;
   delay(100);
 
@@ -290,14 +291,14 @@ void loop() {
     switch(gamePhase){
       case 0:
         if(screenRefresh){
-          Serial.println("Faze 0");
+          //Serial.println("Faze 0");
           drawPage(0);
         }
         break;
 
       case 1:
         if(screenRefresh){
-          Serial.println("Faze 1");
+          //Serial.println("Faze 1");
           drawPage(1);
         }
         if ((millis() - lastReconnect > tryReconnect)){ //Pokus o znovuspojení
@@ -363,11 +364,11 @@ void loop() {
   if (touchPoint.z > MINPRESSURE && touchPoint.z < MAXPRESSURE && touchScreenAct) {
      TSx = map(touchPoint.y, TOUCH_XMAX, TOUCH_XMIN, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.x, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
-     Serial.print("X = "); Serial.print(touchPoint.x);
+     /*Serial.print("X = "); Serial.print(touchPoint.x);
      Serial.print("\tY = "); Serial.print(touchPoint.y);
      Serial.print("\tXpix = "); Serial.print(TSx);
      Serial.print("\tYpix = "); Serial.print(TSy);
-     Serial.print("\tPressure = "); Serial.println(touchPoint.z);
+     Serial.print("\tPressure = "); Serial.println(touchPoint.z);*/
      buttonPressed(TSx, TSy);
      touchScreenAct = false;
      if (gamePhase == 4){ //POkud je client na tahu
@@ -446,14 +447,13 @@ void drawMesh(uint16_t color){
     
       case 0:
         button_index = 0;
+        LCD.setColor(BLACK);
+        LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
         LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(3);
         LCD.setCursor(80, 10);
         LCD.println("Piskvorky");
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
-        LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(2);
         LCD.setCursor(20, 45);
         LCD.println("Moje IP: ");
@@ -474,13 +474,12 @@ void drawMesh(uint16_t color){
       case 1:
         button_index = 0;
         drawMainFrame(BLUE);
+        LCD.setColor(BLACK);
+        LCD.fillRect(20, 40, 310, 90);
         LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(3);
         LCD.setCursor(80, 10);
         LCD.println("Piskvorky");
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
-        LCD.setTextColor(YELLOW, BLACK);
         LCD.setCursor(20, 50);
         LCD.setTextSize(2);
         LCD.println("Pripojuji se k serveru");
@@ -495,14 +494,13 @@ void drawMesh(uint16_t color){
       case 2:
         LCD.clrScr();
         button_index = 0;
+        LCD.setColor(BLACK);
+        LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
         LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(3);
         LCD.setCursor(80, 10);
         LCD.println("Piskvorky");
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
-        LCD.setTextColor(YELLOW, BLACK);
         LCD.setTextSize(2);
         LCD.setCursor(90, 50);
         LCD.println("Pripojeno");
@@ -635,12 +633,12 @@ void buttonPressed(int x, int y){
   byte cislo = 0;
   for(int i = 0; i < button_index; i++){
         if(buttons[i].isTouched(x, y)){
-          Serial.println("Stisknuto");
+          //Serial.println("Stisknuto");
           cislo = buttons[i].getID();
           break;
         }
   }
-  Serial.print("cislo tlacitka: "); Serial.println(cislo);
+  //Serial.print("cislo tlacitka: "); Serial.println(cislo);
   switch(cislo){
     case 1:
       gamePhase = 1;
@@ -710,5 +708,24 @@ bool connectToServer(){
 
 uint16_t getPlayerColor(byte start){
   return uint16_t(board[start] << 8 | board[start+1]);
+}
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+//>>>>> Zjištění mopje číslo hráče <<<<<
+ /*   Princip:   
+  *    - Projde jednotlivé IP v boardu a pokusí se najít shodu s mojí IP = moje číslo
+  *    - pokud nenajde shodu vrátí -1
+  */
+
+byte getMyPlayerNumber(){
+  bool haveNumber = false;
+  for(byte i = 0; i < maxPlayers; i++){
+    if(IPaddr[i] == IPAddress(Ethernet.localIP())[0] && IPaddr[i+1] == IPAddress(Ethernet.localIP())[1] && IPaddr[i+2] == IPAddress(Ethernet.localIP())[2] && IPaddr[i+3] == IPAddress(Ethernet.localIP())[3]){
+      return (i+1);
+    }
+    else {
+      return -1;
+    }
+  }
 }
 //------------------------------------------------------------------------------------------------------
