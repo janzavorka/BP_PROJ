@@ -273,7 +273,7 @@ void setup() {
   Serial.println(Ethernet.localIP());
   
   //Nulování herní desky
-  //Serial.println("Nulovani pole pro herni desku");
+  Serial.println("Nulovani pole pro herni desku");
   for (int i = 0; i < packetLength; i++){
     board[i] = 0;
   }
