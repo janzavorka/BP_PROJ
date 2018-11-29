@@ -669,7 +669,7 @@ bool connectToServer(){
     delay(20);
     if (client.connected()){
       Serial.println("Pripojuji");
-      client.write(250); //Aby připojení server správně zaznamenal (kód 33: chci se připojit)
+      client.write(250); //Aby připojení server správně zaznamenal (kód 250: chci se připojit)
       while(client.connected()){
         if(recieveBoard()){
           if(getMyPlayerNumber > 0){
