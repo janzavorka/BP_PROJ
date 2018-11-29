@@ -142,6 +142,11 @@ byte board [120]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *            0:    vše OK, hraje se, překresli obrazovku
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
  *            9:    odpojuji
+ *            11:   hraje hráč 1
+ *            12:   hraje hráč 2
+ *            13:   hraje hráč 3
+ *            14:   hraje hráč 4
+ *            15:   hraje hráč 5
  *            100:  hra skončila remízou  
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
@@ -252,6 +257,7 @@ void buttonPressed(int, int); //Argumentem souřadnice bodu, systém vyhodnotí 
 void processBoard(void); //Zpracuje novou přijatou herní desku
 uint16_t getPlayerColor(byte); //Zjistí barvu hráče, argument je číslo pozice v poli, kde údaj začíná
 byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí -1
+bool recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
@@ -311,31 +317,20 @@ void loop() {
         }
         break;
 
-     case 2:{ //Nová hra
-      drawPage(2);
-      byte index = 0;
-      while (index < packetLength){
-        if(client.available() > 0){
-          board[index] = client.read();
-          index++;
-        }
-        delay(5);
+     case 2: //Nová hra
+      if(screenRefresh){
+        drawPage(2);
       }
-      LCD.clrScr();
-      processBoard();
-     }
+      if(recieveBoard() && getMyPlayerNumber() > 0){
+        myNum = getMyPlayerNumber();
+        LCD.clrScr();
+        processBoard();
+      }     
       break;
       
-    case 3:{ //Běžící hra
-      byte index = 0;
-      while (index < packetLength){
-        if(client.available() > 0){
-          board[index] = client.read();
-          index++;
-        }
-        delay(5);
-      }
-      processBoard();
+    case 3: //Běžící hra
+      if(recieveBoard()){
+        processBoard();
       }
       break;
 
@@ -674,22 +669,19 @@ bool connectToServer(){
     delay(20);
     if (client.connected()){
       Serial.println("Pripojuji");
-      client.write(33); //Aby připojení server správně zaznamenal (kód 33: chci se připojit)
-      while(client.connected()){ //Čekání na příjem potvrzovacího kódu
-        if(client.available()){
-          server_code = client.read();
-          if(server_code > 0){
-            myNum = server_code;
+      client.write(250); //Aby připojení server správně zaznamenal (kód 33: chci se připojit)
+      while(client.connected()){
+        if(recieveBoard()){
+          if(getMyPlayerNumber > 0){
             clientConnected = true;
+            myNum = getMyPlayerNumber();
             return true;
           }
           else{
-            Serial.println("Spojeni odmitnuto");
-            clientConnected = false;
-            client.stop();
             return false;
           }
         }
+        delay(100);
       }
     }
     else{
@@ -711,7 +703,7 @@ uint16_t getPlayerColor(byte start){
 }
 //------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------
-//>>>>> Zjištění mopje číslo hráče <<<<<
+//>>>>> Zjištění moje číslo hráče <<<<<
  /*   Princip:   
   *    - Projde jednotlivé IP v boardu a pokusí se najít shodu s mojí IP = moje číslo
   *    - pokud nenajde shodu vrátí -1
@@ -726,6 +718,27 @@ byte getMyPlayerNumber(){
     else {
       return -1;
     }
+  }
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Pokud je připojeno k serveru, přijímá herní desku <<<<<
+ /*   Princip:   
+  *    - Zkusí jestli server něco odeslal, přijme celý board
+  */
+bool recieveBoard (){
+  byte index = 0;
+  if (client.connected() && client.available() > 0){  
+    while (index < packetLength){
+      if(client.available() > 0){
+        board[index] = client.read();
+        index++;
+      }
+      delay(5);
+    }
+    return true;
+  }
+  else {
+    return false;
   }
 }
 //------------------------------------------------------------------------------------------------------
