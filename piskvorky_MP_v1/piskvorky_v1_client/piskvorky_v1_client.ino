@@ -17,14 +17,14 @@ extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
-byte mac[] = {
+/*byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
-};
+};*/
 
 //Client 2
-/*byte mac[] = {
+byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xDD
-};*/
+};
 
 //Client 3
 /*byte mac[] = {
@@ -130,23 +130,19 @@ TouchScreen Touch(XP, YP, XM, YM, 300);
 
 /* ----------Herní data----------*/
 byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení 
-byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, připojení k serveru, 1: připojování k serveru, 2: čekání na instrukce, 3: tah)
+byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, 1: připojování k serveru, 2: připojeno, čekání na začátek hry, 3: pro=bíhající hra, překreslování displeje, 4: můj tah)
 const byte maxPlayers = 5;
 
 /* ----------Piškvorky----------*/
-byte packetLength = 95; 
-byte board [120]; //0: nikdo, 1: hráč 1; 2: hráč 2
+byte packetLength = 126; 
+byte board [126]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
  *  90:     Hlášení prostřednictvím kódu 
  *            0:    vše OK, hraje se, překresli obrazovku
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
  *            9:    odpojuji
- *            11:   hraje hráč 1
- *            12:   hraje hráč 2
- *            13:   hraje hráč 3
- *            14:   hraje hráč 4
- *            15:   hraje hráč 5
+ *            10:   hraje nějaký hráč (pole 91)
  *            100:  hra skončila remízou  
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
@@ -178,11 +174,11 @@ byte board [120]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_PC1        95  
 #define gb_PC2        97
 #define gb_PC3        99
-#define gb_PC4        100
-#define gb_PC5        102
+#define gb_PC4        101
+#define gb_PC5        103
 
 const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
-const byte IPaddr [] = {104, 108, 112, 116, 120}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu 
+const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu 
 
 bool screenRefresh = false; //Zda se má obrazovka překreslit
 
@@ -241,14 +237,16 @@ bool buttonRect::isTouched(int touchX, int touchY){
   }
 }
 
-//Pole tlačítek
 buttonRect buttons[max_buttRect];
 
+//Pole tlačítek
 //DOTAŽENO SEM
 
 void drawMainFrame(uint16_t); //Vykreslí základní rámeček (v dané barvě)
 void drawMesh (uint16_t); //Vykreslí základní hrací mřížku (argument je barva)
 void drawPage (byte); //Vykreslí obrazovku podle čísla
+void drawPogetMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí -1
+bool recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
 void drawPoints(void); //Vykreslí puntíky podle board
 //void checkWin(byte); //Zkontroluje zda nějaký hráč nevyhrál (argument je políčko, na které bylo vloženo kolečko)
 void chechStatus(byte); //KOntroluje oznamovací kód (umístěn v board[90])
@@ -256,7 +254,7 @@ bool connectToServer(void); //Začne se spojovat se serverem
 void buttonPressed(int, int); //Argumentem souřadnice bodu, systém vyhodnotí stisk
 void processBoard(void); //Zpracuje novou přijatou herní desku
 uint16_t getPlayerColor(byte); //Zjistí barvu hráče, argument je číslo pozice v poli, kde údaj začíná
-byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí -1
+byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí 0
 bool recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
@@ -492,7 +490,7 @@ void drawMesh(uint16_t color){
         LCD.setColor(BLACK);
         LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
-        LCD.setTextColor(YELLOW, BLACK);
+        LCD.setTextColor(getPlayerColor(colorAddr[myNum-1]), BLACK);
         LCD.setTextSize(3);
         LCD.setCursor(80, 10);
         LCD.println("Piskvorky");
@@ -548,11 +546,18 @@ void drawPoints(){
 
 void processBoard(){
   switch(board[gb_code]){
-    case 0: //Jen překreslit
-      drawMainFrame(LIGHTGREY);
-      drawMesh(LIGHTGREY);
-      drawPoints();
-      gamePhase = 3;
+    case 0: //Podle čísla hráče překreslit nebo hrát 
+      if(board[gb_actPlayer] == myNum){
+        drawMainFrame(BLUE);
+        drawMesh(BLUE);
+        gamePhase = 4;
+      }
+      else{
+        drawMainFrame(LIGHTGREY);
+        drawMesh(LIGHTGREY);
+        drawPoints();
+        gamePhase = 3;
+      }
       break;
 
     case 2: //Vložení kolečka do herní desky
@@ -648,6 +653,9 @@ void buttonPressed(int x, int y){
     case 21:
       gamePhase = 0;
       screenRefresh = true;
+      client.flush();
+      client.stop();
+      clientConnected = false;
       break;
   }
   
@@ -670,18 +678,22 @@ bool connectToServer(){
     if (client.connected()){
       Serial.println("Pripojuji");
       client.write(250); //Aby připojení server správně zaznamenal (kód 250: chci se připojit)
-      while(client.connected()){
+      delay(200);
+      while(client.connected()){ 
         if(recieveBoard()){
           if(getMyPlayerNumber > 0){
             clientConnected = true;
             myNum = getMyPlayerNumber();
+            Serial.println(myNum);
             return true;
           }
           else{
+            Serial.println("Nepripojeno");
+            client.stop();
             return false;
           }
         }
-        delay(100);
+        delay(500);
       }
     }
     else{
@@ -699,7 +711,7 @@ bool connectToServer(){
   */
 
 uint16_t getPlayerColor(byte start){
-  return uint16_t(board[start] << 8 | board[start+1]);
+  return uint16_t(board[start] | uint16_t(board[start+1]) << 8);
 }
 //------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------
@@ -711,14 +723,14 @@ uint16_t getPlayerColor(byte start){
 
 byte getMyPlayerNumber(){
   bool haveNumber = false;
+  IPAddress locIP = Ethernet.localIP();
   for(byte i = 0; i < maxPlayers; i++){
-    if(IPaddr[i] == IPAddress(Ethernet.localIP())[0] && IPaddr[i+1] == IPAddress(Ethernet.localIP())[1] && IPaddr[i+2] == IPAddress(Ethernet.localIP())[2] && IPaddr[i+3] == IPAddress(Ethernet.localIP())[3]){
+    if(board[IPaddr[i]] == locIP[0] && board[IPaddr[i]+1] == locIP[1] && board[IPaddr[i]+2] == locIP[2] && board[IPaddr[i]+3] == locIP[3]){
+      Serial.print("Cislo: "); Serial.println(i+1);
       return (i+1);
     }
-    else {
-      return -1;
-    }
   }
+  return false;
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Pokud je připojeno k serveru, přijímá herní desku <<<<<
@@ -727,10 +739,12 @@ byte getMyPlayerNumber(){
   */
 bool recieveBoard (){
   byte index = 0;
-  if (client.connected() && client.available() > 0){  
+  if (client.connected() &&client.available() > 0){ //client.available();
+    Serial.println("prijem"); 
     while (index < packetLength){
       if(client.available() > 0){
         board[index] = client.read();
+        Serial.println(board[index]);
         index++;
       }
       delay(5);
