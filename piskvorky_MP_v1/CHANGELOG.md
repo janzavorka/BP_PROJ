@@ -1,27 +1,33 @@
-ï»¿# BP_PROJ: Piskvorky v1
+# BP_PROJ: Piskvorky v1
+
+### 03.12.2018
+- Program pro server
+	- úprava funkce pro získání dalšího clienta
+
+### 27.11.2018
+- Program pro clienta
+	- oprava pøipojovací funkce
+	- doladìní úvodních obrazovek
+
+
+### 25.11.2018
+- Práce na programu pro clienta:
+	- Dodìlány jednotlivé fáze hry
+	- Funkce pro spojení se serverem
+	- Mnoho dalších drobnıch úprav 
+- Program pro server
+	- správné vyhodnocení odpojenıch clientù
+	- pøi tahu daného clienta se pošle jen index dané pozice, ne celı herní board
+
 
 ### 12.11.2018
 - Program pro clienta:
-  - pÅ™idÃ¡nÃ­ tÅ™Ã­dy pro tlaÄÃ­tka 
+  - pøidání tøídy pro tlaèítka 
 
 ### 11.11.2018
-- PÅ™Ã­prava programu pro clienta
-  - Ãšprava parametrÅ¯ pro sÃ­Å¥ovÃ© pÅ™ipojenÃ­
-  - PÅ™Ã­prava rozloÅ¾enÃ­ packetu pro komunikaci
-- ZÃ¡klad programu pro server
-
-### 25.11.2018
-- PrÃ¡ce na programu pro clienta:
-	- DodÄ›lÃ¡ny jednotlivÃ© fÃ¡ze hry
-	- Funkce pro spojenÃ­ se serverem
-	- Mnoho dalÅ¡Ã­ch drobnÃ½ch Ãºprav 
-- Program pro server
-	- sprÃ¡vnÃ© vyhodnocenÃ­ odpojenÃ½ch clientÅ¯
-	- pÅ™i tahu danÃ©ho clienta se poÅ¡le jen index danÃ© pozice, ne celÃ½ hernÃ­ board
+- Pøíprava programu pro clienta
+  - Úprava parametrù pro síové pøipojení
+  - Pøíprava rozloení packetu pro komunikaci
+- Základ programu pro server
 	
-### 27.11.2018
-- Program pro clienta
-	- oprava pÅ™ipojovacÃ­ funkce
-	- doladÄ›nÃ­ ÃºvodnÃ­ch obrazovek
-
 
