@@ -50,8 +50,8 @@ byte lastPlayer = 0; //Označuje posledního hráče, který hrál
 #define GREENYELLOW     0xAFE5      /* 173, 255,  47 */
 
 /* ----------Piškvorky----------*/
-byte packetLength = 126; 
-byte board [126]; //0: nikdo, 1: hráč 1; 2: hráč 2
+byte packetLength = 136; 
+byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
  *  90:     Hlášení prostřednictvím kódu 
@@ -192,9 +192,12 @@ void loop() {
         if(place >=0 && place < meshX*meshY){
           board[place] = board[gb_actPlayer];
           board[gb_round]++; //Zvýšení počtu odehraných kol
-          board[gb_actPlayer] = getNextPlayerNumber(board[gb_actPlayer]);
+          board[gb_actPlayer] = 0;
+          sendBoard();
         }
         board[gb_code] = 0;
+        delay(500); //Hraje další hráč
+        board[gb_actPlayer] = getNextPlayerNumber(board[gb_actPlayer]);
         sendBoard();
       }
     }
@@ -283,9 +286,16 @@ void syncBoardIPs(){
   *    - pomocí server.write odešle celou herní desku
   */
 void sendBoard(){
+  byte subBoard[8];
   for(byte i = 0; i < maxPlayers; i++){
-    if(clients[i]){
-      clients[i].write(board, packetLength);
+    if(clients[i] && clients[i].connected()){
+      for(byte j = 0; j < packetLength/8; j++){
+        for(byte k = 0; k < 8; k++){
+          subBoard[k] = board[k + 8*j];
+        }
+        clients[i].write(subBoard, 8);
+        delay(10);
+      }
       delay(50);
     }
   }
