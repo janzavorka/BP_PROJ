@@ -17,14 +17,14 @@ extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
-/*byte mac[] = {
+byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
-};*/
+};
 
 //Client 2
-byte mac[] = {
+/*byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xDD
-};
+};*/
 
 //Client 3
 /*byte mac[] = {
@@ -134,8 +134,8 @@ byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, 
 const byte maxPlayers = 5;
 
 /* ----------Piškvorky----------*/
-byte packetLength = 126; 
-byte board [126]; //0: nikdo, 1: hráč 1; 2: hráč 2
+byte packetLength = 136; 
+byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
  *  90:     Hlášení prostřednictvím kódu 
@@ -228,7 +228,7 @@ byte buttonRect::getID(){
 }
 
 bool buttonRect::isTouched(int touchX, int touchY){
-  Serial.print("Kontrola stisku x: "); Serial.print(y1);; Serial.print(" y: "); Serial.print(y2); Serial.print(" s id: "); Serial.println(id);
+  //Serial.print("Kontrola stisku x: "); Serial.print(y1);; Serial.print(" y: "); Serial.print(y2); Serial.print(" s id: "); Serial.println(id);
   if(touchX >= x1 && touchX <= x2 && touchY >= y1 && touchY <= y2){
     return true;
   }
@@ -327,6 +327,7 @@ void loop() {
       break;
       
     case 3: //Běžící hra
+      button_index = 0;
       if(recieveBoard()){
         processBoard();
       }
@@ -747,7 +748,7 @@ bool recieveBoard (){
         Serial.println(board[index]);
         index++;
       }
-      delay(5);
+      delay(2);
     }
     return true;
   }
