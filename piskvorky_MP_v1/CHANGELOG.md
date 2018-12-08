@@ -5,8 +5,10 @@
 - Program pro server
 	- herní deska se odesílá po 8 bajtech
 	- oprava funkce pro získání èísla dalšího hráèe (docházelo k zacyklení)
+	- pøidána funkce pro kontrolu výhry
 - Program pro clienta
 	- Oprava zobrazování barevných koleèek (nyní se zobrazují správnì)
+	- oprava zamrznutí hráèe, kdy bìhem jeho tahu dojde k resetu hry ze strany serveru
 
 ### 03.12.2018
 - Program pro server
