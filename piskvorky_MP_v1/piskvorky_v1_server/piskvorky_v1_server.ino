@@ -28,6 +28,7 @@ IPAddress serverAddress(10,0,0,8);
 /* ----------HRA----------*/
 byte serverPhase = 0; //označuje fázi hry= 0: čekání na připojení klientů, 1: kontrola klientů, správné nastavení hry, 2: fáze hry
 byte lastPlayer = 0; //Označuje posledního hráče, který hrál
+byte crossNum = 5; //Počet koleček, které je nutné spojit por výhru
 
 /* ----------Barvy----------*/
 #define BLACK           0x0000      /*   0,   0,   0 */
@@ -105,6 +106,7 @@ void syncBoardIPs(void); //Synchronizuje IP adresy v boardu a s IP adresy v sezn
 void sendBoard(void); //Odešle herní desku
 void setBoard(void); //Připraví herní desku
 byte getNextPlayer(byte); //Vrátí číslo dalšího hráče (argument fce je číslo předchozího hráče)
+void checkGame(byte, byte); //Zkontroluje průběh hry...případně vyplní kód v boardu, argument je poslední pole a číslo hrajícího hráče
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
@@ -179,26 +181,33 @@ void loop() {
         }
       }
       board[gb_actPlayer] = firstPlayer;
+      lastPlayer = firstPlayer;
       serverPhase = 2;
       board[gb_code] = 0;
       sendBoard();
     }
     else if(serverPhase == 2){
-      if(clients[board[gb_actPlayer] - 1].available() > 0){
-        Serial.print("Hraje hrac: ");
-        Serial.println(board[gb_actPlayer]);
-        byte place = 0;
-        place = clients[board[gb_actPlayer] - 1].read();
-        if(place >=0 && place < meshX*meshY){
-          board[place] = board[gb_actPlayer];
-          board[gb_round]++; //Zvýšení počtu odehraných kol
-          board[gb_actPlayer] = 0;
-          sendBoard();
+      if(board[gb_code] == 0){
+        //Hra
+        if(clients[board[gb_actPlayer] - 1].available() > 0){
+          Serial.print("Hraje hrac: ");
+          Serial.println(board[gb_actPlayer]);
+          byte place = 0;
+          place = clients[board[gb_actPlayer] - 1].read();
+          if(place >=0 && place < meshX*meshY){
+            board[place] = board[gb_actPlayer];
+            board[gb_round]++; //Zvýšení počtu odehraných kol
+            board[gb_actPlayer] = 0;
+            checkGame(place, board[gb_actPlayer]) ;/Zkontroluje stav hry (zda někdo nevyhrál)
+            sendBoard();
+            //Posun k dalšímu hráči
+            delay(500); //Hraje další hráč
+            board[gb_actPlayer] = getNextPlayerNumber(lastPlayer);
+            lastPlayer = board[gb_actPlayer];
+            sendBoard();
+          }
+          board[gb_code] = 0;
         }
-        board[gb_code] = 0;
-        delay(500); //Hraje další hráč
-        board[gb_actPlayer] = getNextPlayerNumber(board[gb_actPlayer]);
-        sendBoard();
       }
     }
     else{
@@ -313,11 +322,11 @@ void setBoard(){
   board[gb_PC1] = byte(RED & 0xFF);
   board[gb_PC1+1] = byte(RED >> 8);
   //
-  board[gb_PC2] = byte(ORANGE & 0xFF);
-  board[gb_PC2+1] = byte(ORANGE >> 8);
+  board[gb_PC2] = byte(GREEN & 0xFF);
+  board[gb_PC2+1] = byte(GREEN >> 8);
   //
-  board[gb_PC3] = CYAN & 0xFF;
-  board[gb_PC3+1] = CYAN >> 8;
+  board[gb_PC3] = GREENYELLOW & 0xFF;
+  board[gb_PC3+1] = GREENYELLOW >> 8;
   //
   board[gb_PC4] = PURPLE & 0xFF;
   board[gb_PC5+1] = PURPLE >> 8;
@@ -334,8 +343,8 @@ void setBoard(){
   *    - hrac1 je číslo předchozího (aktuálně hrajícího hráče)
   */
 byte getNextPlayerNumber(byte player1){
-  player1++;
   do{
+    player1++;
     if(player1 > maxPlayers){
       player1 = 1;
     }
@@ -344,6 +353,91 @@ byte getNextPlayerNumber(byte player1){
     }
   }while(!clients[player1-1]);
   return player1;
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Zkontroluje běh hry <<<<<
+ /*   Princip:   
+  *    - zkontroleuje běh hry
+  *    - vyhodnocuje výhru hráče
+  *    - vyhodnocuje remízu (vysoký počet herních kol)
+  *    - automaticky zapíše do kódu v boardu
+  */
+void checkGame(byte cross, byte player){
+  if(board[gb_round] >= meshX*meshY){
+    board[gb_code] = 100;
+  }
+  else{
+    byte row = 0;
+    byte column = 0;
+    byte count = 0; //počet puntíků za sebou
+    bool win = false;
+    row = cross/11;
+    column = cross%11;
+  
+     for(byte i = 0; i < meshX; i++){ //v řádku
+        if(board[11*row + i ] == player){
+          count++;
+        }
+        else{
+          count = 0;
+        }
+        if (count >= crossNum){
+          win = true;
+          break;
+        }
+      
+     }
+    count = 0;
+     for(int i = 0; i < meshY; i++){ //v sloupec
+        if(board[column + i*11 ] == player){
+          count++;
+        }
+        else{
+          count = 0;
+        }
+        if (count >= crossNum){
+          win = true;
+          break;
+        }
+      
+     }
+     count = 0;
+      //Do kříže
+     byte index = 0;
+     index = pole % 12;
+     while (index < meshX*meshY){
+        if(board[index] == player){
+          count++;
+        }
+        else{
+          count = 0;
+        }
+        index += 12;
+        if (count >= crossNum){
+          win = true;
+          break;
+        }
+     }
+  
+     count = 0;
+     index = pole % 10;
+     while (index < meshX*meshY){
+        if(board[index] == player){
+          count++;
+        }
+        else{
+          count = 0;
+        }
+        index += 10;
+        if (count >= crossNum){
+          win = true;
+          break;
+        }
+     }
+    if(win){
+      board[gb_code] = 100+player; //Pokud byla zaznamenána výhra, zeznamená se kód s čílem hráče do příslušného pole
+    }
+  }
 }
 //------------------------------------------------------------------------------------------------------
 
