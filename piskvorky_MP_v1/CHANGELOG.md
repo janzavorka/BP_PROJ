@@ -1,5 +1,13 @@
 # BP_PROJ: Piskvorky v1
 
+### 08.12.2018
+- Použití Arduino Due jako server 
+- Program pro server
+	- herní deska se odesílá po 8 bajtech
+	- oprava funkce pro získání èísla dalšího hráèe (docházelo k zacyklení)
+- Program pro clienta
+	- Oprava zobrazování barevných koleèek (nyní se zobrazují správnì)
+
 ### 03.12.2018
 - Program pro server
 	- úprava funkce pro získání dalšího clienta
