@@ -19,6 +19,15 @@ EthernetClient clients [maxPlayers];
 bool clientConnected = false;
 bool serverReady = false;
 
+//piny pro tlačítka
+bool pinReady = false; //Slouží k deaktivaci tlačítek aby se zabránilo vícedotykům současně
+const byte startPIN = 40;
+const byte resetPIN = 38;
+
+/* ----------Časové intervaly různých událostí----------*/
+#define buttonOff 1000 //Po jakou dobu bude dotyková plocha deaktivována (zabrání multidotykům)
+unsigned long long refresh_buttonOff = 0;
+
 //Herní server
 IPAddress serverAddress(10,0,0,8);
 
@@ -107,12 +116,17 @@ void sendBoard(void); //Odešle herní desku
 void setBoard(void); //Připraví herní desku
 byte getNextPlayer(byte); //Vrátí číslo dalšího hráče (argument fce je číslo předchozího hráče)
 void checkGame(byte, byte); //Zkontroluje průběh hry...případně vyplní kód v boardu, argument je poslední pole a číslo hrajícího hráče
+void stopGame(void); //Zruší běžící hru
+void startGame(void); //Spustí hru
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
 void setup() { 
   //Sériová linka
   Serial.begin(9600);
+  //Tlačítka
+  pinMode(startPIN, INPUT);
+  pinMode(resetPIN, INPUT);
   randomSeed(analogRead(0));
   delay(10);
   Serial.println("Startuji piskvorkovy server");
@@ -132,6 +146,11 @@ void setup() {
  * >>>>>>>>>> LOOP <<<<<<<<<<
  */
 void loop() {
+  if ((millis() - refresh_buttonOff > buttonOff) && !pinReady){ //Obnova funkce tlačítek (zabrání přečtení více stisků současně)
+    pinReady = true;
+    refresh_buttonOff = millis();
+  } 
+  //Část se zpracováním hry
     if(serverPhase == 0){
       EthernetClient newClient = server.accept();
       delay(10);
@@ -198,7 +217,7 @@ void loop() {
             board[place] = board[gb_actPlayer];
             board[gb_round]++; //Zvýšení počtu odehraných kol
             board[gb_actPlayer] = 0;
-            checkGame(place, board[gb_actPlayer]) ;/Zkontroluje stav hry (zda někdo nevyhrál)
+            checkGame(place, board[gb_actPlayer]); //Zkontroluje stav hry (zda někdo nevyhrál)
             sendBoard();
             //Posun k dalšímu hráči
             delay(500); //Hraje další hráč
@@ -246,7 +265,21 @@ void loop() {
       Serial.println(com);
     }
   }
-  delay(100); 
+
+  //Kontrola stisku tlačítek
+  if(pinReady){
+    if(digitalRead(startPIN) == HIGH){
+      pinReady = false;
+      refresh_buttonOff = millis(); //čas užití tlačítka (pro funkci, která tlačítka po určené době obnoví)
+      startGame();
+    }
+    if(digitalRead(resetPIN) == HIGH){
+      pinReady = false;
+      refresh_buttonOff = millis();
+      stopGame();
+    }
+  }
+  delay(50); 
 }
 
 
@@ -404,7 +437,7 @@ void checkGame(byte cross, byte player){
      count = 0;
       //Do kříže
      byte index = 0;
-     index = pole % 12;
+     index = cross % 12;
      while (index < meshX*meshY){
         if(board[index] == player){
           count++;
@@ -420,7 +453,7 @@ void checkGame(byte cross, byte player){
      }
   
      count = 0;
-     index = pole % 10;
+     index = cross % 10;
      while (index < meshX*meshY){
         if(board[index] == player){
           count++;
@@ -440,4 +473,22 @@ void checkGame(byte cross, byte player){
   }
 }
 //------------------------------------------------------------------------------------------------------
+//>>>>> spustí hru <<<<<
+ /*   Princip:   
+  *    - 
+  */
+void startGame (){
+  Serial.println("Spoustim hru, tlacitko");
+}
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+//>>>>> Zastaví běžící hru <<<<<
+ /*   Princip:   
+  *    - 
+  */
+void stopGame (){
+  Serial.println("Zastavuji hru, tlacitko");
+}
+//------------------------------------------------------------------------------------------------------
+
 
