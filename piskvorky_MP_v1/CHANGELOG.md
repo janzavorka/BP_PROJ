@@ -1,5 +1,10 @@
 # BP_PROJ: Piskvorky v1
 
+### 09.12.2018
+- Vytvoøení desky s dvìma tlaèítkama pro ovládání serveru
+- Program pro server
+	- pøidání fce dvou tlaèítek (start, stop), vyhodnocení stisku v loopu (nelze využít interrupty (rozhodilo by odesílání dat))
+
 ### 08.12.2018
 - Použití Arduino Due jako server 
 - Program pro server
