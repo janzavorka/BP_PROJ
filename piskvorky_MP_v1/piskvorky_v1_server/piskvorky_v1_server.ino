@@ -188,22 +188,28 @@ void loop() {
         }
     }
     else if(serverPhase == 1){
+      byte ONplayers = 0;
       Serial.println("Pripravuji hru");
       setBoard();
       byte firstPlayer = random(1, 5);
       delay(50);
-      Serial.print("Prvni hraje ");  Serial.println(firstPlayer);
-      while(!clients[firstPlayer-1]){
-        firstPlayer++;
-        if(firstPlayer > maxPlayers){
-          firstPlayer = 1;
+      for (byte i = 0; i < maxPlayers; i++){ //Kontrola, zda jsou připojení alespoň dva hráči
+        if(clients[i]){
+          ONplayers++;
         }
       }
-      board[gb_actPlayer] = firstPlayer;
-      lastPlayer = firstPlayer;
-      serverPhase = 2;
-      board[gb_code] = 0;
-      sendBoard();
+      if(ONplayers < 2){ //POkud jsou méně jak dva hráči, hra nezačne
+        serverPhase = 0;
+        Serial.println("Je pritomno malo hracu!");
+      }
+      else{
+        Serial.print("Prvni hraje ");  Serial.println(firstPlayer);
+        board[gb_actPlayer] = getNextPlayerNumber(firstPlayer);
+        lastPlayer = board[gb_actPlayer];
+        serverPhase = 2;
+        board[gb_code] = 0;
+        sendBoard();
+      }
     }
     else if(serverPhase == 2){
       if(board[gb_code] == 0){
@@ -213,19 +219,21 @@ void loop() {
           Serial.println(board[gb_actPlayer]);
           byte place = 0;
           place = clients[board[gb_actPlayer] - 1].read();
+          Serial.print("Prijata pozice: ");Serial.println(place);
           if(place >=0 && place < meshX*meshY){
             board[place] = board[gb_actPlayer];
             board[gb_round]++; //Zvýšení počtu odehraných kol
-            board[gb_actPlayer] = 0;
             checkGame(place, board[gb_actPlayer]); //Zkontroluje stav hry (zda někdo nevyhrál)
+            board[gb_actPlayer] = 0;
             sendBoard();
             //Posun k dalšímu hráči
-            delay(500); //Hraje další hráč
-            board[gb_actPlayer] = getNextPlayerNumber(lastPlayer);
-            lastPlayer = board[gb_actPlayer];
-            sendBoard();
+            if(board[gb_code] == 0){
+              delay(500); //Hraje další hráč
+              board[gb_actPlayer] = getNextPlayerNumber(lastPlayer);
+              lastPlayer = board[gb_actPlayer];
+              sendBoard();
+            }
           }
-          board[gb_code] = 0;
         }
       }
     }
@@ -358,14 +366,14 @@ void setBoard(){
   board[gb_PC2] = byte(GREEN & 0xFF);
   board[gb_PC2+1] = byte(GREEN >> 8);
   //
-  board[gb_PC3] = GREENYELLOW & 0xFF;
-  board[gb_PC3+1] = GREENYELLOW >> 8;
+  board[gb_PC3] = byte(PURPLE & 0xFF);
+  board[gb_PC3+1] = byte(PURPLE >> 8);
   //
-  board[gb_PC4] = PURPLE & 0xFF;
-  board[gb_PC5+1] = PURPLE >> 8;
+  board[gb_PC4] = byte(GREENYELLOW & 0xFF);
+  board[gb_PC5+1] = byte(GREENYELLOW >> 8);
   //
-  board[gb_PC5] = OLIVE & 0xFF;
-  board[gb_PC5+1] = OLIVE >> 8;
+  board[gb_PC5] = byte(OLIVE & 0xFF);
+  board[gb_PC5+1] = byte(OLIVE >> 8);
   
   
 }
@@ -468,7 +476,14 @@ void checkGame(byte cross, byte player){
         }
      }
     if(win){
+      Serial.print("Vyhral hrac: "); Serial.println(player);
       board[gb_code] = 100+player; //Pokud byla zaznamenána výhra, zeznamená se kód s čílem hráče do příslušného pole
+      sendBoard();
+      delay(7000);
+      stopGame ();
+    }
+    else{
+      Serial.println("Nikdo nevyhral, pokracuji");
     }
   }
 }
@@ -478,7 +493,13 @@ void checkGame(byte cross, byte player){
   *    - 
   */
 void startGame (){
-  Serial.println("Spoustim hru, tlacitko");
+  if(serverPhase == 2){
+    Serial.println("Aktualne bezi hra");
+  }
+  else{
+    Serial.println("Spoustim hru, tlacitko");
+    serverPhase = 1;
+  }
 }
 //------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------
@@ -488,6 +509,10 @@ void startGame (){
   */
 void stopGame (){
   Serial.println("Zastavuji hru, tlacitko");
+  board[gb_code] = 3;
+  delay(5);
+  sendBoard();
+  serverPhase = 0;
 }
 //------------------------------------------------------------------------------------------------------
 
