@@ -1,5 +1,10 @@
 # BP_PROJ: Piskvorky v1
 
+### 12.12.2018
+- Program pro clienta
+	- pro všechny client desky zkalibrovány displeje, u clienta 3 nutná úprava v loopu (dislej má jinou orientaci)
+	- oprava zobrazování hlášek (výhra, prohra, remíza)
+
 ### 09.12.2018
 - Vytvoøení desky s dvìma tlaèítkama pro ovládání serveru
 - Program pro server
