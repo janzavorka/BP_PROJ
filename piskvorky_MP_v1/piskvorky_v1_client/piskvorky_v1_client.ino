@@ -17,14 +17,14 @@ extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
-/*byte mac[] = {
+byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
-};*/
+};
 
 //Client 2
-byte mac[] = {
+/*byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xDD
-};
+};*/
 
 //Client 3
 /*byte mac[] = {
@@ -71,22 +71,22 @@ bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabráněn�
 //Kalibrace jednotlivých displajů (ZMĚNIT)
 
 //Client 1
-#define TOUCH_XMIN 132
-#define TOUCH_XMAX 959
+#define TOUCH_XMIN 170
+#define TOUCH_XMAX 950
 #define TOUCH_YMIN 146
 #define TOUCH_YMAX 950
 
 //Client 2
-/*#define TOUCH_XMIN 
-#define TOUCH_XMAX
-#define TOUCH_YMIN
-#define TOUCH_YMAX*/
+/*#define TOUCH_XMIN  170
+#define TOUCH_XMAX  935
+#define TOUCH_YMIN  146
+#define TOUCH_YMAX  920*/
 
-//Client 2
-/*#define TOUCH_XMIN 
-#define TOUCH_XMAX
-#define TOUCH_YMIN
-#define TOUCH_YMAX*/
+//Client 3 (nutné změnit i v kódu u čtení z displaye - zapojení displeje má jinou orientaci)
+/*#define TOUCH_XMIN 945
+#define TOUCH_XMAX 155
+#define TOUCH_YMIN 156
+#define TOUCH_YMAX 936*/
 
 
 /* ----------Časové intervaly různých událostí----------*/
@@ -334,6 +334,7 @@ void loop() {
       break;
 
     case 4: //Můj tah
+      button_index = 0;
       Serial.println("Faze 4");
       if(recieveBoard()){
         processBoard();
@@ -359,13 +360,20 @@ void loop() {
   // we have some minimum pressure we consider 'valid'
   // pressure of 0 means no pressing!
   if (touchPoint.z > MINPRESSURE && touchPoint.z < MAXPRESSURE && touchScreenAct) {
+     refreshTouchScreen = millis(); //Nastaví poslední čas stisku
+     //Standardní 
      TSx = map(touchPoint.y, TOUCH_XMAX, TOUCH_XMIN, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.x, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
-     /*Serial.print("X = "); Serial.print(touchPoint.x);
+     //Pro CLIENT 3
+     /*TSx = map(touchPoint.x, TOUCH_XMIN, TOUCH_XMAX, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
+     TSy = map(touchPoint.y, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);*/
+     //Kontrola stisku
+     Serial.print("X = "); Serial.print(touchPoint.x);
      Serial.print("\tY = "); Serial.print(touchPoint.y);
      Serial.print("\tXpix = "); Serial.print(TSx);
      Serial.print("\tYpix = "); Serial.print(TSy);
-     Serial.print("\tPressure = "); Serial.println(touchPoint.z);*/
+     Serial.print("\tPressure = "); Serial.println(touchPoint.z);
+     
      buttonPressed(TSx, TSy);
      touchScreenAct = false;
      if (gamePhase == 4){ //POkud je client na tahu
@@ -574,20 +582,13 @@ void processBoard(){
       gamePhase = 2; 
       screenRefresh = true;
       break;
-  }
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> vypisuje hlášení podle kodu <<<<<
- /*   Princip:   
-  *    - 
-  *    
-  */
-void checkStatus(byte code){
-  switch(code){
-    case 100: //Vše OK
-      break;
 
-    case 200: //Remíza
+    case 100: //Remíza
+        //Překreslí pole
+        drawMainFrame(LIGHTGREY);
+        drawMesh(LIGHTGREY);
+        drawPoints();
+        //Informuje o remíze
         LCD.setColor(BLACK);
         LCD.fillRect(0,0, 320, 50);
         LCD.setTextColor(YELLOW, BLACK);
@@ -598,34 +599,33 @@ void checkStatus(byte code){
         //prepareNewGame();
       break;
 
-    case 201: //Vyhrál server
-        LCD.setColor(BLACK);
-        LCD.fillRect(0,0, 320, 50);
-        LCD.setTextColor(RED, BLACK);
-        LCD.setTextSize(3);
-        LCD.setCursor(20, 20);
-        LCD.println("Porazeny");
-        delay(10000);
-        //prepareNewGame();
-      break;
-
-   case 202: //Vyhrál client
-        LCD.setColor(BLACK);
-        LCD.fillRect(0,0, 320, 50);
-        LCD.setTextColor(GREEN, BLACK);
-        LCD.setTextSize(3);
-        LCD.setCursor(20, 20);
+    case 101:
+    case 102:
+    case 103:
+    case 104:
+    case 105:
+      //Překreslí pole
+      drawMainFrame(LIGHTGREY);
+      drawMesh(LIGHTGREY);
+      drawPoints();
+      //Vypíše vítěze
+      byte winner = board[gb_code] - 100;
+      LCD.setColor(BLACK);
+      LCD.fillRect(0,0, 320, 50);
+      LCD.setTextColor(getPlayerColor(colorAddr[winner - 1]), BLACK);
+      LCD.setTextSize(3);
+      LCD.setCursor(20, 20);
+      if(winner == myNum){
         LCD.println("Vitez");
-        delay(10000);
-        //prepareNewGame();
-      break;
-
-   default:
+      }
+      else{
+        LCD.println("Vyhral hrac");
+        LCD.setCursor(250, 20);
+        LCD.println(winner);
+      }
       break;
   }
 }
-
-
 //------------------------------------------------------------------------------------------------------
 //>>>>> Vyhodocení stisku tlačítka <<<<<
  /*   Princip:   
