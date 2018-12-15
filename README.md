@@ -12,5 +12,8 @@
 
 ### piskvorky_MP_v1 
 - Piškvorky pro až 5 hráčů
-- 1x arduino jako server, max 5x arduino s dotykovým displejem jako client
+- 1x arduino Due jako server, max 5x arduino Ethernet s dotykovým displejem jako client
 - připojovánou přes router s DHCP (serveru nutno přidělit pevnou IP)
+
+### Zprava_BPROJ
+-  Výstupní zpráva z celého projektu
