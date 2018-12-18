@@ -1,0 +1,166 @@
+\documentclass[a4paper,12pt, twoside]{article} % papír A4, písmo 12 bodu
+\usepackage[utf8x]{inputenc} %kodovaní UTF-8
+\usepackage{ucs} %kodovani unicode
+\usepackage[czech]{babel} %podpora cestiny
+\usepackage[T1]{fontenc} %pouzij variantu pisma T1 (hacky, carky)
+%\usepackage[left=3.5cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry} %okraje stranky
+\usepackage{amsmath,amsfonts,amssymb} %podpora matematiky
+\usepackage{gensymb,marvosym} %symboly celsius (\celsius) apod.
+\usepackage{times} %font Times New Roman (matematika bude vychozim pismem Computer Modern) 
+\clubpenalty 10000  %kontrolovat sirotky
+\widowpenalty 10000 %kontrolovat vdovy
+\usepackage{setspace} \onehalfspacing %podpora pro zmenu radkovani + radkovani 1,5
+\usepackage{enumerate} %podpora pro zmenu cislovani
+\usepackage[unicode]{hyperref} %podpora hypertextu
+\usepackage{fancyhdr} %vlastni zahlavi a zapati
+\usepackage{graphicx} %podpora grafiky
+\graphicspath{{img/}} %vychozi adresar s obrazky
+\usepackage[normalem]{ulem} %Pro tabulku z Tablesgenerator.com
+\useunder{\uline}{\ul}{} %Pro tabulku z Tablesgenerator.com
+%--prostredi pro vkladani grafu ---
+\usepackage{float}
+\newfloat{graf}{hbtp}{ext}
+\floatname{graf}{Graf}
+%---pouziti:
+%	\begin{graf}[hbtp]
+%	\includegraphics[width=10cm]{graf.png}
+%	\caption{Popisek grafu}
+%	\end{graf}
+%
+
+
+%Redefinice prostředí abstract
+\renewenvironment{abstract}
+ {\small
+  \begin{center}
+  \bfseries \large \abstractname\vspace{-.5em}\vspace{0pt}
+  \end{center}
+  \list{}{%
+  \itshape
+    \setlength{\leftmargin}{0mm}
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \item\relax}
+ {\endlist}
+ 
+%Prostředí pro klíčová slova
+\newenvironment{keywords}
+ {\small
+ \vspace*{1cm}
+  \list{Klíčová slova:}{
+    \setlength{\leftmargin}{1cm}%
+    \setlength{\rightmargin}{0cm}%
+  }%
+  \item\relax}
+ {\endlist}
+
+
+
+%--------------- UDAJE O PRACI -------
+\newcommand{\jmeno}{Jan Závorka} %Jméno autora 
+\newcommand{\nazev}{Externí měřicí čidlo k meteostanici} %Název práce (čeština)
+\newcommand{\nazevEN}{External sensor for weather station}
+\newcommand{\fakulta}{Fakulta elektrotechnická} %Fakulta
+\newcommand{\katedra}{Katedra sociální patologie a sociologie} %Katedra
+\newcommand{\vedouci}{Prof. Evžen Skocdopolis} %Vedoucí práce
+\newcommand{\datum}{\today} %Případně místo \today vložit svoje napevno 
+%-------------------------------------
+
+
+\begin{document}
+%>>>>>>> Titulní strana
+\begin{titlepage}
+\centering
+\includegraphics[scale=0.6]{/titulka/ctu_logo_blue.pdf}
+\begin{center}
+\vspace*{1cm}{\Large \bf ČESKÉ VYSOKÉ UČENÍ TECHNICKÉ V PRAZE}
+{\large \bf \fakulta} \\
+{\large \bf \katedra} \\
+\vspace*{2cm} {\LARGE {\bf \nazev}}\\
+\vspace*{0.7cm}
+{\LARGE {\bf \nazevEN}} \\
+\vspace*{1.cm}{\large miniprojekt}
+\end{center}
+
+~\vfill
+\begin{tabular}{p{.2\linewidth} p{.5\linewidth} p{.25\linewidth}}
+~ & ~ & ~ \\
+Studijní obor: & {\bf Elektronika a komunikace} & ~\\[.4em]
+{ Vedoucí práce:} & \multicolumn{2}{l}{{\bf \vedouci} } \\
+\end{tabular}\\
+~\vfill
+\begin{center}
+{\Large \bf \jmeno} \\
+{\Large \bf Praha, \datum}
+\end{center}
+\end{titlepage}
+%>>>>>>> Prohlášení
+\setcounter{page}{0} %cislo strany
+\pagestyle{empty} %Nezobrazovat číslo stránky
+\newpage ~\vfill „Prohlašuji, že jsem předloženou práci vypracoval samostatně a že jsem uvedl
+veškeré použité informační zdroje v souladu s Metodickým pokynem o
+dodržování etických principů při přípravě vysokoškolských závěrečných prací.“\\[3em]
+V~Praze dne \today \hspace{.2\textwidth} \dotfill\\
+\hspace*{11cm} Podpis
+%>>>>> ABSTRACT <<<<<<
+\newpage
+\begin{abstract}
+%----- TADY BUDE ABSTRACT -----
+\end{abstract}
+%>>>>>>> KEYWORDS <<<<<<<
+\begin{keywords}
+%----- TADY BUDOU KLÍČOVÁ SLOVA -----
+\end{keywords}
+%>>>>> Obsah <<<<<<<
+\newpage
+\tableofcontents %vytiskne obsah
+%>>>>>>> Seznam tabulek a obrázků <<<<<<<
+\newpage
+\listoftables
+\listoffigures
+% --- definice zapati a cislovani ---
+\newpage 
+\pagestyle{fancy} %vlastni zahlavi/zapati
+\renewcommand{\headrulewidth}{0pt} %bez linky v zahlavi
+\renewcommand{\footrulewidth}{.5pt} %linka v zapati
+\lhead{}       \chead{} \rhead{} %pole zahlavi (prazdna)
+\lfoot{\nazev} \cfoot{} \rfoot{\thepage} %pole zapati
+%
+%>>>>>>> Vlatní text práce <<<<<<<
+\clearpage
+\section{Úvod} 
+\label{kap:uvod}
+%
+%
+\clearpage
+\section{Závěr}
+%
+%>>>>>>> Seznam literatury <<<<<<<
+\clearpage
+%--- Změna nadpisu literatury
+\renewcommand{\refname}{Seznam použité literatury a zdrojů informací}
+\addcontentsline{toc}{section}{Seznam použité literatury a zdrojů informací}
+\begin{thebibliography}{99}
+%
+\end{thebibliography}
+%--- SEZNAM SOFTWARU ---
+\clearpage
+\phantomsection %pridej odkaz do PDF zalozek
+\addcontentsline{toc}{section}{Seznam použitého softwaru}
+\section*{Seznam použitého softwaru}
+\begin{enumerate}%[--]
+	\item \TeX maker, \TeX Live
+	\item \href{http://fritzing.org/home/}{Fritzing}
+	\item \href{https://www.tablesgenerator.com/latex_tables}{Tables Generator}
+	\item \href{https://www.gimp.org/}{GIMP}
+	\item \href{https://easyeda.com/}{EasyEDA}
+	\item Linux Mint 18.1 Cinnamon 64-bit
+\end{enumerate}
+%--- SEZNAM PRILOH ---
+\phantomsection %pridej odkaz do PDF zalozek
+\addcontentsline{toc}{section}{Seznam příloh}
+\section*{Seznam příloh} 
+\begin{enumerate}[{Příloha} 1:]
+\item příloha
+\end{enumerate}
+\end{document}
