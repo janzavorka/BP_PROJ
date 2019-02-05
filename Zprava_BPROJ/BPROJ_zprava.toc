@@ -1,6 +1,13 @@
-\select@language {czech}
+\babel@toc {czech}{}
 \contentsline {section}{\numberline {1}\IeC {\'U}vod}{4}{section.1}
-\contentsline {section}{\numberline {2}Z\IeC {\'a}v\IeC {\v e}r}{5}{section.2}
-\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e} literatury a zdroj\IeC {\r u} informac\IeC {\'\i }}{6}{section.2}
-\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{7}{section*.5}
-\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{7}{section*.7}
+\contentsline {section}{\numberline {2}Hardware}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Client}{5}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Server}{5}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Router}{5}{subsection.2.3}
+\contentsline {section}{\numberline {3}Software}{5}{section.3}
+\contentsline {subsection}{\numberline {3.1}Knihovny}{5}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Komunikace}{5}{subsection.3.2}
+\contentsline {section}{\numberline {4}Z\IeC {\'a}v\IeC {\v e}r}{6}{section.4}
+\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e} literatury a zdroj\IeC {\r u} informac\IeC {\'\i }}{7}{section.4}
+\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{8}{section*.5}
+\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{8}{section*.7}

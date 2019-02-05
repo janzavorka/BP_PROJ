@@ -130,10 +130,37 @@ Arduino ethernet, piškvorky, komunikace Arduino-Arduino
 %>>>>>>> Vlatní text práce <<<<<<<
 \clearpage
 \section{Úvod} 
-\label{kap:uvod}
-Práce se
+\label{sec:uvod}
+Cílem bylo vytvořit jednoduchý projekt, který by demonstroval možnosti komunikace Arduin po lokální síti. Po několika experimentech se jako zajímavá varianta jevila jednoduchá hra pro více hráčů. Vzhledem k použitému hardwaru se jako nejlepší možnost ukázala hra Piškvorky (v této verzi pro 2 - 5 hráčů). 
 %
 %
+\section{Hardware}
+\label{sec:hardware}
+Z počátku bylo vše postaveno na deskách Aruino Ethernet. Pro možnost hry více než dvou hráčů bylo jedno Arduino použito jako server (bez displeje), které mělo za úkol řídit celou hru a Arduina s displejem (jako clienti) sloužili pouze jako zobrazovací zařízení a ke komunikaci s uživatelem (prostřednictvím dotykové displeje). Tato volba s sebou přinesla několik problému. 
+
+Prvním problémem je malá paměť Arduina Ethernet (dle \cite{arduinoEthernet_page} je pro program k dispozici 32 kB paměti). 
+Po přidání všech knihoven (konkrétně popsáno v kapitole \ref{sec:knihovny}) zůstane pro samotný program k dispozici 30 \% programové paměti, což je dost limitující ve spojení s použitím barevného dotykového displeje.
+
+Dalším problém s omezenými prostředky Arduina Ethernet nastal při vývoji serveru. Díky absenci dotykového displeje bylo pro samotný kód k dispozici dostatek místa, ale problémy nastaly při samotné komunikaci, kdy během odesílání dat (přenáší se pole o velikosti 140 bajtů pro každého clienta zvlášť, detailněji v kapitole   \ref{sec:komunikace_server_client}) docházelo k náhodným pádům a restartům Arduina. Tento problém byl vyřešen použitím desky Arduino Due.
+%
+\subsection{Client}
+\label{sec:client}
+%
+\subsection{Server}
+\label{sec:server}
+%
+\subsection{Router}
+\label{sec:router}
+%
+%
+%
+\section{Software}
+%
+\subsection{Knihovny}
+\label{sec:knihovny}
+%
+\subsection{Komunikace}
+\label{sec:komunikace_server_client}
 \clearpage
 \section{Závěr}
 %
@@ -143,7 +170,11 @@ Práce se
 \renewcommand{\refname}{Seznam použité literatury a zdrojů informací}
 \addcontentsline{toc}{section}{Seznam použité literatury a zdrojů informací}
 \begin{thebibliography}{99}
-%
+\bibitem{arduinoEthernet_page}
+\textit{Arduino store: ARDUINO ETHERNET REV3} [online]. [cit. 2019-02-05]. Dostupné z: https://store.arduino.cc/arduino-ethernet-rev3-without-poe
+%%%
+\bibitem{library_ethernet}
+\textit{Arduino: Ethernet library} [online]. [cit. 2018-12-18]. Dostupné z: https://www.arduino.cc/en/Reference/Ethernet
 \end{thebibliography}
 %--- SEZNAM SOFTWARU ---
 \clearpage
@@ -156,7 +187,7 @@ Práce se
 	\item \href{https://www.tablesgenerator.com/latex_tables}{Tables Generator}
 	\item \href{https://www.citace.com/citace-pro}{Citace.com}
 	\item \href{https://easyeda.com/}{EasyEDA}
-	\item Linux Mint 18.1 Cinnamon 64-bit
+	\item \href{https://linuxmint.com/}{Linux Mint 18.1 Cinnamon 64-bit}
 \end{enumerate}
 %--- SEZNAM PRILOH ---
 \phantomsection %pridej odkaz do PDF zalozek
