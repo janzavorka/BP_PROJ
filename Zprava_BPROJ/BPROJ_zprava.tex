@@ -17,6 +17,7 @@
 \graphicspath{{img/}} %vychozi adresar s obrazky
 \usepackage[normalem]{ulem} %Pro tabulku z Tablesgenerator.com
 \useunder{\uline}{\ul}{} %Pro tabulku z Tablesgenerator.com
+%"\catcode`\-=12" %V případě nefunkčnosti tabulek z tablegenerator.com
 %--prostredi pro vkladani grafu ---
 \usepackage{float}
 \newfloat{graf}{hbtp}{ext}
@@ -199,9 +200,31 @@ Clientům je IP adresa přiřazována automaticky pomocí DHCP.
 %_____________________________________
 \subsection{Knihovny}
 \label{sec:knihovny}
+Seznam použitých knihoven pro clienta:
+\begin{itemize}
+\item \textit{Ethernet library}: komunikace po LAN (se serverem), zdroj \cite{library_ethernet}.
+\item \textit{UTFGLUE}: ovládání displeje, zdroj \cite{library_UTFGLUE}.
+\item \textit{TouchScreen}: práce s dotykovou plochou, zdroj  \cite{library_touch}.
+\end{itemize}
+
+Seznam použitých knihoven pro server:
+\begin{itemize}
+\item \textit{Ethernet library}: komunikace po LAN (s jednotlivými clienty), zdroj \cite{library_ethernet}.
+\end{itemize}
 %_____________________________________
 \subsection{Komunikace}
+\subsubsection{Komunikace Server -> Client}
 \label{sec:komunikace_server_client}
+Během komunikace tímto směrem vždy server odešle celou herní desku (pole typu byte \textit{board}), celkem tedy 136 bytů. Pokud client toto pole v pořádku přijme, dojde k jeho vyhodnocení a vykonání potřebných funkcí (překreslení displeje, vyžádání akce od uživatele, zobrazení hlášky). Hodnoty pole mění pouze server. Popis pole a co které hodnoty představují je vidět v tabulce \ref{tab:board_content}. 
+
+Při odesílání je pole rozděleno do packetů. Každý packet obsahuje 8 bytů pole \textit{board}, pořadové číslo packetu (aby client mohl pole zpětně sestavit) a dva byty kontrolního součtu. 
+
+Client průběžně přijímá jednotlivé části, pokud dorazí nějaká část chybná (nesedí kontrolní součet), client si může vyžádat od serveru znovuodeslání (realizace popsána v kapitole \ref{sec:komunikace_client_server}). Pokud client přijme všechny části, pole \textit{board} vyhodnotí.
+%Tabulka herní desky (pole board)
+\input{img/tabulky/board_content.tex}
+%
+\subsubsection{Komunikace Client -> Server}
+\label{sec:komunikace_client_server}
 %_____________________________________
 \subsection{Změny a nastavení}
 \subsubsection{Server}
@@ -227,6 +250,12 @@ Clientům je IP adresa přiřazována automaticky pomocí DHCP.
 %%%
 \bibitem{router_config}
 ZÁVORKA, Jan. Janzavorka/BP\_PROJ: Nastavení routeru. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/janzavorka/BP\_PROJ/tree/master/piskvorky\_MP\_v1/nastaveni\_router
+%%
+\bibitem{library_UTFGLUE}
+MCUFRIEND\_kbv library. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/prenticedavid/MCUFRIEND\_kbv
+%%
+\bibitem{library_touch}
+Adafruit\_TouchScreen library. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/adafruit/Adafruit\_TouchScreen
 \end{thebibliography}
 %--- SEZNAM SOFTWARU ---
 \clearpage

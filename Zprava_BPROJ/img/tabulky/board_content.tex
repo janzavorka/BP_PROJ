@@ -1,0 +1,31 @@
+\begin{table}[hbtp]
+\catcode`\-=12
+\caption{\label{tab:board_content}Rozložení tabulky pro přenos dat a řízení hry mezi clientem a serverem}
+\begin{tabular}{|c|c|l|}
+\hline
+Index   & Hodnoty     & \multicolumn{1}{c|}{Popis}                                      \\ \hline
+0-89    &             & Každý index odpovídá jednomu čtverečku na herní desce piškvorek \\ \cline{2-3} 
+        & 0           & Pole je prázdné (neobsazené)                                    \\ \cline{2-3} 
+        & 1-5         & Obsazeno některým hráčem/clientem                               \\ \hline
+90      &             & Přenos řídicí informace pomocí kódu                             \\ \cline{2-3} 
+        & 0           & Vše je OK, překreslit obrazovku                                 \\ \cline{2-3} 
+        & 3           & Příprava nové hry, zobrazit úvodní obrazovku                    \\ \cline{2-3} 
+        & 9           & Informace pro hráč odpojen, že bude odpojen                     \\ \cline{2-3} 
+        & 10          & Hraje nějaký hráče (číslo daného hráče v poli 91)               \\ \cline{2-3} 
+        & 100         & Hra skončila remízou                                            \\ \cline{2-3} 
+        & 10x         & Hodnota podle hráče, který vyhrál: 101-105 ('x' je číslo hráče) \\ \cline{2-3} 
+        & 20x         & Problémy s daným hráčem: 201-205 ('x' je číslo hráče)           \\ \hline
+91      & 1-5         & Číslo hráče, který je na tahu                                   \\ \hline
+93      & 0-89        & Počet odehraných kol (vyplňuje server)                          \\ \hline
+95-96   &             & Barva hráče 1                                                   \\ \cline{1-1} \cline{3-3} 
+97-98   &             & Barva hráče 2                                                   \\ \cline{1-1} \cline{3-3} 
+99-100  & Kód barvy   & Barva hráče 3                                                   \\ \cline{1-1} \cline{3-3} 
+101-102 &             & Barva hráče 4                                                   \\ \cline{1-1} \cline{3-3} 
+103-104 &             & Barva hráče 5                                                   \\ \hline
+105-108 &             & IP adresa hráče 1                                               \\ \cline{1-1} \cline{3-3} 
+109-112 &             & IP adresa hráče 2                                               \\ \cline{1-1} \cline{3-3} 
+113-116 & IPv4 adresa & IP adresa hráče 3                                               \\ \cline{1-1} \cline{3-3} 
+117-120 &             & IP adresa hráče 4                                               \\ \cline{1-1} \cline{3-3} 
+121-124 &             & IP adresa hráče 5                                               \\ \hline
+\end{tabular}
+\end{table}

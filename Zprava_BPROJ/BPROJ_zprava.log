@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  5 FEB 2019 19:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  5 FEB 2019 21:56
 entering extended mode
 **./BPROJ_zprava.tex
 (BPROJ_zprava.tex
@@ -362,23 +362,23 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
  (BPROJ_zprava.aux)
 \openout1 = `BPROJ_zprava.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 71.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 72.
 
 (D:\Programy\MikTex\tex\latex\psnfss\t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -420,19 +420,19 @@ File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \celsius on input line 71.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 71.
+LaTeX Info: Redefining \celsius on input line 72.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 72.
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 71.
-Package gensymb Info: Using \Omega for \ohm on input line 71.
+LaTeX Info: Redefining \ohm on input line 72.
+Package gensymb Info: Using \Omega for \ohm on input line 72.
 
 Package gensymb Warning: Not defining \micro.
 
 \AtBeginShipoutBox=\box33
-Package hyperref Info: Link coloring OFF on input line 71.
+Package hyperref Info: Link coloring OFF on input line 72.
 (D:\Programy\MikTex\tex\latex\hyperref\nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 
@@ -441,9 +441,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count119
 )
-LaTeX Info: Redefining \ref on input line 71.
-LaTeX Info: Redefining \pageref on input line 71.
-LaTeX Info: Redefining \nameref on input line 71.
+LaTeX Info: Redefining \ref on input line 72.
+LaTeX Info: Redefining \pageref on input line 72.
+LaTeX Info: Redefining \nameref on input line 72.
  (BPROJ_zprava.out) (BPROJ_zprava.out)
 \@outlinefile=\write3
 \openout3 = `BPROJ_zprava.out'.
@@ -474,14 +474,14 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-<img//titulka/ctu_logo_blue.pdf, id=62, 366.36874pt x 279.0425pt>
+<img//titulka/ctu_logo_blue.pdf, id=70, 366.36874pt x 279.0425pt>
 File: img//titulka/ctu_logo_blue.pdf Graphic file (type pdf)
 <use img//titulka/ctu_logo_blue.pdf>
-Package pdftex.def Info: img//titulka/ctu_logo_blue.pdf  used on input line 75.
+Package pdftex.def Info: img//titulka/ctu_logo_blue.pdf  used on input line 76.
 
 (pdftex.def)             Requested size: 219.82294pt x 167.42679pt.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 77.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 78.
 
 (D:\Programy\MikTex\tex\latex\ucs\uni-1.def
 File: uni-1.def 2013/05/13 UCS: Unicode data U+0100..U+01FF
@@ -490,23 +490,23 @@ File: uni-1.def 2013/05/13 UCS: Unicode data U+0100..U+01FF
 File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
 )
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 78.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 79.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <20.74> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 80.
-LaTeX Font Info:    Try loading font information for U+msa on input line 87.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 81.
+LaTeX Font Info:    Try loading font information for U+msa on input line 88.
 
 (D:\Programy\MikTex\tex\latex\amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 87.
+LaTeX Font Info:    Try loading font information for U+msb on input line 88.
 
 (D:\Programy\MikTex\tex\latex\amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 89.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 90.
 
-Overfull \hbox (13.94775pt too wide) in paragraph at lines 87--91
+Overfull \hbox (13.94775pt too wide) in paragraph at lines 88--92
  [][] 
  []
 
@@ -518,12 +518,12 @@ File: uni-32.def 2013/05/13 UCS: Unicode data U+2000..U+20FF
 )
 [0]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 108.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 109.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \newpage
+l.117 \newpage
                [1] (BPROJ_zprava.toc)
 \tf@toc=\write4
 \openout4 = `BPROJ_zprava.toc'.
@@ -546,30 +546,30 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [4
 
 ]
-<img/foto/HW_client.jpg, id=119, 4683.4975pt x 3512.12125pt>
+<img/foto/HW_client.jpg, id=131, 4683.4975pt x 3512.12125pt>
 File: img/foto/HW_client.jpg Graphic file (type jpg)
 <use img/foto/HW_client.jpg>
-Package pdftex.def Info: img/foto/HW_client.jpg  used on input line 155.
+Package pdftex.def Info: img/foto/HW_client.jpg  used on input line 156.
 (pdftex.def)             Requested size: 284.52756pt x 213.34412pt.
-<img/schema/server_switch_module.png, id=123, 274.02374pt x 229.60782pt>
+<img/schema/server_switch_module.png, id=135, 274.02374pt x 229.60782pt>
 File: img/schema/server_switch_module.png Graphic file (type png)
 <use img/schema/server_switch_module.png>
 Package pdftex.def Info: img/schema/server_switch_module.png  used on input lin
-e 175.
+e 176.
 (pdftex.def)             Requested size: 142.26378pt x 119.20755pt.
-<img/foto/HW_server.jpg, id=124, 5203.44pt x 3902.58pt>
+<img/foto/HW_server.jpg, id=136, 5203.44pt x 3902.58pt>
 File: img/foto/HW_server.jpg Graphic file (type jpg)
 <use img/foto/HW_server.jpg>
-Package pdftex.def Info: img/foto/HW_server.jpg  used on input line 181.
+Package pdftex.def Info: img/foto/HW_server.jpg  used on input line 182.
 (pdftex.def)             Requested size: 284.52756pt x 213.36227pt.
  [5pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.185 \subsection
+l.186 \subsection
                  {NapÃ¡jenÃ­} <./img/foto/HW_client.jpg>]
-Overfull \hbox (0.99126pt too wide) in paragraph at lines 191--192
+Overfull \hbox (0.99126pt too wide) in paragraph at lines 192--193
 \T1/ptm/m/n/12 Pro tes-to-vání byl po-u-ºit Hu-a-wei Echo-Life HG520i. V na-sta
 -vení byly vy-pnuty v²echny funkce
  []
@@ -579,74 +579,106 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.194 
+l.195 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.194 
+l.195 
        <./img/schema/server_switch_module.png> <./img/foto/HW_server.jpg>]
-[7] [8
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 205.
+
+
+(D:\Programy\MikTex\tex\latex\psnfss\omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 205.
+ (img/tabulky/board_content.tex
+Overfull \hbox (15.77174pt too wide) in paragraph at lines 4--31
+[][] 
+ []
+
+) [7] [8pdfTeX warning (ext4): destination with the same identifier (name{table
+.1}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.233 \clearpage
+                ] [9
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 223--225
+Underfull \hbox (badness 10000) in paragraph at lines 246--248
 []\T1/ptm/m/it/12 Arduino: Ether-net lib-rary \T1/ptm/m/n/12 [on-line]. [cit. 2
 018-12-18]. Do-stupné z:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 226--228
+Underfull \hbox (badness 10000) in paragraph at lines 249--251
 []\T1/ptm/m/it/12 Arduino store: AR-DUINO DUE \T1/ptm/m/n/12 [on-line]. [cit. 2
 019-02-05]. Do-stupné z:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 229--230
+Underfull \hbox (badness 10000) in paragraph at lines 252--254
 []\T1/ptm/m/n/12 ZÁVORKA, Jan. Jan-za-vorka/BP_PROJ: Na-sta-vení rou-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 229--230
+Underfull \hbox (badness 10000) in paragraph at lines 252--254
 \T1/ptm/m/n/12 teru. \T1/ptm/m/it/12 Gi-thub \T1/ptm/m/n/12 [on-line]. [cit. 20
 19-02-05]. Do-stupné z:
  []
 
 
-Overfull \hbox (10.89265pt too wide) in paragraph at lines 229--230
+Overfull \hbox (10.89265pt too wide) in paragraph at lines 252--254
 \T1/ptm/m/n/12 https://github.com/janzavorka/BP_PROJ/tree/master/piskvorky_MP_v
 1/nastaveni_router 
  []
 
-[9
+
+Underfull \hbox (badness 8075) in paragraph at lines 255--257
+[]\T1/ptm/m/n/12 MCUFRIEND_kbv lib-rary. \T1/ptm/m/it/12 Gi-thub \T1/ptm/m/n/12
+ [on-line]. [cit. 2019-02-05]. Do-stupné z:
+ []
+
+
+Underfull \hbox (badness 3179) in paragraph at lines 258--259
+[]\T1/ptm/m/n/12 Adafruit_TouchScreen lib-rary. \T1/ptm/m/it/12 Gi-thub \T1/ptm
+/m/n/12 [on-line]. [cit. 2019-02-05]. Do-stupné z:
+ []
+
+[10
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 252.
- [10
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 281.
+ [11
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 252.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 281.
  (BPROJ_zprava.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 252.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 252.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 281.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 281.
 Package rerunfilecheck Info: File `BPROJ_zprava.out' has not changed.
-(rerunfilecheck)             Checksum: D8786969EF47B783765BE6A595E4CE9B;1838.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 252.
+(rerunfilecheck)             Checksum: 651B742D1CEDC570C8CAB059FF3FACEC;2264.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 281.
  ) 
 Here is how much of TeX's memory you used:
- 12719 strings out of 493305
- 168929 string characters out of 3142790
- 243474 words of memory out of 3000000
- 16048 multiletter control sequences out of 15000+200000
+ 12755 strings out of 493305
+ 169669 string characters out of 3142790
+ 251734 words of memory out of 3000000
+ 16070 multiletter control sequences out of 15000+200000
  38077 words of font info for 54 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,10n,43p,587b,613s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,10n,43p,587b,613s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/Programy/MikTex/fonts/enc/dvips/base/8r.enc}<D:/Programy/MikTex/fonts/typ
-e1/urw/times/utmb8a.pfb><D:/Programy/MikTex/fonts/type1/urw/times/utmr8a.pfb><D
-:/Programy/MikTex/fonts/type1/urw/times/utmri8a.pfb>
-Output written on BPROJ_zprava.pdf (12 pages, 2129770 bytes).
+e1/public/amsfonts/cm/cmsy10.pfb><D:/Programy/MikTex/fonts/type1/urw/times/utmb
+8a.pfb><D:/Programy/MikTex/fonts/type1/urw/times/utmr8a.pfb><D:/Programy/MikTex
+/fonts/type1/urw/times/utmri8a.pfb>
+Output written on BPROJ_zprava.pdf (13 pages, 2145281 bytes).
 PDF statistics:
- 203 PDF objects out of 1000 (max. 8388607)
- 51 named destinations out of 1000 (max. 500000)
- 141 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 233 PDF objects out of 1000 (max. 8388607)
+ 57 named destinations out of 1000 (max. 500000)
+ 157 words of extra memory for PDF output out of 10000 (max. 10000000)
 

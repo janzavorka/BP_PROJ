@@ -8,9 +8,11 @@
 \contentsline {section}{\numberline {3}Software}{7}{section.3}
 \contentsline {subsection}{\numberline {3.1}Knihovny}{7}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Komunikace}{7}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Komunikace Server -> Client}{7}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Komunikace Client -> Server}{7}{subsubsection.3.2.2}
 \contentsline {subsection}{\numberline {3.3}Zm\IeC {\v e}ny a nastaven\IeC {\'\i }}{7}{subsection.3.3}
 \contentsline {subsubsection}{\numberline {3.3.1}Server}{7}{subsubsection.3.3.1}
-\contentsline {section}{\numberline {4}Z\IeC {\'a}v\IeC {\v e}r}{8}{section.4}
-\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e} literatury a zdroj\IeC {\r u} informac\IeC {\'\i }}{9}{section.4}
-\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{10}{section*.5}
-\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{10}{section*.7}
+\contentsline {section}{\numberline {4}Z\IeC {\'a}v\IeC {\v e}r}{9}{section.4}
+\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e} literatury a zdroj\IeC {\r u} informac\IeC {\'\i }}{10}{section.4}
+\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{11}{section*.5}
+\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{11}{section*.7}
