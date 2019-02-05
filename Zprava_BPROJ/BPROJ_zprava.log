@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  5 FEB 2019 16:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  5 FEB 2019 19:32
 entering extended mode
 **./BPROJ_zprava.tex
 (BPROJ_zprava.tex
@@ -75,6 +75,37 @@ Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
 File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 ))
+(D:\Programy\MikTex\tex\latex\geometry\geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(D:\Programy\MikTex\tex\latex\graphics\keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(D:\Programy\MikTex\tex\generic\oberdiek\ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+(D:\Programy\MikTex\tex\generic\oberdiek\ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(D:\Programy\MikTex\tex\generic\ifxetex\ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count91
+\Gm@cntv=\count92
+\c@Gm@tempcnt=\count93
+\Gm@bindingoffset=\dimen104
+\Gm@wd@mp=\dimen105
+\Gm@odd@mp=\dimen106
+\Gm@even@mp=\dimen107
+\Gm@layoutwidth=\dimen108
+\Gm@layoutheight=\dimen109
+\Gm@layouthoffset=\dimen110
+\Gm@layoutvoffset=\dimen111
+\Gm@dimlist=\toks20
+
+(D:\Programy\MikTex\tex\latex\geometry\geometry.cfg))
 (D:\Programy\MikTex\tex\latex\amsmath\amsmath.sty
 Package: amsmath 2017/09/02 v2.17a AMS math features
 \@mathmargin=\skip43
@@ -85,51 +116,51 @@ Package: amstext 2000/06/29 v2.01 AMS text
 
 (D:\Programy\MikTex\tex\latex\amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks19
-\ex@=\dimen104
+\@emptytoks=\toks21
+\ex@=\dimen112
 ))
 (D:\Programy\MikTex\tex\latex\amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen105
+\pmbraise@=\dimen113
 )
 (D:\Programy\MikTex\tex\latex\amsmath\amsopn.sty
 Package: amsopn 2016/03/08 v2.02 operator names
 )
-\inf@bad=\count91
+\inf@bad=\count94
 LaTeX Info: Redefining \frac on input line 213.
-\uproot@=\count92
-\leftroot@=\count93
+\uproot@=\count95
+\leftroot@=\count96
 LaTeX Info: Redefining \overline on input line 375.
-\classnum@=\count94
-\DOTSCASE@=\count95
+\classnum@=\count97
+\DOTSCASE@=\count98
 LaTeX Info: Redefining \ldots on input line 472.
 LaTeX Info: Redefining \dots on input line 475.
 LaTeX Info: Redefining \cdots on input line 596.
 \Mathstrutbox@=\box26
 \strutbox@=\box27
-\big@size=\dimen106
+\big@size=\dimen114
 LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
-\macc@depth=\count96
-\c@MaxMatrixCols=\count97
+\macc@depth=\count99
+\c@MaxMatrixCols=\count100
 \dotsspace@=\muskip10
-\c@parentequation=\count98
-\dspbrk@lvl=\count99
-\tag@help=\toks20
-\row@=\count100
-\column@=\count101
-\maxfields@=\count102
-\andhelp@=\toks21
-\eqnshift@=\dimen107
-\alignsep@=\dimen108
-\tagshift@=\dimen109
-\tagwidth@=\dimen110
-\totwidth@=\dimen111
-\lineht@=\dimen112
-\@envbody=\toks22
+\c@parentequation=\count101
+\dspbrk@lvl=\count102
+\tag@help=\toks22
+\row@=\count103
+\column@=\count104
+\maxfields@=\count105
+\andhelp@=\toks23
+\eqnshift@=\dimen115
+\alignsep@=\dimen116
+\tagshift@=\dimen117
+\tagwidth@=\dimen118
+\totwidth@=\dimen119
+\lineht@=\dimen120
+\@envbody=\toks24
 \multlinegap=\skip44
 \multlinetaggap=\skip45
-\mathdisplay@stack=\toks23
+\mathdisplay@stack=\toks25
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
@@ -157,7 +188,7 @@ Package: setspace 2011/12/19 v6.7a set line spacing
 )
 (D:\Programy\MikTex\tex\latex\tools\enumerate.sty
 Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
-\@enLab=\toks24
+\@enLab=\toks26
 )
 (D:\Programy\MikTex\tex\latex\hyperref\hyperref.sty
 Package: hyperref 2018/02/06 v6.86b Hypertext links for LaTeX
@@ -173,10 +204,9 @@ Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
-Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
-Package ifvtex Info: VTeX not detected.
+Package hobsub Info: Skipping package `ifvtex' (already loaded).
 Package: intcalc 2016/05/16 v1.2 Expandable calculations with integers (HO)
-Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+Package hobsub Info: Skipping package `ifpdf' (already loaded).
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
@@ -206,27 +236,20 @@ Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
 Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
 Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
 )
-(D:\Programy\MikTex\tex\latex\graphics\keyval.sty
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks25
-)
-(D:\Programy\MikTex\tex\generic\ifxetex\ifxetex.sty
-Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
-)
 (D:\Programy\MikTex\tex\latex\oberdiek\auxhook.sty
 Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
 )
 (D:\Programy\MikTex\tex\latex\oberdiek\kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 )
-\@linkdim=\dimen113
-\Hy@linkcounter=\count103
-\Hy@pagecounter=\count104
+\@linkdim=\dimen121
+\Hy@linkcounter=\count106
+\Hy@pagecounter=\count107
 
 (D:\Programy\MikTex\tex\latex\hyperref\pd1enc.def
 File: pd1enc.def 2018/02/06 v6.86b Hyperref: PDFDocEncoding definition (HO)
 )
-\Hy@SavedSpaceFactor=\count105
+\Hy@SavedSpaceFactor=\count108
 
 (D:\Programy\MikTex\tex\latex\00miktex\hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -243,17 +266,17 @@ Package hyperref Info: Plain pages OFF on input line 4524.
 Package hyperref Info: Backreferencing OFF on input line 4529.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4762.
-\c@Hy@tempcnt=\count106
+\c@Hy@tempcnt=\count109
 
 (D:\Programy\MikTex\tex\latex\url\url.sty
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5115.
-\XeTeXLinkMargin=\dimen114
-\Fld@menulength=\count107
-\Field@Width=\dimen115
-\Fld@charsize=\dimen116
+\XeTeXLinkMargin=\dimen122
+\Fld@menulength=\count110
+\Field@Width=\dimen123
+\Fld@charsize=\dimen124
 Package hyperref Info: Hyper figures OFF on input line 6369.
 Package hyperref Info: Link nesting OFF on input line 6374.
 Package hyperref Info: Hyper index ON on input line 6377.
@@ -263,16 +286,16 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6394.
 Package hyperref Info: PDF/A mode OFF on input line 6399.
 LaTeX Info: Redefining \ref on input line 6439.
 LaTeX Info: Redefining \pageref on input line 6443.
-\Hy@abspage=\count108
-\c@Item=\count109
-\c@Hfootnote=\count110
+\Hy@abspage=\count111
+\c@Item=\count112
+\c@Hfootnote=\count113
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
 (D:\Programy\MikTex\tex\latex\hyperref\hpdftex.def
 File: hpdftex.def 2018/02/06 v6.86b Hyperref driver for pdfTeX
-\Fld@listcount=\count111
-\c@bookmark@seq@number=\count112
+\Fld@listcount=\count114
+\c@bookmark@seq@number=\count115
 
 (D:\Programy\MikTex\tex\latex\oberdiek\rerunfilecheck.sty
 Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
@@ -311,31 +334,31 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 (D:\Programy\MikTex\tex\latex\graphics-def\pdftex.def
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen117
-\Gin@req@width=\dimen118
+\Gin@req@height=\dimen125
+\Gin@req@width=\dimen126
 )
 (D:\Programy\MikTex\tex\latex\ulem\ulem.sty
 \UL@box=\box28
 \UL@hyphenbox=\box29
 \UL@skip=\skip56
-\UL@hook=\toks26
-\UL@height=\dimen119
-\UL@pe=\count113
-\UL@pixel=\dimen120
+\UL@hook=\toks27
+\UL@height=\dimen127
+\UL@pe=\count116
+\UL@pixel=\dimen128
 \ULC@box=\box30
 Package: ulem 2012/05/18
-\ULdepth=\dimen121
+\ULdepth=\dimen129
 )
 (D:\Programy\MikTex\tex\latex\float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count114
-\float@exts=\toks27
+\c@float@type=\count117
+\float@exts=\toks28
 \float@box=\box31
-\@float@everytoks=\toks28
+\@float@everytoks=\toks29
 \@floatcapt=\box32
 )
-\@float@every@graf=\toks29
-\c@graf=\count115
+\@float@every@graf=\toks30
+\c@graf=\count118
  (BPROJ_zprava.aux)
 \openout1 = `BPROJ_zprava.aux'.
 
@@ -363,9 +386,42 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 (D:\Programy\MikTex\tex\latex\ucs\ucsencs.def
 File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 )
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(99.58464pt, 441.01773pt, 56.9055pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=441.01773pt
+* \textheight=702.78308pt
+* \oddsidemargin=27.31465pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-38.1381pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=85.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
 LaTeX Info: Redefining \celsius on input line 71.
 Package gensymb Info: Faking symbols for \degree and \celsius on input line 71.
-
 
 
 Package gensymb Warning: Not defining \perthousand.
@@ -383,7 +439,7 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (D:\Programy\MikTex\tex\generic\oberdiek\gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count116
+\c@section@level=\count119
 )
 LaTeX Info: Redefining \ref on input line 71.
 LaTeX Info: Redefining \pageref on input line 71.
@@ -394,17 +450,17 @@ LaTeX Info: Redefining \nameref on input line 71.
 
  (D:\Programy\MikTex\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count117
-\scratchdimen=\dimen122
+\scratchcounter=\count120
+\scratchdimen=\dimen130
 \scratchbox=\box34
-\nofMPsegments=\count118
-\nofMParguments=\count119
-\everyMPshowfont=\toks30
-\MPscratchCnt=\count120
-\MPscratchDim=\dimen123
-\MPnumerator=\count121
-\makeMPintoPDFobject=\count122
-\everyMPtoPDFconversion=\toks31
+\nofMPsegments=\count121
+\nofMParguments=\count122
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count123
+\MPscratchDim=\dimen131
+\MPnumerator=\count124
+\makeMPintoPDFobject=\count125
+\everyMPtoPDFconversion=\toks32
 ) (D:\Programy\MikTex\tex\latex\oberdiek\epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -418,7 +474,7 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-<img//titulka/ctu_logo_blue.pdf, id=50, 366.36874pt x 279.0425pt>
+<img//titulka/ctu_logo_blue.pdf, id=62, 366.36874pt x 279.0425pt>
 File: img//titulka/ctu_logo_blue.pdf Graphic file (type pdf)
 <use img//titulka/ctu_logo_blue.pdf>
 Package pdftex.def Info: img//titulka/ctu_logo_blue.pdf  used on input line 75.
@@ -450,7 +506,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 89.
 
-Overfull \hbox (16.49881pt too wide) in paragraph at lines 87--91
+Overfull \hbox (13.94775pt too wide) in paragraph at lines 87--91
  [][] 
  []
 
@@ -481,9 +537,6 @@ l.116 \newpage
 \openout6 = `BPROJ_zprava.lof'.
 
 [3]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 14.49998pt.
@@ -492,43 +545,108 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [4
 
-] [5] [6
+]
+<img/foto/HW_client.jpg, id=119, 4683.4975pt x 3512.12125pt>
+File: img/foto/HW_client.jpg Graphic file (type jpg)
+<use img/foto/HW_client.jpg>
+Package pdftex.def Info: img/foto/HW_client.jpg  used on input line 155.
+(pdftex.def)             Requested size: 284.52756pt x 213.34412pt.
+<img/schema/server_switch_module.png, id=123, 274.02374pt x 229.60782pt>
+File: img/schema/server_switch_module.png Graphic file (type png)
+<use img/schema/server_switch_module.png>
+Package pdftex.def Info: img/schema/server_switch_module.png  used on input lin
+e 175.
+(pdftex.def)             Requested size: 142.26378pt x 119.20755pt.
+<img/foto/HW_server.jpg, id=124, 5203.44pt x 3902.58pt>
+File: img/foto/HW_server.jpg Graphic file (type jpg)
+<use img/foto/HW_server.jpg>
+Package pdftex.def Info: img/foto/HW_server.jpg  used on input line 181.
+(pdftex.def)             Requested size: 284.52756pt x 213.36227pt.
+ [5pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.185 \subsection
+                 {NapÃ¡jenÃ­} <./img/foto/HW_client.jpg>]
+Overfull \hbox (0.99126pt too wide) in paragraph at lines 191--192
+\T1/ptm/m/n/12 Pro tes-to-vání byl po-u-ºit Hu-a-wei Echo-Life HG520i. V na-sta
+-vení byly vy-pnuty v²echny funkce
+ []
+
+[6pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.194 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.194 
+       <./img/schema/server_switch_module.png> <./img/foto/HW_server.jpg>]
+[7] [8
 
 ]
-Underfull \hbox (badness 5548) in paragraph at lines 177--178
+Underfull \hbox (badness 10000) in paragraph at lines 223--225
 []\T1/ptm/m/it/12 Arduino: Ether-net lib-rary \T1/ptm/m/n/12 [on-line]. [cit. 2
 018-12-18]. Do-stupné z:
  []
 
-[7
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--228
+[]\T1/ptm/m/it/12 Arduino store: AR-DUINO DUE \T1/ptm/m/n/12 [on-line]. [cit. 2
+019-02-05]. Do-stupné z:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 229--230
+[]\T1/ptm/m/n/12 ZÁVORKA, Jan. Jan-za-vorka/BP_PROJ: Na-sta-vení rou-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 229--230
+\T1/ptm/m/n/12 teru. \T1/ptm/m/it/12 Gi-thub \T1/ptm/m/n/12 [on-line]. [cit. 20
+19-02-05]. Do-stupné z:
+ []
+
+
+Overfull \hbox (10.89265pt too wide) in paragraph at lines 229--230
+\T1/ptm/m/n/12 https://github.com/janzavorka/BP_PROJ/tree/master/piskvorky_MP_v
+1/nastaveni_router 
+ []
+
+[9
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 199.
- [8
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 252.
+ [10
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 199.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 252.
  (BPROJ_zprava.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 199.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 199.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 252.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 252.
 Package rerunfilecheck Info: File `BPROJ_zprava.out' has not changed.
-(rerunfilecheck)             Checksum: 243F34A04D494C63D50AB955AA2BBB26;1375.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 199.
+(rerunfilecheck)             Checksum: D8786969EF47B783765BE6A595E4CE9B;1838.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 252.
  ) 
 Here is how much of TeX's memory you used:
- 12223 strings out of 493305
- 161473 string characters out of 3142790
- 229710 words of memory out of 3000000
- 15586 multiletter control sequences out of 15000+200000
+ 12719 strings out of 493305
+ 168929 string characters out of 3142790
+ 243474 words of memory out of 3000000
+ 16048 multiletter control sequences out of 15000+200000
  38077 words of font info for 54 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,10n,43p,554b,613s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 30i,10n,43p,587b,613s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/Programy/MikTex/fonts/enc/dvips/base/8r.enc}<D:/Programy/MikTex/fonts/typ
 e1/urw/times/utmb8a.pfb><D:/Programy/MikTex/fonts/type1/urw/times/utmr8a.pfb><D
 :/Programy/MikTex/fonts/type1/urw/times/utmri8a.pfb>
-Output written on BPROJ_zprava.pdf (10 pages, 114263 bytes).
+Output written on BPROJ_zprava.pdf (12 pages, 2129770 bytes).
 PDF statistics:
- 153 PDF objects out of 1000 (max. 8388607)
- 36 named destinations out of 1000 (max. 500000)
- 102 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 203 PDF objects out of 1000 (max. 8388607)
+ 51 named destinations out of 1000 (max. 500000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 

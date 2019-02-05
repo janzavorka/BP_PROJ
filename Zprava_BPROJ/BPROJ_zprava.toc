@@ -3,11 +3,14 @@
 \contentsline {section}{\numberline {2}Hardware}{4}{section.2}
 \contentsline {subsection}{\numberline {2.1}Client}{5}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Server}{5}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Router}{5}{subsection.2.3}
-\contentsline {section}{\numberline {3}Software}{5}{section.3}
-\contentsline {subsection}{\numberline {3.1}Knihovny}{5}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Komunikace}{5}{subsection.3.2}
-\contentsline {section}{\numberline {4}Z\IeC {\'a}v\IeC {\v e}r}{6}{section.4}
-\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e} literatury a zdroj\IeC {\r u} informac\IeC {\'\i }}{7}{section.4}
-\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{8}{section*.5}
-\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{8}{section*.7}
+\contentsline {subsection}{\numberline {2.3}Nap\IeC {\'a}jen\IeC {\'\i }}{6}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Router a nastaven\IeC {\'\i } s\IeC {\'\i }t\IeC {\v e}}{6}{subsection.2.4}
+\contentsline {section}{\numberline {3}Software}{7}{section.3}
+\contentsline {subsection}{\numberline {3.1}Knihovny}{7}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Komunikace}{7}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Zm\IeC {\v e}ny a nastaven\IeC {\'\i }}{7}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Server}{7}{subsubsection.3.3.1}
+\contentsline {section}{\numberline {4}Z\IeC {\'a}v\IeC {\v e}r}{8}{section.4}
+\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e} literatury a zdroj\IeC {\r u} informac\IeC {\'\i }}{9}{section.4}
+\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{10}{section*.5}
+\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{10}{section*.7}

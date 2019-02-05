@@ -3,7 +3,7 @@
 \usepackage{ucs} %kodovani unicode
 \usepackage[czech]{babel} %podpora cestiny
 \usepackage[T1]{fontenc} %pouzij variantu pisma T1 (hacky, carky)
-%\usepackage[left=3.5cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry} %okraje stranky
+\usepackage[left=3.5cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry} %okraje stranky
 \usepackage{amsmath,amsfonts,amssymb} %podpora matematiky
 \usepackage{gensymb,marvosym} %symboly celsius (\celsius) apod.
 \usepackage{times} %font Times New Roman (matematika bude vychozim pismem Computer Modern) 
@@ -133,7 +133,7 @@ Arduino ethernet, piškvorky, komunikace Arduino-Arduino
 \label{sec:uvod}
 Cílem bylo vytvořit jednoduchý projekt, který by demonstroval možnosti komunikace Arduin po lokální síti. Po několika experimentech se jako zajímavá varianta jevila jednoduchá hra pro více hráčů. Vzhledem k použitému hardwaru se jako nejlepší možnost ukázala hra Piškvorky (v této verzi pro 2 - 5 hráčů). 
 %
-%
+%=====================================
 \section{Hardware}
 \label{sec:hardware}
 Z počátku bylo vše postaveno na deskách Aruino Ethernet. Pro možnost hry více než dvou hráčů bylo jedno Arduino použito jako server (bez displeje), které mělo za úkol řídit celou hru a Arduina s displejem (jako clienti) sloužili pouze jako zobrazovací zařízení a ke komunikaci s uživatelem (prostřednictvím dotykové displeje). Tato volba s sebou přinesla několik problému. 
@@ -142,25 +142,71 @@ Prvním problémem je malá paměť Arduina Ethernet (dle \cite{arduinoEthernet_
 Po přidání všech knihoven (konkrétně popsáno v kapitole \ref{sec:knihovny}) zůstane pro samotný program k dispozici 30 \% programové paměti, což je dost limitující ve spojení s použitím barevného dotykového displeje.
 
 Dalším problém s omezenými prostředky Arduina Ethernet nastal při vývoji serveru. Díky absenci dotykového displeje bylo pro samotný kód k dispozici dostatek místa, ale problémy nastaly při samotné komunikaci, kdy během odesílání dat (přenáší se pole o velikosti 140 bajtů pro každého clienta zvlášť, detailněji v kapitole   \ref{sec:komunikace_server_client}) docházelo k náhodným pádům a restartům Arduina. Tento problém byl vyřešen použitím desky Arduino Due.
-%
+%_____________________________________
+\newpage
 \subsection{Client}
 \label{sec:client}
-%
+Základem je, jak už bylo zmíněno výše, Arduino Ethernet s mikrokontrolérem ATmega328P. Jako zobrazovací a ovládací prvek byl zvolen 2.4" barevný TFT LCD displej s rozlišením 320x240 pixelů s rezistivní dotykovou plochou ve formě shieldu.
+Vzhledem k rozměrům (výšce) RJ-45 konektoru, který je umístěný na desce s Arduinem, je nutné pro správné připojení displeje použít lištu s oboustrannými kolíky o délce minimálně 15 mm. Protože u displejů použitých v této práci byly kolíky připájené už od výrobce, byla dodatečně vyrobena patice z dutinkové lišty a lišty s oboustrannými kolíky.
+
+%Foto clienta
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=10cm]{img/foto/HW_client.jpg}
+\caption{\label{fig:HW_client} Fotografie funkční verze clienta}
+\end{figure}
+%_____________________________________
+
 \subsection{Server}
 \label{sec:server}
-%
-\subsection{Router}
+Základem serveru je Arduino Due (bližší specifikace v \cite{ArduinoDue_page}). Pro připojení do sítě byl zvolen Ethernetový shield s čipem Wiznet W5100. 
+
+Pro pohodlné ovládání hry jsou k serveru připojena dvě tlačítka, tlačítko s červeným kroužkem slouží pro zastavení a restart hry, tlačítko se zeleným kroužkem slouží pro start hry. Schéma zapojení je vidět na obrázku \ref{fig:server_switch_module}. Zapojení bylo pro testovací účely zhotoveno na univerzální desce plošných spojů. Připojení je realizováno pomocí vodičů, kolíky umístěné v desce slouží pouze k připevnění k Arduinu nebo shieldu. Vodiče s připojí podle barvy následovně: 
+\begin{enumerate}
+\item Černý - GND
+\item Modrý - D40
+\item Oranžový - D38
+\item Červený - 5 V
+\end{enumerate}
+Místo pinů D40 a D38 lze použít libovolné jiné, ale tato změna musí být upravena v kódu pro server (viz. kapitola \ref{sec:nastaveni_server}).
+%Schéma modulu s tlačítky
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=5cm]{img/schema/server_switch_module.png}
+\caption{\label{fig:server_switch_module}Schéma zapojení tlačítek pro ovládání serveru}
+\end{figure}
+%Fotografie serveru
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=10cm]{img/foto/HW_server.jpg}
+\caption{\label{fig:HW_server}Fotografie funkční verze serveru}
+\end{figure}
+%____________________________________
+\subsection{Napájení}
+\label{sec:napajeni}
+Napájení je řešeno externím zdrojem 5 V DC. Client se k napájení připojuje na programovací vstup (místo převodníku USB/UART), na piny: 1 = GND a 3 = 5V (zprava). Připojení externího zdroje pomocí souosého konektoru a využití integrovaného stabilizátoru není možné, protože client s displejem odebírá za provozu kolem 300 mA. 
+%_____________________________________
+\subsection{Router a nastavení sítě}
 \label{sec:router}
-%
-%
-%
+Pro testování byl použit Huawei EchoLife HG520i. V nastavení byly vypnuty všechny funkce (WiFi apod.) a byl nakonfigurován DHCP server. Konfigurační soubor dostupný v \cite{router_config}.
+
+Aby se Arduina mohla spojit, je nutná aby měl server statickou IP adresu. Tento router neumožňuje přiřazení IP adresy k dané MAC, proto má server pevně přiřazenou IP (její změna popsána v kapitole \ref{sec:nastaveni_server}). Tato adresa musí být ze stejné sítě jako je router ale mimo rozsah DHCP serveru.
+
+Clientům je IP adresa přiřazována automaticky pomocí DHCP.
+%_____________________________________
+%=====================================
 \section{Software}
-%
+%_____________________________________
 \subsection{Knihovny}
 \label{sec:knihovny}
-%
+%_____________________________________
 \subsection{Komunikace}
 \label{sec:komunikace_server_client}
+%_____________________________________
+\subsection{Změny a nastavení}
+\subsubsection{Server}
+\label{sec:nastaveni_server}
+%_____________________________________
 \clearpage
 \section{Závěr}
 %
@@ -175,6 +221,12 @@ Dalším problém s omezenými prostředky Arduina Ethernet nastal při vývoji 
 %%%
 \bibitem{library_ethernet}
 \textit{Arduino: Ethernet library} [online]. [cit. 2018-12-18]. Dostupné z: https://www.arduino.cc/en/Reference/Ethernet
+%%%
+\bibitem{ArduinoDue_page}
+\textit{Arduino store: ARDUINO DUE} [online]. [cit. 2019-02-05]. Dostupné z: https://store.arduino.cc/arduino-due
+%%%
+\bibitem{router_config}
+ZÁVORKA, Jan. Janzavorka/BP\_PROJ: Nastavení routeru. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/janzavorka/BP\_PROJ/tree/master/piskvorky\_MP\_v1/nastaveni\_router
 \end{thebibliography}
 %--- SEZNAM SOFTWARU ---
 \clearpage
@@ -187,6 +239,7 @@ Dalším problém s omezenými prostředky Arduina Ethernet nastal při vývoji 
 	\item \href{https://www.tablesgenerator.com/latex_tables}{Tables Generator}
 	\item \href{https://www.citace.com/citace-pro}{Citace.com}
 	\item \href{https://easyeda.com/}{EasyEDA}
+	\item \href{https://www.irfanview.com/}{IrfanView}
 	\item \href{https://linuxmint.com/}{Linux Mint 18.1 Cinnamon 64-bit}
 \end{enumerate}
 %--- SEZNAM PRILOH ---
