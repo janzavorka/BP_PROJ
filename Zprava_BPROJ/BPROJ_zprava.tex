@@ -75,7 +75,7 @@
 \centering
 \includegraphics[scale=0.6]{/titulka/ctu_logo_blue.pdf}
 \begin{center}
-\vspace*{1cm}{\Large \bf ČESKÉ VYSOKÉ UČENÍ TECHNICKÉ V PRAZE}
+\vspace*{1cm}{\Large \bf ČESKÉ VYSOKÉ UČENÍ TECHNICKÉ V PRAZE} \\
 {\large \bf \fakulta} \\
 {\large \bf \katedra} \\
 \vspace*{2cm} {\LARGE {\bf \nazev}}\\
@@ -106,13 +106,13 @@ V~Praze dne \today \hspace{.2\textwidth} \dotfill\\
 \hspace*{11cm} Podpis
 %>>>>> ABSTRACT <<<<<<
 \newpage
-\begin{abstract}
+%\begin{abstract}
 %----- TADY BUDE ABSTRACT -----
-\end{abstract}
+%\end{abstract}
 %>>>>>>> KEYWORDS <<<<<<<
-\begin{keywords}
-Arduino ethernet, piškvorky, komunikace Arduino-Arduino
-\end{keywords}
+%\begin{keywords}
+%Arduino ethernet, piškvorky, komunikace Arduino-Arduino
+%\end{keywords}
 %>>>>> Obsah <<<<<<<
 \newpage
 \tableofcontents %vytiskne obsah
@@ -142,7 +142,21 @@ Z počátku bylo vše postaveno na deskách Aruino Ethernet. Pro možnost hry v�
 Prvním problémem je malá paměť Arduina Ethernet (dle \cite{arduinoEthernet_page} je pro program k dispozici 32 kB paměti). 
 Po přidání všech knihoven (konkrétně popsáno v kapitole \ref{sec:knihovny}) zůstane pro samotný program k dispozici 30 \% programové paměti, což je dost limitující ve spojení s použitím barevného dotykového displeje.
 
-Dalším problém s omezenými prostředky Arduina Ethernet nastal při vývoji serveru. Díky absenci dotykového displeje bylo pro samotný kód k dispozici dostatek místa, ale problémy nastaly při samotné komunikaci, kdy během odesílání dat (přenáší se pole o velikosti 140 bajtů pro každého clienta zvlášť, detailněji v kapitole   \ref{sec:komunikace_server_client}) docházelo k náhodným pádům a restartům Arduina. Tento problém byl vyřešen použitím desky Arduino Due.
+Dalším problém s omezenými prostředky Arduina Ethernet nastal při vývoji serveru. Díky absenci dotykového displeje bylo pro samotný kód k dispozici dostatek místa, ale problémy nastaly při komunikaci, kdy během odesílání dat (přenáší se pole o velikosti 140 bajtů pro každého clienta zvlášť, detailněji v kapitole   \ref{sec:komunikace_server_client}) docházelo k náhodným pádům a restartům Arduina. Tento problém byl vyřešen použitím desky Arduino Due.
+
+Celková finální sestava pro tento projekt se sestávala z následujícího hardwaru:
+\begin{itemize}
+\item 1x router Huawei EchoLife HG520i, viz. kapitola \ref{sec:router}.
+\item 3x client s Arduino Ethernet (celková sestava clienta popsána v kapitole \ref{sec:client}).
+\item 1x server s Arduino Due (celková sestava serveru popsána v kapitole \ref{sec:server}).
+\item příslušné napájecí adaptéry pro router (součástí balení) a pro Arduina (5 V, 2000 mA).
+\end{itemize}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=12cm]{img/schema/schema.png}
+\caption{Schéma zapojení celé sestavy, zdroj \cite{router_symbol}, \cite{arduinoEthernet_page}}
+\end{figure}
 %_____________________________________
 \newpage
 \subsection{Client}
@@ -186,6 +200,8 @@ Místo pinů D40 a D38 lze použít libovolné jiné, ale tato změna musí být
 \subsection{Napájení}
 \label{sec:napajeni}
 Napájení je řešeno externím zdrojem 5 V DC. Client se k napájení připojuje na programovací vstup (místo převodníku USB/UART), na piny: 1 = GND a 3 = 5V (zprava). Připojení externího zdroje pomocí souosého konektoru a využití integrovaného stabilizátoru není možné, protože client s displejem odebírá za provozu kolem 300 mA. 
+
+Je třeba také dbát na správné dimenzování napájecího zdroje, aby nedocházelo k poklesu napájecího napětí, protože tím by došlo k výkyvu reference pro dotykovou plochu a dotyky by nemusely být správně vyhodnoceny. 
 %_____________________________________
 \subsection{Router a nastavení sítě}
 \label{sec:router}
@@ -226,17 +242,114 @@ Client průběžně přijímá jednotlivé části, pokud dorazí nějaká čás
 %
 \subsubsection{Komunikace Client -> Server}
 \label{sec:komunikace_client_server}
-Při této komunikaci se přenáší vždy dva bajty, přičemž celá zpráva je odeslána dvakrát po sobě. Server po přijetí obou zpráv zprávy porovná a pokud se neliší provede dané instrukce (význam v tabulce XXX). V případě neshody je zpráva zahozena. 
+Při této komunikaci se přenáší vždy dva bajty, přičemž celá zpráva je odeslána dvakrát po sobě. Server po přijetí obou zpráv zprávy porovná a pokud se neliší provede dané instrukce (význam v tabulce \ref{table:clietn-server}). V případě neshody je zpráva zahozena. 
 %Tabulka přenášeného packetu
 \input{img/tabulky/client_packet.tex}
 %_____________________________________
+\newpage
 \subsection{Změny a nastavení}
+Všechny hodnoty, které je možno podle potřeby konfigurovat a nedojde tím k nesprávnému fungování zařízení jsou vždy označeny komentářem v kódu:
+\begin{verbatim}
+/* ---------- KONFIGURACE ----------*/
+\end{verbatim}
+Konkrétní konfigurovatelného hodnoty jsou popsány v podkapitolách, detaily pak přímo ve zdrojovém kódu (příloha \ref{priloha:github_zdrojovy_kod}) pomocí komentářů.
 \subsubsection{Server}
 \label{sec:nastaveni_server}
-
+\begin{itemize}
+\item \textit{Adresa MAC} \ldots vzhledem k tomu, že zařízení je provozováno na samostatné síti, adresy byly voleny náhodně a nemůže dojít ke kolizi MAC adres. V případě, že zařízení bude provozováno v síti s cizími zařízeními,  může být nutné MAC adresu změnit. K odstranění nebo snížení pravděpodobnosti kolize lze použít například postup popsaný v \cite{nastaveni_mac}. Zjistí se MAC existujícího cizího zařízení (byla mu přidělena výrobcem), zvětší se poslední bajt o jedna a takto vzniklá MAC adresa se přidělí našemu zařízení.
+%%%
+\item \textit{Připojení tlačítek} \ldots nastavují se čísla pinů, ke kterým jsou připojena ovládací tlačítka, nastavení pouze změnou kódu.
+%%%
+\item \textit{IP adresa} \ldots požadavky v kapitole \ref{sec:router}, nastavení změnou v kódu.
+%%%
+\item \textit{počet polí k výhře} \ldots nastavení počtu polí, které je nutné obsadit aby došlo k výhře. Obsazené pole musí být v souvislé řadě svisle, vodorovně nebo diagonálně. 
+\end{itemize}
+%%%%%%%
+\subsubsection{Client}
+\label{sec:nastaveni_client}
+\begin{itemize}
+\item \textit{Adresa MAC} \ldots platí to stejné jako pro server, popsáno v kapitole \ref{sec:nastaveni_server}.
+%%%
+\item \textit{IP adresa serveru} \ldots nastavuje se IPv4 adresa, která byla přiřazena serveru.
+%%%
+\item \textit{Kalibrace dotykové plochy} \ldots nastavují se čtyři hodnoty, minimum a maximum pro osu \textit{x} a pro osu \textit{y}. Hodnoty lze zjistit například použitím příkladového programu obsažené v knihovně UTFGLUE. Lze ho nalézt v příklady~->~MCUFRIEND\_kbv~->~TouchScreen\_calibr\_kbv.
+\end{itemize}
 %_____________________________________
+%=====================================
+\clearpage
+\section{Uvedení do provozu a postup hry}
+\subsection{Server}
+\begin{enumerate}
+\item Server se připojí pomocí síťového kabelu k routeru a připojí se i napájení. Server lze připojit microUSB kabelem k počítači a sledovat informace a stav hry na sériové lince.
+
+%%
+\item Po připojení alespoň dvou clientů lze spustit hru zeleným tlačítkem. Hru lze kdykoliv přerušit červeným tlačítkem. Ovládání hry je možné kromě tlačítky také příkazy přes sériovou linku (v Arduino IDE: Nástroje->Sériový monitor nebo například pomocí \href{https://www.putty.org/}{Putty}), jejich seznam je v tabulce \ref{tab:server_prikazy}.
+\end{enumerate}
+%Tabulka příkazů
+\input{img/tabulky/server_prikazy.tex}
+%_____________________________________
+\subsection{Client}
+\begin{enumerate}
+\item Client se připojí pomocí síťového kabelu k routeru a připojí se k napájení. Pokud nebyl kabel správně připojen nebo client neobdržel IP adresu od DHCP serveru, zobrazí se na displeji žlutá hláška \uv{Zkontrolujte pripojeni kabelu}.
+
+%%%
+\item Pokud připojení do sítě proběhlo v pořádku, zobrazí se úvodní obrazovka (obrázek:~\ref{fig:faze1}).  Zobrazeny jsou informace o nastavené IP adrese serveru a o IP adrese, která byla clientovi přiřazena DHCP serverem.  
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{img/foto/faze1.jpg}
+\caption{\label{fig:faze1} Obrazovka clienta po úspěšném připojení do sítě}
+\end{figure}
+
+%%%
+\item Připojení k piškvorkovému serveru lze spustit stisknutím tlačítka \uv{\textit{PRIPOJIT}}. Připojování je indikováno pomocí displeje (obrázek \ref{fig:faze2}). Připojování může být kdykoliv přerušena stiskem tlačítka \uv{\textit{PRERUSIT}}. Připojování bude dokončeno pokud na serveru není rozehraná hra.
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{img/foto/faze2.jpg}
+\caption{\label{fig:faze2} Obrazovka clienta při připojování k serveru}
+\end{figure}
+
+%%%
+\item Pokud připojení proběhlo úspěšně, client má od serveru přiřazené číslo a barvu. To je indikováno pomocí displeje (obrázek \ref{fig:faze3}), kde barva textu odpovídá barvě hráče. Než započne hra je možné se ze serveru odpojit stiskem tlačítka \uv{\textit{ODPOJIT}}. Nyní se čeká na zahájení hry.
+\begin{figure}[H]
+\centering
+\includegraphics[height=7cm, angle=90]{img/foto/faze3a.jpg}
+\includegraphics[width=7cm, angle=0]{img/foto/faze3b.jpg}
+\caption{\label{fig:faze3} Obrazovky dvou různých clientů  po úspěšném připojení k piškvorkovému serveru}
+\end{figure}
+\label{item:faze3}
+
+%%%
+\item V případě, že ze strany serveru byla započata hra, vykreslí se na obrazovce herní pole (obrázek \ref{fig:faze4}). 
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm, angle=0]{img/foto/faze4.jpg}
+\caption{\label{fig:faze4} Obrazovka clienta po započaté hře}
+\end{figure}
+
+%%
+\item Během hry: pokud je mřížky šedá, hraje jiný hráč, pokud má mřížka nějakou barvu (barva se shoduje s barvou hráče) je na tahu daný hráč. Ten má za úkol stiskem libovolného volného čtverečku umístit svůj žeton. 
+
+Pokud ho stiskne, dojde k jeho vyplnění příslušným žetonem (barevným kruhem), mříž zešedne a je na řadě další hráč. Rozehraná hra je vidět na obrázku \ref{fig:faze5}.
+\begin{figure}[H]
+\centering
+\includegraphics[height=8cm, angle=-90]{img/foto/faze5.jpg}
+\caption{\label{fig:faze5} Rozehraná hra tří hráčů, obrazovka jednoho z clientů}
+\end{figure}
+
+%%
+\item Hráči se střídají do té doby než: jsou všechna pole vyplněna (ukončeno remízou) nebo některý hráč spojil požadovaný počet žetonů (podle nastavení serveru, možnosti uvedeny v kapitole \ref{sec:nastaveni_server}). O výsledku hry jsou hráči informováni hláškou na displeji (obrázek \ref{fig:faze6}). Tato hláška po deseti sekundách zmizí a hra přechází do fáze \ref{item:faze3}.
+\begin{figure}[H]
+\centering
+\includegraphics[height=7cm, angle=-90]{img/foto/faze6a.jpg}
+\includegraphics[height=7cm, angle=-90]{img/foto/faze6b.jpg}
+\caption{\label{fig:faze6} Zobrazená hláška na displeji výherce (vlevo) a ostatních hráčů (vpravo), barva textu se shoduje s barvou hráče}
+\end{figure}
+\end{enumerate}
 \clearpage
 \section{Závěr}
+Podařilo se sestrojit zařízení, které zábavnou formu ukazuje možnosti komunikace Arduin po lokální síti. Během realizace se vyskytly určitě problém (z nichž většina byla popsána v této zprávě), které se podařilo vyřešit ať už změnou hardwaru nebo případně určitými kompromisy na straně softwaru (například možnost připojení omezeného počtu hráčů).  
+
+Všechny zdrojové kódy, konfigurační soubory a i elektronická verze této práce (včetně  \LaTeX ového  kódu) jsou k dispozici na autorově \href{https://github.com/janzavorka/BP_PROJ}{Githubu}. Dále zde budou umisťovány i aktualizované kódy s opravami případných chyb.
 %
 %>>>>>>> Seznam literatury <<<<<<<
 \clearpage
@@ -244,6 +357,9 @@ Při této komunikaci se přenáší vždy dva bajty, přičemž celá zpráva j
 \renewcommand{\refname}{Seznam použité literatury a zdrojů informací}
 \addcontentsline{toc}{section}{Seznam použité literatury a zdrojů informací}
 \begin{thebibliography}{99}
+\bibitem{router_symbol}
+Network Diagram Symbols and Icons. \textit{LucidChart} [online]. [cit. 2019-02-06]. Dostupné z: https://www.lucidchart.com/pages/network-diagram-icons-and-symbols?a=0
+%%%
 \bibitem{arduinoEthernet_page}
 \textit{Arduino store: ARDUINO ETHERNET REV3} [online]. [cit. 2019-02-05]. Dostupné z: https://store.arduino.cc/arduino-ethernet-rev3-without-poe
 %%%
@@ -258,6 +374,9 @@ MCUFRIEND\_kbv library. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z
 %%%
 \bibitem{library_touch}
 Adafruit\_TouchScreen library. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/adafruit/Adafruit\_TouchScreen
+%%%
+\bibitem{nastaveni_mac}
+MALÝ, Martin. Arduino: webový server i klient do ruky. \textit{Root.cz} [online]. 27. 7. 2010 [cit. 2019-02-06]. Dostupné z: https://www.root.cz/clanky/arduino-webovy-server-i-klient-do-ruky/
 \end{thebibliography}
 %--- SEZNAM SOFTWARU ---
 \clearpage
@@ -279,5 +398,7 @@ Adafruit\_TouchScreen library. \textit{Github} [online]. [cit. 2019-02-05]. Dost
 \section*{Seznam příloh} 
 \begin{enumerate}[{Příloha} 1:]
 \item \label{priloha:github_router_conf} Konfigurační soubor routeru Huawei EchoLife HG520i na Githubu, dostupné z: \href{https://goo.gl/h8494S}{https://goo.gl/h8494S}
+%%%
+\item \label{priloha:github_zdrojovy_kod} Zdrojové kódy pro server i clienta na Githubu, dostupné z: \href{https://goo.gl/5roM9V}{https://goo.gl/5roM9V}
 \end{enumerate}
 \end{document}
