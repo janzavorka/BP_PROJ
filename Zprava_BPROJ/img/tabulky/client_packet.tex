@@ -1,0 +1,11 @@
+\begin{table}[hbtp]
+\catcode`\-=12
+\caption{\label{table:clietn-server} Rozložení packetu pro komunikaci client->server}
+\begin{tabular}{|c|c|l|}
+\hline
+Index & Hodnoty                         & \multicolumn{1}{c|}{Popis}                                                                                                                                                                                \\ \hline
+0     & 1x                              & \begin{tabular}[c]{@{}l@{}}Jedná se o informaci, že další přenesený bajt bude číslo vyplněného\\ pole (čtverečku) herní desky (board), za 'x' (na místě jednotek) \\ je vyplněno číslo hráče\end{tabular} \\ \cline{2-3} 
+      & 2x                              & \begin{tabular}[c]{@{}l@{}}Žádost klienta o poslání dané části herního pole (board), v další \\ bajtu je číslo dané části (packetu), za 'x' (na místě jednotek) \\ je vyplněno číslo hráče\end{tabular}   \\ \hline
+1     & \multicolumn{1}{l|}{0-89, 0-16} & \begin{tabular}[c]{@{}l@{}}Podle hodnoty předchozího bajtu: index vyplněného \\ pole nebo pořadí packetu, který má být poslán znovu\end{tabular}                                                          \\ \hline
+\end{tabular}
+\end{table}

@@ -189,13 +189,14 @@ Napájení je řešeno externím zdrojem 5 V DC. Client se k napájení připoju
 %_____________________________________
 \subsection{Router a nastavení sítě}
 \label{sec:router}
-Pro testování byl použit Huawei EchoLife HG520i. V nastavení byly vypnuty všechny funkce (WiFi apod.) a byl nakonfigurován DHCP server. Konfigurační soubor dostupný v \cite{router_config}.
+Pro testování byl použit Huawei EchoLife HG520i. V nastavení byly vypnuty všechny funkce (WiFi apod.) a byl nakonfigurován DHCP server. Konfigurační soubor dostupný v příloze \ref{priloha:github_router_conf}.
 
 Aby se Arduina mohla spojit, je nutná aby měl server statickou IP adresu. Tento router neumožňuje přiřazení IP adresy k dané MAC, proto má server pevně přiřazenou IP (její změna popsána v kapitole \ref{sec:nastaveni_server}). Tato adresa musí být ze stejné sítě jako je router ale mimo rozsah DHCP serveru.
 
 Clientům je IP adresa přiřazována automaticky pomocí DHCP.
 %_____________________________________
 %=====================================
+\clearpage
 \section{Software}
 %_____________________________________
 \subsection{Knihovny}
@@ -215,9 +216,9 @@ Seznam použitých knihoven pro server:
 \subsection{Komunikace}
 \subsubsection{Komunikace Server -> Client}
 \label{sec:komunikace_server_client}
-Během komunikace tímto směrem vždy server odešle celou herní desku (pole typu byte \textit{board}), celkem tedy 136 bytů. Pokud client toto pole v pořádku přijme, dojde k jeho vyhodnocení a vykonání potřebných funkcí (překreslení displeje, vyžádání akce od uživatele, zobrazení hlášky). Hodnoty pole mění pouze server. Popis pole a co které hodnoty představují je vidět v tabulce \ref{tab:board_content}. 
+Během komunikace tímto směrem vždy server odešle celou herní desku (pole typu byte \textit{board}), celkem tedy 136 bajtů. Pokud client toto pole v pořádku přijme, dojde k jeho vyhodnocení a vykonání potřebných funkcí (překreslení displeje, vyžádání akce od uživatele, zobrazení hlášky). Hodnoty pole mění pouze server. Popis pole a co které hodnoty představují je vidět v tabulce \ref{tab:board_content}. 
 
-Při odesílání je pole rozděleno do packetů. Každý packet obsahuje 8 bytů pole \textit{board}, pořadové číslo packetu (aby client mohl pole zpětně sestavit) a dva byty kontrolního součtu. 
+Při odesílání je pole rozděleno do packetů. Každý packet obsahuje 8 bajtů pole \textit{board}, pořadové číslo packetu (aby client mohl pole zpětně sestavit) a dva bajty kontrolního součtu. 
 
 Client průběžně přijímá jednotlivé části, pokud dorazí nějaká část chybná (nesedí kontrolní součet), client si může vyžádat od serveru znovuodeslání (realizace popsána v kapitole \ref{sec:komunikace_client_server}). Pokud client přijme všechny části, pole \textit{board} vyhodnotí.
 %Tabulka herní desky (pole board)
@@ -225,10 +226,14 @@ Client průběžně přijímá jednotlivé části, pokud dorazí nějaká čás
 %
 \subsubsection{Komunikace Client -> Server}
 \label{sec:komunikace_client_server}
+Při této komunikaci se přenáší vždy dva bajty, přičemž celá zpráva je odeslána dvakrát po sobě. Server po přijetí obou zpráv zprávy porovná a pokud se neliší provede dané instrukce (význam v tabulce XXX). V případě neshody je zpráva zahozena. 
+%Tabulka přenášeného packetu
+\input{img/tabulky/client_packet.tex}
 %_____________________________________
 \subsection{Změny a nastavení}
 \subsubsection{Server}
 \label{sec:nastaveni_server}
+
 %_____________________________________
 \clearpage
 \section{Závěr}
@@ -248,12 +253,9 @@ Client průběžně přijímá jednotlivé části, pokud dorazí nějaká čás
 \bibitem{ArduinoDue_page}
 \textit{Arduino store: ARDUINO DUE} [online]. [cit. 2019-02-05]. Dostupné z: https://store.arduino.cc/arduino-due
 %%%
-\bibitem{router_config}
-ZÁVORKA, Jan. Janzavorka/BP\_PROJ: Nastavení routeru. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/janzavorka/BP\_PROJ/tree/master/piskvorky\_MP\_v1/nastaveni\_router
-%%
 \bibitem{library_UTFGLUE}
 MCUFRIEND\_kbv library. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/prenticedavid/MCUFRIEND\_kbv
-%%
+%%%
 \bibitem{library_touch}
 Adafruit\_TouchScreen library. \textit{Github} [online]. [cit. 2019-02-05]. Dostupné z: https://github.com/adafruit/Adafruit\_TouchScreen
 \end{thebibliography}
@@ -276,6 +278,6 @@ Adafruit\_TouchScreen library. \textit{Github} [online]. [cit. 2019-02-05]. Dost
 \addcontentsline{toc}{section}{Seznam příloh}
 \section*{Seznam příloh} 
 \begin{enumerate}[{Příloha} 1:]
-\item příloha
+\item \label{priloha:github_router_conf} Konfigurační soubor routeru Huawei EchoLife HG520i na Githubu, dostupné z: \href{https://goo.gl/h8494S}{https://goo.gl/h8494S}
 \end{enumerate}
 \end{document}

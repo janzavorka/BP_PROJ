@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  5 FEB 2019 21:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  6 FEB 2019 17:33
 entering extended mode
 **./BPROJ_zprava.tex
 (BPROJ_zprava.tex
@@ -546,18 +546,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [4
 
 ]
-<img/foto/HW_client.jpg, id=131, 4683.4975pt x 3512.12125pt>
+<img/foto/HW_client.jpg, id=133, 4683.4975pt x 3512.12125pt>
 File: img/foto/HW_client.jpg Graphic file (type jpg)
 <use img/foto/HW_client.jpg>
 Package pdftex.def Info: img/foto/HW_client.jpg  used on input line 156.
 (pdftex.def)             Requested size: 284.52756pt x 213.34412pt.
-<img/schema/server_switch_module.png, id=135, 274.02374pt x 229.60782pt>
+<img/schema/server_switch_module.png, id=137, 274.02374pt x 229.60782pt>
 File: img/schema/server_switch_module.png Graphic file (type png)
 <use img/schema/server_switch_module.png>
 Package pdftex.def Info: img/schema/server_switch_module.png  used on input lin
 e 176.
 (pdftex.def)             Requested size: 142.26378pt x 119.20755pt.
-<img/foto/HW_server.jpg, id=136, 5203.44pt x 3902.58pt>
+<img/foto/HW_server.jpg, id=138, 5203.44pt x 3902.58pt>
 File: img/foto/HW_server.jpg Graphic file (type jpg)
 <use img/foto/HW_server.jpg>
 Package pdftex.def Info: img/foto/HW_server.jpg  used on input line 182.
@@ -587,98 +587,90 @@ l.195
                                                   \fi \fi 
 l.195 
        <./img/schema/server_switch_module.png> <./img/foto/HW_server.jpg>]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 205.
+[7]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 206.
 
-
-(D:\Programy\MikTex\tex\latex\psnfss\omsptm.fd
+ (D:\Programy\MikTex\tex\latex\psnfss\omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 205.
- (img/tabulky/board_content.tex
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 206.
+
+(img/tabulky/board_content.tex
 Overfull \hbox (15.77174pt too wide) in paragraph at lines 4--31
 [][] 
  []
 
-) [7] [8pdfTeX warning (ext4): destination with the same identifier (name{table
-.1}) has been already used, duplicate ignored
+) (img/tabulky/client_packet.tex) [8
+
+] [9pdfTeX warning (ext4): destination with the same identifier (name{table.1})
+ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.233 \clearpage
-                ] [9
+l.238 \clearpage
+                pdfTeX warning (ext4): destination with the same identifier (na
+me{table.2}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.238 \clearpage
+                ] [10
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 246--248
+Underfull \hbox (badness 10000) in paragraph at lines 251--253
 []\T1/ptm/m/it/12 Arduino: Ether-net lib-rary \T1/ptm/m/n/12 [on-line]. [cit. 2
 018-12-18]. Do-stupné z:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 249--251
+Underfull \hbox (badness 10000) in paragraph at lines 254--256
 []\T1/ptm/m/it/12 Arduino store: AR-DUINO DUE \T1/ptm/m/n/12 [on-line]. [cit. 2
 019-02-05]. Do-stupné z:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 252--254
-[]\T1/ptm/m/n/12 ZÁVORKA, Jan. Jan-za-vorka/BP_PROJ: Na-sta-vení rou-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 252--254
-\T1/ptm/m/n/12 teru. \T1/ptm/m/it/12 Gi-thub \T1/ptm/m/n/12 [on-line]. [cit. 20
-19-02-05]. Do-stupné z:
- []
-
-
-Overfull \hbox (10.89265pt too wide) in paragraph at lines 252--254
-\T1/ptm/m/n/12 https://github.com/janzavorka/BP_PROJ/tree/master/piskvorky_MP_v
-1/nastaveni_router 
- []
-
-
-Underfull \hbox (badness 8075) in paragraph at lines 255--257
+Underfull \hbox (badness 8075) in paragraph at lines 257--259
 []\T1/ptm/m/n/12 MCUFRIEND_kbv lib-rary. \T1/ptm/m/it/12 Gi-thub \T1/ptm/m/n/12
  [on-line]. [cit. 2019-02-05]. Do-stupné z:
  []
 
 
-Underfull \hbox (badness 3179) in paragraph at lines 258--259
+Underfull \hbox (badness 3179) in paragraph at lines 260--261
 []\T1/ptm/m/n/12 Adafruit_TouchScreen lib-rary. \T1/ptm/m/it/12 Gi-thub \T1/ptm
 /m/n/12 [on-line]. [cit. 2019-02-05]. Do-stupné z:
  []
 
-[10
+[11
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 281.
- [11
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 283.
+ [12
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 281.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 283.
  (BPROJ_zprava.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 281.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 281.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 283.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 283.
 Package rerunfilecheck Info: File `BPROJ_zprava.out' has not changed.
 (rerunfilecheck)             Checksum: 651B742D1CEDC570C8CAB059FF3FACEC;2264.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 281.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 283.
  ) 
 Here is how much of TeX's memory you used:
- 12755 strings out of 493305
- 169669 string characters out of 3142790
- 251734 words of memory out of 3000000
- 16070 multiletter control sequences out of 15000+200000
+ 12760 strings out of 493305
+ 169838 string characters out of 3142790
+ 253806 words of memory out of 3000000
+ 16071 multiletter control sequences out of 15000+200000
  38077 words of font info for 54 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,10n,43p,587b,613s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 30i,14n,43p,587b,613s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/Programy/MikTex/fonts/enc/dvips/base/8r.enc}<D:/Programy/MikTex/fonts/typ
 e1/public/amsfonts/cm/cmsy10.pfb><D:/Programy/MikTex/fonts/type1/urw/times/utmb
 8a.pfb><D:/Programy/MikTex/fonts/type1/urw/times/utmr8a.pfb><D:/Programy/MikTex
 /fonts/type1/urw/times/utmri8a.pfb>
-Output written on BPROJ_zprava.pdf (13 pages, 2145281 bytes).
+Output written on BPROJ_zprava.pdf (14 pages, 2147485 bytes).
 PDF statistics:
- 233 PDF objects out of 1000 (max. 8388607)
- 57 named destinations out of 1000 (max. 500000)
+ 239 PDF objects out of 1000 (max. 8388607)
+ 58 named destinations out of 1000 (max. 500000)
  157 words of extra memory for PDF output out of 10000 (max. 10000000)
 
