@@ -17,3 +17,8 @@
 
 ### Zprava_BPROJ
 -  Výstupní zpráva z celého projektu
+
+### RGB_LED_cal
+- Slouží ke kalibraci barev pro RGB LED u serveru (Arduino Due)
+- RGB LED se připojí na příslušné PWM piny, změna barev a celkové intenzity probíhá pomocí sériového monitoru
+- Příkaz: "rrr,ggg,bbb,inten", kde _rrr,ggg,bbb_ jsou voleny z <0; 255> a reprezentují jednotlivé barvy, _inten_ je volena z <0; 100> a reprezentuje celkovou intenzitu LED
