@@ -20,6 +20,10 @@
 
 ### RGB_LED_cal
 - Slouží ke kalibraci barev pro RGB LED u serveru (Arduino Due)
+- RGB LED připojení:
+    - R -> D6
+    - G -> D7
+    - B -> D8
 - RGB LED se připojí na příslušné PWM piny, změna barev a celkové intenzity probíhá pomocí sériového monitoru
 - Příkaz _"help"_ vypíše nápovědu přímo na sériový monitor
 - Příkaz: _"led rrr,ggg,bbb,inten"_, kde:
