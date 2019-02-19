@@ -15,6 +15,9 @@
 - 1x arduino Due jako server, max 5x arduino Ethernet s dotykovým displejem jako client
 - připojovánou přes router s DHCP (serveru nutno přidělit pevnou IP)
 
+### piskvorky_MP_old
+- Starší funkční verze projektu
+
 ### Zprava_BPROJ
 -  Výstupní zpráva z celého projektu
 
