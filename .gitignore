@@ -1,0 +1,7 @@
+# ignored files
+
+# Files made by Arduino plugin from Atom
+*.ino.bin
+*.ino.eep
+*.ino.elf
+*.ino.hex
