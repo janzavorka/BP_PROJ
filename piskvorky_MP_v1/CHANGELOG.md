@@ -1,5 +1,10 @@
 # BP_PROJ: Piskvorky v1
 
+### 23.02.2019
+- Celkové pøepracování programu pro server
+- Pro server pøidána LED dioda indikující stav
+- Pøidání zabezpeèovacích funkcí pro komunikaci client->server a server -> client
+
 ### 12.12.2018
 - Program pro clienta
 	- pro všechny client desky zkalibrovány displeje, u clienta 3 nutná úprava v loopu (dislej má jinou orientaci)
