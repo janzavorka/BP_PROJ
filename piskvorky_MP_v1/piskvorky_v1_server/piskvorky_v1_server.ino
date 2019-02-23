@@ -231,6 +231,24 @@ void loop() {
                break;
             }
         }
+        
+        //Kontrola, zda client poslal pro připojení správný kód (v cyklu je počet pokusů)
+        byte checkCode = 0;
+        for(int i = 0; i < 200; i++){
+          if(newClient.available()){
+            checkCode = newClient.read();
+            break;
+          }
+          delay(10);
+        }
+        //Odstranění zbylých dat od clienta
+        while(newClient.available()){ 
+          byte bin = newClient.read();
+        }
+        //Kontrola, zda přijatý kód pro připojení je správný
+        if(checkCode != 100){
+          clientOK = false;
+        }
 
         if(clientOK){
           clients[clientIndex] = newClient;
