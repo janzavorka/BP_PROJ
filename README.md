@@ -1,7 +1,12 @@
 # BP_PROJ
 
-### Dotykový display - knihovny
+### Knihovny
 - Knihovny použité pro ovládání (nemusí být aktuální verze)
+- Domovské stránky knihoven:
+    - [SimpleTimer](https://github.com/schinken/SimpleTimer)
+    - Pro ovládání displeje:
+        - [MCUFRIEND_kbv](https://github.com/prenticedavid/MCUFRIEND_kbv)
+        - [Adafruit_TouchScreen](https://github.com/adafruit/Adafruit_TouchScreen)
 
 ### Piskvorky_red
 - HW: 2x Arduino Ethernet, 2x 2,4" dotykový display
