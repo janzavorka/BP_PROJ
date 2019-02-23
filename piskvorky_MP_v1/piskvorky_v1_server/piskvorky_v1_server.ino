@@ -5,7 +5,7 @@
  */
 
 #include <Ethernet.h>
-
+#include <SimpleTimer.h>
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
 byte mac[] = {
@@ -31,13 +31,19 @@ unsigned long long refresh_buttonOff = 0;
 //Herní server
 IPAddress serverAddress(10,0,0,8);
 
-//Rozměry sítě
+/* ----------Ovládání pomocí sériové linky----------*/
+const byte max_buffik = 30;
+String buffik = "";
+
+
+//Rozměry herní sítě
 #define meshX 11
 #define meshY 8
 /* ----------HRA----------*/
 byte serverPhase = 0; //označuje fázi hry= 0: čekání na připojení klientů, 1: kontrola klientů, správné nastavení hry, 2: fáze hry
 byte lastPlayer = 0; //Označuje posledního hráče, který hrál
 byte crossNum = 5; //Počet koleček, které je nutné spojit por výhru
+byte clientsData [maxPlayers][2][3]; //první index: číslo hráče; druhý index: číslo zprávy (aby bylo provedeno, obě se musí rovnat); třetí index: datový packet1, datový packet2, přijato/nepřijato (0/1) - vyplní server při příjmu dat
 
 /* ----------Barvy----------*/
 #define BLACK           0x0000      /*   0,   0,   0 */
@@ -65,7 +71,8 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
  *  90:     Hlášení prostřednictvím kódu 
- *            0:    vše OK, hraje se, překresli obrazovku
+ *            0:    nic nedělej
+ *            1:    vše OK, hraje se, překresli obrazovku
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
  *            9:    odpojuji
  *            11:   hraje hráč 1
@@ -107,28 +114,68 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_PC4        101
 #define gb_PC5        103
 
+/* ----------Ovládání LED----------*/
+//Piny
+#define LED_red 6
+#define LED_green 7
+#define LED_blue 8
+
+//Nastavení maximálního jasu
+#define LED_br 100
+
+//Barvy
+byte LEDcol_red[] = {255, 0, 0};
+byte LEDcol_green[] = {0, 255, 0};
+byte LEDcol_blue[] = {0, 0, 255};
+byte LEDcol_orange[] = {255, 50, 0};
+//byte LEDcol_red[] = {255, 0, 0};
+
 const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
 const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu 
 /* ----------PROTOTYPY----------*/
 void cleanBoard(void); //Vyplní herní desku nulami
 void syncBoardIPs(void); //Synchronizuje IP adresy v boardu a s IP adresy v seznamu clientů (clients[])
-void sendBoard(void); //Odešle herní desku
+void sendBoard(byte); //Odešle herní desku všem hráčům (argument číslo řídicího kódu)
+void sendBoard(byte, byte); //Odešle herní desku konkrétnímu hráči (argument číslo řídicího kódu a číslo clienta/hráče)
 void setBoard(void); //Připraví herní desku
 byte getNextPlayer(byte); //Vrátí číslo dalšího hráče (argument fce je číslo předchozího hráče)
 void checkGame(byte, byte); //Zkontroluje průběh hry...případně vyplní kód v boardu, argument je poslední pole a číslo hrajícího hráče
+void syncBoardIPs(void); //Synchronizuje herní desku board s připojenými clienty
 void stopGame(void); //Zruší běžící hru
 void startGame(void); //Spustí hru
+/* communication */
+void recieveData(byte); //Přijme data a případně zpracuje, argument je index hráče
+void checkIncommingData(void); //Kontroluje, zda nějaký client neposlal data
+void resetClientData(byte); //Smaže přijatá data daného clienta
+void processClientData(byte); //Provede požadované úkony pro daného hráče
+/* SerialControl */
+void processBuffik(void); //Zpracuje přijatou zprávu přes sériovou linku
+void printLine(byte, byte); //Vypíše několik zadaných znaků za sebou (pro výpis oddělovacích čar na sériovém monitoru)
+/* Ovládání LED */
+void setLED (byte, byte); //Nastaví Barvu LED podle požadavků (barva, jas)
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
 void setup() { 
   //Sériová linka
   Serial.begin(9600);
+  //Alokace paměti pro string
+  buffik.reserve(max_buffik);
   //Tlačítka
   pinMode(startPIN, INPUT);
   pinMode(resetPIN, INPUT);
   randomSeed(analogRead(0));
   delay(10);
+  //Nastavení LED
+  pinMode(LED_red, OUTPUT);
+  pinMode(LED_green, OUTPUT);
+  pinMode(LED_blue, OUTPUT);
+
+  //Turn off LED
+  analogWrite(LED_red, 255);
+  analogWrite(LED_green, 255);
+  analogWrite(LED_blue, 255);
+
   Serial.println("Startuji piskvorkovy server");
   //Ethernet
   Ethernet.begin(mac, serverAddress);
@@ -138,8 +185,14 @@ void setup() {
   Serial.println("Spoustim server");
   server.begin();
   delay(200);
-  setBoard();
-  
+
+  //Reset datových polí
+  cleanBoard();
+  for(byte i = 0; i < maxPlayers; i++){
+    resetClientData(i);
+  }
+
+  setLED(LEDcol_orange, 100);
 }
 
 /*
@@ -155,43 +208,52 @@ void loop() {
       EthernetClient newClient = server.accept();
       delay(10);
       if ((newClient)) {
-        bool clientOK = true;
-        for (byte i = 0; i < maxPlayers; i++) {
-          if (!clients[i]) {
-              for(byte j = 0; j < maxPlayers; j++){ //Ověření duplicit
-                if(clients[j].remoteIP() == newClient.remoteIP()){
-                  clientOK = false;
-                  sendBoard();
-                  break;
-                }
-              }
-              if(clientOK){
-                Serial.print("New client number: ");
-                Serial.println(i);
-                Serial.print("IP: ");
-                Serial.println(newClient.remoteIP());
-                clients[i] = newClient;
-                while(clients[i].available()){ //Vyprázdění
-                  Serial.print(clients[i].read());
-                }
-                Serial.println();
-                IPAddress cliIP = clients[i].remoteIP();
-                board[IPaddr[i]] = cliIP[0];
-                board[IPaddr[i]+1] = cliIP[1];
-                board[IPaddr[i]+2] = cliIP[2];
-                board[IPaddr[i]+3] = cliIP[3];
-                sendBoard();
-              }
-              break;
-            }
+        bool clientOK = true; //Test clienta
+        byte clientIndex = 100; //Index, ktery bude clientovi přiřazen
+
+        //Hledání volné pozice pro nového clienta
+        for(int i = 0; i < maxPlayers; i++){
+          if(!clients[i]){
+            clientIndex = i;
+            break;
           }
         }
+        if(clientIndex==100){ //Pokud index zůstal 100, není pro clienta místo
+          Serial.println("Neni volna pozice pro noveho hrace");
+          clientOK = false;
+        }
+        
+        //Test na duplicitu 
+        for(byte i = 0; i < maxPlayers; i++){ //Ověření duplicit
+            if(clients[i].remoteIP() == newClient.remoteIP()){
+               clientOK = false;
+               Serial.println("Stejny hrac je jiz pripojen");
+               break;
+            }
+        }
+
+        if(clientOK){
+          clients[clientIndex] = newClient;
+          syncBoardIPs();
+          Serial.print("Novy client cislo ");
+          Serial.print(clientIndex);
+          Serial.print(" s IP adresou ");
+          Serial.print(clients[clientIndex].remoteIP());
+          Serial.print(" USPESNE pripojen \n");
+        }
+        else{
+          Serial.print("Client s IP adresou ");
+          Serial.print(newClient.remoteIP());
+          Serial.print(" NEBYL pripojen \n");
+          newClient.stop();
+        }
+      }
     }
-    else if(serverPhase == 1){
-      byte ONplayers = 0;
+    else if(serverPhase == 1){ //Fáze začátek hry
       Serial.println("Pripravuji hru");
+      byte ONplayers = 0;
+      byte firstPlayer = random(1, maxPlayers);
       setBoard();
-      byte firstPlayer = random(1, 5);
       delay(50);
       for (byte i = 0; i < maxPlayers; i++){ //Kontrola, zda jsou připojení alespoň dva hráči
         if(clients[i]){
@@ -208,7 +270,7 @@ void loop() {
         lastPlayer = board[gb_actPlayer];
         serverPhase = 2;
         board[gb_code] = 0;
-        sendBoard();
+        sendBoard(10);
       }
     }
     else if(serverPhase == 2){
@@ -225,13 +287,13 @@ void loop() {
             board[gb_round]++; //Zvýšení počtu odehraných kol
             checkGame(place, board[gb_actPlayer]); //Zkontroluje stav hry (zda někdo nevyhrál)
             board[gb_actPlayer] = 0;
-            sendBoard();
+            sendBoard(10);
             //Posun k dalšímu hráči
             if(board[gb_code] == 0){
               delay(500); //Hraje další hráč
               board[gb_actPlayer] = getNextPlayerNumber(lastPlayer);
               lastPlayer = board[gb_actPlayer];
-              sendBoard();
+              sendBoard(1);
             }
           }
         }
@@ -254,25 +316,6 @@ void loop() {
     }
   }
   
-  //Zpracování příkazů
-  if(Serial.available()){
-    char com = 0;
-    com = Serial.read();
-    if(com == 's'){
-      Serial.println("Zacatek kola");
-      serverPhase = 1;
-    }
-    else if (com == 'r'){
-      Serial.println("Ukoncuji hru");
-      board[gb_code] = 3;
-      delay(5);
-      sendBoard();
-      serverPhase = 0;
-    }
-    else{
-      Serial.println(com);
-    }
-  }
 
   //Kontrola stisku tlačítek
   if(pinReady){
@@ -294,226 +337,19 @@ void loop() {
 /*
  * >>>>>>>>>> FUNKCE <<<<<<<<<<
  */
+ //>>>>> Nastaví LED <<<<<
+ /*   Princip:   
+  *    - 
+  */
+void setLED (byte color[], byte br){
+  byte L_RED = (byte)(color[0]*(br/100.0)*(LED_br/100.0));
+  byte L_GREEN = (byte)(color[1]*(br/100.0)*(LED_br/100.0));
+  byte L_BLUE = (byte)(color[2]*(br/100.0)*(LED_br/100.0));
+  analogWrite(LED_red, 255-L_RED);
+  analogWrite(LED_green, 255-L_GREEN);
+  analogWrite(LED_blue, 255-L_BLUE);
+}
+//------------------------------------------------------------------------------------------------------
  //------------------------------------------------------------------------------------------------------
-//>>>>> vynuluje herní desku <<<<<
- /*   Princip:   
-  *    - vyplní herná desku nulami
-  */
-void cleanBoard(){
-   //Nulování herní desky
-  Serial.println("Nulovani pole pro herni desku");
-  for (int i = 0; i < meshX*meshY; i++){
-    board[i] = 0;
-  }
-  board[gb_round] = 0;
-  board[gb_actPlayer] = 0;
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> Synchronizuj IP hráčů <<<<<
- /*   Princip:   
-  *    - Synchronizuje IP adresy v boardu a s IP adresy v seznamu clientů (clients[])
-  */
-void syncBoardIPs(){
-  /*for(byte i = 0; i < maxPlayers; i++){
-    if(clients[i]){
-      IPAddress cliIP = clients[i].remoteIP();
-      board[IPaddr[i]] = cliIP[0];
-      board[IPaddr[i]+1] = cliIP[1];
-      board[IPaddr[i]+2] = cliIP[2];
-      board[IPaddr[i]+3] = cliIP[3];
-    }
-    else{
-      board[IPaddr[i]] = 0;
-      board[IPaddr[i]+1] = 0;
-      board[IPaddr[i]+2] = 0;
-      board[IPaddr[i]+3] = 0;
-    }
-  }*/
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> Odešle herní desku <<<<<
- /*   Princip:   
-  *    - pomocí server.write odešle celou herní desku
-  */
-void sendBoard(){
-  byte subBoard[8];
-  for(byte i = 0; i < maxPlayers; i++){
-    if(clients[i] && clients[i].connected()){
-      for(byte j = 0; j < packetLength/8; j++){
-        for(byte k = 0; k < 8; k++){
-          subBoard[k] = board[k + 8*j];
-        }
-        clients[i].write(subBoard, 8);
-        delay(10);
-      }
-      delay(50);
-    }
-  }
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> Připraví a nastaví herní desku <<<<<
- /*   Princip:   
-  *    - 
-  */
-void setBoard(){
-  cleanBoard();
-  board[gb_code] = 3;
-  board[gb_actPlayer] = 0;
-  //Barvy
-  board[gb_PC1] = byte(RED & 0xFF);
-  board[gb_PC1+1] = byte(RED >> 8);
-  //
-  board[gb_PC2] = byte(GREEN & 0xFF);
-  board[gb_PC2+1] = byte(GREEN >> 8);
-  //
-  board[gb_PC3] = byte(PURPLE & 0xFF);
-  board[gb_PC3+1] = byte(PURPLE >> 8);
-  //
-  board[gb_PC4] = byte(GREENYELLOW & 0xFF);
-  board[gb_PC5+1] = byte(GREENYELLOW >> 8);
-  //
-  board[gb_PC5] = byte(OLIVE & 0xFF);
-  board[gb_PC5+1] = byte(OLIVE >> 8);
-  
-  
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> Vrátí šíslo dalšího hráče <<<<<
- /*   Princip:   
-  *    - zkontroluje pole clientts, aby se jednalo o hráče, který je připojen
-  *    - hrac1 je číslo předchozího (aktuálně hrajícího hráče)
-  */
-byte getNextPlayerNumber(byte player1){
-  do{
-    player1++;
-    if(player1 > maxPlayers){
-      player1 = 1;
-    }
-    if(player1 < 1){
-      player1 = maxPlayers;
-    }
-  }while(!clients[player1-1]);
-  return player1;
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> Zkontroluje běh hry <<<<<
- /*   Princip:   
-  *    - zkontroleuje běh hry
-  *    - vyhodnocuje výhru hráče
-  *    - vyhodnocuje remízu (vysoký počet herních kol)
-  *    - automaticky zapíše do kódu v boardu
-  */
-void checkGame(byte cross, byte player){
-  if(board[gb_round] >= meshX*meshY){
-    board[gb_code] = 100;
-  }
-  else{
-    byte row = 0;
-    byte column = 0;
-    byte count = 0; //počet puntíků za sebou
-    bool win = false;
-    row = cross/11;
-    column = cross%11;
-  
-     for(byte i = 0; i < meshX; i++){ //v řádku
-        if(board[11*row + i ] == player){
-          count++;
-        }
-        else{
-          count = 0;
-        }
-        if (count >= crossNum){
-          win = true;
-          break;
-        }
-      
-     }
-    count = 0;
-     for(int i = 0; i < meshY; i++){ //v sloupec
-        if(board[column + i*11 ] == player){
-          count++;
-        }
-        else{
-          count = 0;
-        }
-        if (count >= crossNum){
-          win = true;
-          break;
-        }
-      
-     }
-     count = 0;
-      //Do kříže
-     byte index = 0;
-     index = cross % 12;
-     while (index < meshX*meshY){
-        if(board[index] == player){
-          count++;
-        }
-        else{
-          count = 0;
-        }
-        index += 12;
-        if (count >= crossNum){
-          win = true;
-          break;
-        }
-     }
-  
-     count = 0;
-     index = cross % 10;
-     while (index < meshX*meshY){
-        if(board[index] == player){
-          count++;
-        }
-        else{
-          count = 0;
-        }
-        index += 10;
-        if (count >= crossNum){
-          win = true;
-          break;
-        }
-     }
-    if(win){
-      Serial.print("Vyhral hrac: "); Serial.println(player);
-      board[gb_code] = 100+player; //Pokud byla zaznamenána výhra, zeznamená se kód s čílem hráče do příslušného pole
-      sendBoard();
-      delay(7000);
-      stopGame ();
-    }
-    else{
-      Serial.println("Nikdo nevyhral, pokracuji");
-    }
-  }
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> spustí hru <<<<<
- /*   Princip:   
-  *    - 
-  */
-void startGame (){
-  if(serverPhase == 2){
-    Serial.println("Aktualne bezi hra");
-  }
-  else{
-    Serial.println("Spoustim hru, tlacitko");
-    serverPhase = 1;
-  }
-}
-//------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------
-//>>>>> Zastaví běžící hru <<<<<
- /*   Princip:   
-  *    - 
-  */
-void stopGame (){
-  Serial.println("Zastavuji hru, tlacitko");
-  board[gb_code] = 3;
-  delay(5);
-  sendBoard();
-  serverPhase = 0;
-}
-//------------------------------------------------------------------------------------------------------
 
 
