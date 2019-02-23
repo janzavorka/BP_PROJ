@@ -24,7 +24,7 @@
 - Starší funkční verze projektu
 
 ### Zprava_BPROJ
--  Výstupní zpráva z celého projektu
+-  Výstupní zpráva z celého projektu pro předmět B2BPROJ4
 
 ### RGB_LED_cal
 - Slouží ke kalibraci barev pro RGB LED u serveru (Arduino Due)
