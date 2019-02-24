@@ -30,7 +30,7 @@ void print_WC(){
   buffik = "";
 }
 //------------------------------------------------------------------------------------------------------
-//>>>>> Funkce pro provedení příkazů předaných sériobou linkou<<<<<
+//>>>>> Funkce pro provedení příkazů předaných sériovou linkou<<<<<
   /*  Princip:
    *    - Provede zadané příkazy
    */
@@ -49,13 +49,49 @@ void processBuffik(){
     buffik="";
   }
   else if (buffik.equals("info")){
-    Serial.println("tady bude info");
+    printLine('_', 70);
+    Serial.println("Informace o piskvorkovem serveru");
+
+    Serial.print("Pouzity WIZnet controler: ");
+    if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+      Serial.println("controller was not found!");
+    }
+    else if (Ethernet.hardwareStatus() == EthernetW5100) {
+      Serial.println("W5100");
+    }
+    else if (Ethernet.hardwareStatus() == EthernetW5200) {
+      Serial.println("W5200");
+    }
+    else if (Ethernet.hardwareStatus() == EthernetW5500) {
+      Serial.println("W5500");
+    }
+
+    Serial.print("MAC adresa: ");
+    for(byte i = 0; i < 6; i++){
+      Serial.print(mac[i], HEX);
+      if(i < 5){
+        Serial.print(":");
+      }
+    }
+    Serial.println();
+
+    Serial.print("IP adresa: ");
+    Serial.println(Ethernet.localIP());
+
+    Serial.print("Port: ");
+    Serial.println(localPort);
+
+    Serial.print("Datum vydane verze v tomto zarizeni: ");
+    Serial.println(makeDate);
+
+    Serial.println("Domovska stranka projektu: https://github.com/janzavorka/BP_PROJ");
+    printLine('_', 70);
     buffik="";
   }
   else if(buffik.equals("clients")){
     byte clientsCount = 0;
     printLine('_', 70);
-    Serial.println("Vypisuji informace o připojených clientech");
+    Serial.println("Vypisuji informace o pripojenych clientech");
     Serial.print("Cislo   IP adresa \n");
     for(int i = 0; i < maxPlayers; i++){
       if(clients[i] && clients[i].connected()){
@@ -68,7 +104,7 @@ void processBuffik(){
     }
    Serial.print("Celkovy pocet clientu: ");
    Serial.print(clientsCount);
-   Serial.print("\n"); 
+   Serial.print("\n");
    printLine('_', 70);
    buffik="";
   }
@@ -87,7 +123,7 @@ void processBuffik(){
 //------------------------------------------------------------------------------------------------------
 //>>>>> Vypíše daný znak na sériovou linku <<<<<
   /*  Princip:
-   *    - 
+   *    -
    */
 void printLine(byte chr, byte count){
   for(byte i = 0; i < count; i++){
@@ -95,4 +131,3 @@ void printLine(byte chr, byte count){
   }
   Serial.println();
 }
-

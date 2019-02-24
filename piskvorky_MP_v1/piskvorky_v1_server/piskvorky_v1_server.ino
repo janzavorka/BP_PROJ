@@ -1,11 +1,15 @@
 /*>>>>>>> Piškvorky s arduino Ethernet <<<<<<<
  * - max 5 hráčů
  * - 1x arduino jako server, max 5x arduino jako client
- * 
+ *
  */
 
 #include <Ethernet.h>
 #include <SimpleTimer.h>
+
+/* ----------Časové intervaly různých událostí----------*/
+char makeDate[] = "23.02.2019";
+
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
 byte mac[] = {
@@ -66,11 +70,11 @@ byte clientsData [maxPlayers][2][3]; //první index: číslo hráče; druhý ind
 #define GREENYELLOW     0xAFE5      /* 173, 255,  47 */
 
 /* ----------Piškvorky----------*/
-byte packetLength = 136; 
+byte packetLength = 136;
 byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
- *  90:     Hlášení prostřednictvím kódu 
+ *  90:     Hlášení prostřednictvím kódu
  *            0:    nic nedělej
  *            1:    vše OK, hraje se, překresli obrazovku
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
@@ -80,7 +84,7 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *            13:   hraje hráč 3
  *            14:   hraje hráč 4
  *            15:   hraje hráč 5
- *            100:  hra skončila remízou  
+ *            100:  hra skončila remízou
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
  *            103:  vyhrál hráč 3
@@ -108,7 +112,7 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_actPlayer  91
 #define gb_filled     92
 #define gb_round      93
-#define gb_PC1        95  
+#define gb_PC1        95
 #define gb_PC2        97
 #define gb_PC3        99
 #define gb_PC4        101
@@ -131,7 +135,7 @@ byte LEDcol_orange[] = {255, 50, 0};
 //byte LEDcol_red[] = {255, 0, 0};
 
 const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
-const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu 
+const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu
 /* ----------PROTOTYPY----------*/
 void cleanBoard(void); //Vyplní herní desku nulami
 void syncBoardIPs(void); //Synchronizuje IP adresy v boardu a s IP adresy v seznamu clientů (clients[])
@@ -156,7 +160,7 @@ void setLED (byte, byte); //Nastaví Barvu LED podle požadavků (barva, jas)
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
-void setup() { 
+void setup() {
   //Sériová linka
   Serial.begin(9600);
   //Alokace paměti pro string
@@ -202,7 +206,7 @@ void loop() {
   if ((millis() - refresh_buttonOff > buttonOff) && !pinReady){ //Obnova funkce tlačítek (zabrání přečtení více stisků současně)
     pinReady = true;
     refresh_buttonOff = millis();
-  } 
+  }
   //Část se zpracováním hry
     if(serverPhase == 0){
       EthernetClient newClient = server.accept();
@@ -222,8 +226,8 @@ void loop() {
           Serial.println("Neni volna pozice pro noveho hrace");
           clientOK = false;
         }
-        
-        //Test na duplicitu 
+
+        //Test na duplicitu
         for(byte i = 0; i < maxPlayers; i++){ //Ověření duplicit
             if(clients[i].remoteIP() == newClient.remoteIP()){
                clientOK = false;
@@ -231,7 +235,7 @@ void loop() {
                break;
             }
         }
-        
+
         //Kontrola, zda client poslal pro připojení správný kód (v cyklu je počet pokusů)
         byte checkCode = 0;
         for(int i = 0; i < 200; i++){
@@ -242,7 +246,7 @@ void loop() {
           delay(10);
         }
         //Odstranění zbylých dat od clienta
-        while(newClient.available()){ 
+        while(newClient.available()){
           byte bin = newClient.read();
         }
         //Kontrola, zda přijatý kód pro připojení je správný
@@ -320,7 +324,7 @@ void loop() {
     else{
       Serial.println("NEZNAM");
     }
-  
+
   // stop any clients which disconnect
   for (byte i = 0; i < maxPlayers; i++) {
     if ((clients[i]) && !clients[i].connected()) {
@@ -333,7 +337,7 @@ void loop() {
       board[IPaddr[i]+3] = 0;
     }
   }
-  
+
 
   //Kontrola stisku tlačítek
   if(pinReady){
@@ -348,7 +352,7 @@ void loop() {
       stopGame();
     }
   }
-  delay(50); 
+  delay(50);
 }
 
 
@@ -356,8 +360,8 @@ void loop() {
  * >>>>>>>>>> FUNKCE <<<<<<<<<<
  */
  //>>>>> Nastaví LED <<<<<
- /*   Princip:   
-  *    - 
+ /*   Princip:
+  *    -
   */
 void setLED (byte color[], byte br){
   byte L_RED = (byte)(color[0]*(br/100.0)*(LED_br/100.0));
@@ -369,5 +373,3 @@ void setLED (byte color[], byte br){
 }
 //------------------------------------------------------------------------------------------------------
  //------------------------------------------------------------------------------------------------------
-
-
