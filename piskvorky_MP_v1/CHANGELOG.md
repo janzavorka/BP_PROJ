@@ -1,4 +1,4 @@
-BP_PROJ: Piskvorky v1
+# BP_PROJ: Piskvorky v1
 
 ### 25.20.2019
 - Úprava funkcí pro řízení hry
