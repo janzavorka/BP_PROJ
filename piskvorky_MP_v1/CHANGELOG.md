@@ -1,58 +1,59 @@
 # BP_PROJ: Piskvorky v1
 
+### 25.02.2019
+- Ãšprava funkcÃ­ pro Å™Ã­zenÃ­ hry
+
 ### 23.02.2019
-- Celkové pøepracování programu pro server
-- Pro server pøidána LED dioda indikující stav
-- Pøidání zabezpeèovacích funkcí pro komunikaci client->server a server -> client
+- Celkovï¿½ pï¿½epracovï¿½nï¿½ programu pro server
+- Pro server pï¿½idï¿½na LED dioda indikujï¿½cï¿½ stav
+- Pï¿½idï¿½nï¿½ zabezpeï¿½ovacï¿½ch funkcï¿½ pro komunikaci client->server a server -> client
 
 ### 12.12.2018
 - Program pro clienta
-	- pro všechny client desky zkalibrovány displeje, u clienta 3 nutná úprava v loopu (dislej má jinou orientaci)
-	- oprava zobrazování hlášek (vıhra, prohra, remíza)
+	- pro vï¿½echny client desky zkalibrovï¿½ny displeje, u clienta 3 nutnï¿½ ï¿½prava v loopu (dislej mï¿½ jinou orientaci)
+	- oprava zobrazovï¿½nï¿½ hlï¿½ï¿½ek (vï¿½hra, prohra, remï¿½za)
 
 ### 09.12.2018
-- Vytvoøení desky s dvìma tlaèítkama pro ovládání serveru
+- Vytvoï¿½enï¿½ desky s dvï¿½ma tlaï¿½ï¿½tkama pro ovlï¿½dï¿½nï¿½ serveru
 - Program pro server
-	- pøidání fce dvou tlaèítek (start, stop), vyhodnocení stisku v loopu (nelze vyuít interrupty (rozhodilo by odesílání dat))
+	- pï¿½idï¿½nï¿½ fce dvou tlaï¿½ï¿½tek (start, stop), vyhodnocenï¿½ stisku v loopu (nelze vyuï¿½ï¿½t interrupty (rozhodilo by odesï¿½lï¿½nï¿½ dat))
 
 ### 08.12.2018
-- Pouití Arduino Due jako server 
+- Pouï¿½itï¿½ Arduino Due jako server
 - Program pro server
-	- herní deska se odesílá po 8 bajtech
-	- oprava funkce pro získání èísla dalšího hráèe (docházelo k zacyklení)
-	- pøidána funkce pro kontrolu vıhry
+	- hernï¿½ deska se odesï¿½lï¿½ po 8 bajtech
+	- oprava funkce pro zï¿½skï¿½nï¿½ ï¿½ï¿½sla dalï¿½ï¿½ho hrï¿½ï¿½e (dochï¿½zelo k zacyklenï¿½)
+	- pï¿½idï¿½na funkce pro kontrolu vï¿½hry
 - Program pro clienta
-	- Oprava zobrazování barevnıch koleèek (nyní se zobrazují správnì)
-	- oprava zamrznutí hráèe, kdy bìhem jeho tahu dojde k resetu hry ze strany serveru
+	- Oprava zobrazovï¿½nï¿½ barevnï¿½ch koleï¿½ek (nynï¿½ se zobrazujï¿½ sprï¿½vnï¿½)
+	- oprava zamrznutï¿½ hrï¿½ï¿½e, kdy bï¿½hem jeho tahu dojde k resetu hry ze strany serveru
 
 ### 03.12.2018
 - Program pro server
-	- úprava funkce pro získání dalšího clienta
+	- ï¿½prava funkce pro zï¿½skï¿½nï¿½ dalï¿½ï¿½ho clienta
 
 ### 27.11.2018
 - Program pro clienta
-	- oprava pøipojovací funkce
-	- doladìní úvodních obrazovek
+	- oprava pï¿½ipojovacï¿½ funkce
+	- doladï¿½nï¿½ ï¿½vodnï¿½ch obrazovek
 
 
 ### 25.11.2018
-- Práce na programu pro clienta:
-	- Dodìlány jednotlivé fáze hry
-	- Funkce pro spojení se serverem
-	- Mnoho dalších drobnıch úprav 
+- Prï¿½ce na programu pro clienta:
+	- Dodï¿½lï¿½ny jednotlivï¿½ fï¿½ze hry
+	- Funkce pro spojenï¿½ se serverem
+	- Mnoho dalï¿½ï¿½ch drobnï¿½ch ï¿½prav
 - Program pro server
-	- správné vyhodnocení odpojenıch clientù
-	- pøi tahu daného clienta se pošle jen index dané pozice, ne celı herní board
+	- sprï¿½vnï¿½ vyhodnocenï¿½ odpojenï¿½ch clientï¿½
+	- pï¿½i tahu danï¿½ho clienta se poï¿½le jen index danï¿½ pozice, ne celï¿½ hernï¿½ board
 
 
 ### 12.11.2018
 - Program pro clienta:
-  - pøidání tøídy pro tlaèítka 
+  - pï¿½idï¿½nï¿½ tï¿½ï¿½dy pro tlaï¿½ï¿½tka
 
 ### 11.11.2018
-- Pøíprava programu pro clienta
-  - Úprava parametrù pro síové pøipojení
-  - Pøíprava rozloení packetu pro komunikaci
-- Základ programu pro server
-	
-
+- Pï¿½ï¿½prava programu pro clienta
+  - ï¿½prava parametrï¿½ pro sï¿½ï¿½ovï¿½ pï¿½ipojenï¿½
+  - Pï¿½ï¿½prava rozloï¿½enï¿½ packetu pro komunikaci
+- Zï¿½klad programu pro server
