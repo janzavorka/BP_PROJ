@@ -6,7 +6,6 @@
 
 #include <Ethernet.h>
 #include <SimpleTimer.h>
-
 /* ----------Časové intervaly různých událostí----------*/
 char makeDate[] = "23.02.2019";
 
@@ -77,6 +76,7 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *  90:     Hlášení prostřednictvím kódu
  *            0:    nic nedělej
  *            1:    vše OK, hraje se, překresli obrazovku
+ *            2:    pouze překreslit
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
  *            9:    odpojuji
  *            11:   hraje hráč 1
@@ -145,8 +145,10 @@ void setBoard(void); //Připraví herní desku
 byte getNextPlayer(byte); //Vrátí číslo dalšího hráče (argument fce je číslo předchozího hráče)
 void checkGame(byte, byte); //Zkontroluje průběh hry...případně vyplní kód v boardu, argument je poslední pole a číslo hrajícího hráče
 void syncBoardIPs(void); //Synchronizuje herní desku board s připojenými clienty
+/* gameControl */
 void stopGame(void); //Zruší běžící hru
 void startGame(void); //Spustí hru
+void shiftPlayer(void); //Změní číslo hráče a odešle herní desku
 /* communication */
 void recieveData(byte); //Přijme data a případně zpracuje, argument je index hráče
 void checkIncommingData(void); //Kontroluje, zda nějaký client neposlal data

@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------------------------------
 //>>>>> Zastaví běžící hru <<<<<
- /*   Princip:   
-  *    - 
+ /*   Princip:
+  *    -
   */
 void stopGame (){
   Serial.println("Zastavuji hru, tlacitko");
@@ -9,10 +9,11 @@ void stopGame (){
   delay(5);
   sendBoard(3);
   serverPhase = 0;
+  setBoard(); //Vyčistí herní pole
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Vrátí šíslo dalšího hráče <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - zkontroluje pole clientts, aby se jednalo o hráče, který je připojen
   *    - hrac1 je číslo předchozího (aktuálně hrajícího hráče)
   */
@@ -30,7 +31,7 @@ byte getNextPlayerNumber(byte player1){
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Zkontroluje běh hry <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - zkontroleuje běh hry
   *    - vyhodnocuje výhru hráče
   *    - vyhodnocuje remízu (vysoký počet herních kol)
@@ -47,7 +48,7 @@ void checkGame(byte cross, byte player){
     bool win = false;
     row = cross/11;
     column = cross%11;
-  
+
      for(byte i = 0; i < meshX; i++){ //v řádku
         if(board[11*row + i ] == player){
           count++;
@@ -59,7 +60,7 @@ void checkGame(byte cross, byte player){
           win = true;
           break;
         }
-      
+
      }
     count = 0;
      for(int i = 0; i < meshY; i++){ //v sloupec
@@ -73,7 +74,7 @@ void checkGame(byte cross, byte player){
           win = true;
           break;
         }
-      
+
      }
      count = 0;
       //Do kříže
@@ -92,7 +93,7 @@ void checkGame(byte cross, byte player){
           break;
         }
      }
-  
+
      count = 0;
      index = cross % 10;
      while (index < meshX*meshY){
@@ -123,8 +124,8 @@ void checkGame(byte cross, byte player){
 //------------------------------------------------------------------------------------------------------
 
 //>>>>> spustí hru <<<<<
- /*   Princip:   
-  *    - 
+ /*   Princip:
+  *    -
   */
 void startGame (){
   if(serverPhase == 2){
@@ -133,6 +134,41 @@ void startGame (){
   else{
     Serial.println("Spoustim hru, tlacitko");
     serverPhase = 1;
+    syncBoardIPs();
+    byte ONplayers = 0; //Pocet hracu online
+    //Cislo prvniho hrace
+    //byte firstPlayer = random(1, maxPlayers);
+
+    for (byte i = 0; i < maxPlayers; i++){ //Kontrola, zda jsou připojení alespoň dva hráči
+      if(clients[i]){
+        ONplayers++;
+      }
+    }
+
+    if(ONplayers < 2){
+      Serial.print("Je k dispozici jen ");
+      Serial.print(ONplayers);
+      Serial.println(" hracu, hra nemuze zacit.");
+      stopGame();
+      return;
+    }
+    sendBoard(1); //Pošle všem příkaz k překreslení obrazovky (bez hráče)
+
+    board[gb_actPlayer] = getNextPlayerNumber(random(1, maxPlayers)); //Náhodně se vybere číslo začínajícího hráče
+    delay(100);
+    sendBoard(1);
   }
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Posune (předá) hru dalšímu hráči <<<<<
+ /*   Princip:
+  *    -
+  */
+
+void shiftPlayer(){
+    byte nextPlayer = getNextPlayerNumber(board[gb_actPlayer]); //Získej číslo dalšího hráče
+    board[gb_actPlayer] = nextPlayer;
+    sendBoard(1); //Odešle desku s číslem dalšího hráče a s povelem k překreslení
+
 }
 //------------------------------------------------------------------------------------------------------
