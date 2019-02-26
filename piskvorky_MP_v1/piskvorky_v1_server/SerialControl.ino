@@ -55,15 +55,17 @@ void processBuffik(){
     Serial.print("Pouzity WIZnet controler: ");
     switch (getHWcontroller()) {
       case 0:
-        Serial.println("no HW found")
+        Serial.println("no HW found");
         break;
       case 1:
         Serial.println("W5100");
         break;
       case 2:
         Serial.println("W5200");
+        break;
       case 3:
         Serial.println("W5500");
+        break;
       default:
         Serial.println("undefined");
     }

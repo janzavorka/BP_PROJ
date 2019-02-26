@@ -165,6 +165,7 @@ void processBuffik(void); //Zpracuje přijatou zprávu přes sériovou linku
 void printLine(byte, byte); //Vypíše několik zadaných znaků za sebou (pro výpis oddělovacích čar na sériovém monitoru)
 /* Ovládání LED */
 void setLED (byte, byte); //Nastaví Barvu LED podle požadavků (barva, jas)
+void setLEDgamePhase(void); //Nastaví barvu LEDky podle herní fáze
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
@@ -217,7 +218,7 @@ void setup() {
     resetClientData(i);
   }
 
-  setLED(LEDcol_orange, 100);
+  setLED(LEDcol_blue, 100);
 }
 
 /*
@@ -346,4 +347,20 @@ void setLED (byte color[], byte br){
   analogWrite(LED_blue, 255-L_BLUE);
 }
 //------------------------------------------------------------------------------------------------------
+//>>>>> Nastaví LED podle herní fáze <<<<<
+/*   Princip:
+ *    -
+ */
+void setLEDgamePhase(){
+  switch (serverPhase) {
+    case 0:
+      setLED (LEDcol_blue, 100);
+      break;
+    case 1:
+      setLED (LEDcol_green, 100);
+      break;
+    default:
+      setLED (LEDcol_blue, 0);
+  }
+}
  //------------------------------------------------------------------------------------------------------

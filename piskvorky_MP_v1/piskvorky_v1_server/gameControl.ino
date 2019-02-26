@@ -9,6 +9,7 @@ void stopGame (){
   delay(5);
   sendBoard(3);
   serverPhase = 0;
+  setLEDgamePhase(); //Rozsvítí LEDku podle herní fáze (proměnná serverPhase)
   setBoard(); //Vyčistí herní pole
 }
 //------------------------------------------------------------------------------------------------------
@@ -113,7 +114,7 @@ void checkGame(byte cross, byte player){
     if(win){
       Serial.print("Vyhral hrac: "); Serial.println(player);
       sendBoard(100+player);
-      timer.setTimeout(clientMessageLast, stopGame());
+      timer.setTimeout(clientMessageLast, stopGame);
     }
     else{
       Serial.println("Nikdo nevyhral, pokracuji");
@@ -149,12 +150,15 @@ void startGame (){
       Serial.print("Je k dispozici jen ");
       Serial.print(ONplayers);
       Serial.println(" hracu, hra nemuze zacit.");
+      setLED(LEDcol_orange, 100);
+      timer.setTimeout(1000, setLEDgamePhase)
       stopGame();
       return;
     }
     sendBoard(2); //Pošle všem příkaz k překreslení obrazovky (bez hráče)
 
     board[gb_actPlayer] = getNextPlayerNumber(random(1, maxPlayers)); //Náhodně se vybere číslo začínajícího hráče
+    setLEDgamePhase();
     delay(200);
     sendBoard(1);
   }
@@ -181,7 +185,7 @@ void shiftPlayer(){
 bool fillPlayerToken(byte coord, byte player){
     if(coord >= 0 && coord < meshX*meshY){
       if(board[coord] == 0){
-          board[index] = player;
+          board[coord] = player;
           sendBoard(2);
           return true;
       }
