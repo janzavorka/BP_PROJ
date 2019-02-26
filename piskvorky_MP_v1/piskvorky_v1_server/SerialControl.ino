@@ -53,17 +53,19 @@ void processBuffik(){
     Serial.println("Informace o piskvorkovem serveru");
 
     Serial.print("Pouzity WIZnet controler: ");
-    if (Ethernet.hardwareStatus() == EthernetNoHardware) {
-      Serial.println("controller was not found!");
-    }
-    else if (Ethernet.hardwareStatus() == EthernetW5100) {
-      Serial.println("W5100");
-    }
-    else if (Ethernet.hardwareStatus() == EthernetW5200) {
-      Serial.println("W5200");
-    }
-    else if (Ethernet.hardwareStatus() == EthernetW5500) {
-      Serial.println("W5500");
+    switch (getHWcontroller()) {
+      case 0:
+        Serial.println("no HW found")
+        break;
+      case 1:
+        Serial.println("W5100");
+        break;
+      case 2:
+        Serial.println("W5200");
+      case 3:
+        Serial.println("W5500");
+      default:
+        Serial.println("undefined");
     }
 
     Serial.print("MAC adresa: ");

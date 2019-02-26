@@ -120,14 +120,21 @@ void processClientData(byte index){
   if(clientsData[index][0][0] == clientsData[index][1][0] && clientsData[index][0][1] == clientsData[index][1][1]){
     if(clientsData[index][0][0] == 10){
       //Přijatá data o tahu
+      if(fillPlayerToken(clientsData[index][0][1], index+1)){ //Vyplnění pole proběhlo v pořádku
+          checkGame(clientsData[index][0][1], index+1);
+      }
+      else{ //Pokud se to nepovedlo, pošle se deska znovu
+          sendBoard(1);
+      }
     }
     else if(clientsData[index][0][0] == 20){
       sendBoard(board[gb_code], index+1); //Znovu se pošle hráči celé pole
     }
+    resetClientData(index);
   }
   else{
     Serial.print("Od hrace ");
-    Serial.print(index);
+    Serial.print(index+1);
     Serial.print(" byla prijata chybna data, zahazuji");
     resetClientData(index);
   }

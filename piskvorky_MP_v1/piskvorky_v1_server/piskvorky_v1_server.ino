@@ -22,6 +22,8 @@ EthernetClient clients [maxPlayers];
 bool clientConnected = false;
 bool serverReady = false;
 
+//Casovac
+SimpleTimer timer;
 
 //piny pro tlačítka
 bool pinReady = false; //Slouží k deaktivaci tlačítek aby se zabránilo vícedotykům současně
@@ -31,6 +33,8 @@ const byte resetPIN = 38;
 /* ----------Časové intervaly různých událostí----------*/
 #define buttonOff 1000 //Po jakou dobu bude dotyková plocha deaktivována (zabrání multidotykům)
 unsigned long long refresh_buttonOff = 0;
+
+#define clientMessageLast 8000 //Doba zobrazení zprávy na straně clienta (v milisekundách)
 
 //Herní server
 IPAddress serverAddress(10,0,0,8);
@@ -289,54 +293,7 @@ void loop() {
       }
     }
     else if(serverPhase == 1){ //Fáze začátek hry
-      Serial.println("Pripravuji hru");
-      byte ONplayers = 0;
-      byte firstPlayer = random(1, maxPlayers);
-      setBoard();
-      delay(50);
-      for (byte i = 0; i < maxPlayers; i++){ //Kontrola, zda jsou připojení alespoň dva hráči
-        if(clients[i]){
-          ONplayers++;
-        }
-      }
-      if(ONplayers < 2){ //POkud jsou méně jak dva hráči, hra nezačne
-        serverPhase = 0;
-        Serial.println("Je pritomno malo hracu!");
-      }
-      else{
-        Serial.print("Prvni hraje ");  Serial.println(firstPlayer);
-        board[gb_actPlayer] = getNextPlayerNumber(firstPlayer);
-        lastPlayer = board[gb_actPlayer];
-        serverPhase = 2;
-        board[gb_code] = 0;
-        sendBoard(10);
-      }
-    }
-    else if(serverPhase == 2){
-      if(board[gb_code] == 0){
-        //Hra
-        if(clients[board[gb_actPlayer] - 1].available() > 0){
-          Serial.print("Hraje hrac: ");
-          Serial.println(board[gb_actPlayer]);
-          byte place = 0;
-          place = clients[board[gb_actPlayer] - 1].read();
-          Serial.print("Prijata pozice: ");Serial.println(place);
-          if(place >=0 && place < meshX*meshY){
-            board[place] = board[gb_actPlayer];
-            board[gb_round]++; //Zvýšení počtu odehraných kol
-            checkGame(place, board[gb_actPlayer]); //Zkontroluje stav hry (zda někdo nevyhrál)
-            board[gb_actPlayer] = 0;
-            sendBoard(10);
-            //Posun k dalšímu hráči
-            if(board[gb_code] == 0){
-              delay(500); //Hraje další hráč
-              board[gb_actPlayer] = getNextPlayerNumber(lastPlayer);
-              lastPlayer = board[gb_actPlayer];
-              sendBoard(1);
-            }
-          }
-        }
-      }
+      //Pro herní čas
     }
     else{
       Serial.println("NEZNAM");
