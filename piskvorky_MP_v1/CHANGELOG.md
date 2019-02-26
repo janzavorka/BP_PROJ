@@ -4,6 +4,7 @@
 - Automatické detekce ethernet kontroléru při zapnutí
 - Pro kontroléry W5200 a W5500 kontrola připojení kabelu, chyba indikována blikající červenou LED
 - Vylepšení a dodělání fukcí pro řízení hry
+- Přidány funkce pro indikaci stavu hry pomocí RGB LED
 
 ### 25.20.2019
 - Úprava funkcí pro řízení hry

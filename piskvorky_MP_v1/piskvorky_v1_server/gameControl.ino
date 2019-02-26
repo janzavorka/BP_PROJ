@@ -151,7 +151,7 @@ void startGame (){
       Serial.print(ONplayers);
       Serial.println(" hracu, hra nemuze zacit.");
       setLED(LEDcol_orange, 100);
-      timer.setTimeout(1000, setLEDgamePhase)
+      timer.setTimeout(1000, setLEDgamePhase);
       stopGame();
       return;
     }
