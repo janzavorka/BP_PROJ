@@ -132,7 +132,7 @@ void startGame (){
     Serial.println("Aktualne bezi hra");
   }
   else{
-    Serial.println("Spoustim hru, tlacitko");
+    Serial.println("Spoustim hru");
     serverPhase = 1;
     syncBoardIPs();
     byte ONplayers = 0; //Pocet hracu online
@@ -170,5 +170,33 @@ void shiftPlayer(){
     board[gb_actPlayer] = nextPlayer;
     sendBoard(1); //Odešle desku s číslem dalšího hráče a s povelem k překreslení
 
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Vyplní token do herního pole <<<<<
+ /*   Princip:
+  *    - podle zadaného hráče a čísla pole vyplní token
+  *    - pokud je pole mimo rozsah nebo je obsazené, vrátí false
+  */
+
+bool fillPlayerToken(byte coord, byte player){
+    if(coord => 0 && coord < meshX*meshY){
+      if(board[coord] == 0){
+
+      }
+      else{
+        Serial.print("CHYBA - hrac ");
+        Serial.print(player);
+        Serial.print(" se pokousi vyplnit obsazene pole: ");
+        Serial.println(coord);
+        return false;
+      }
+    }
+    else{
+      Serial.print("CHYBA - hrac ");
+      Serial.print(player);
+      Serial.print(" se pokousi vyplnit pole mimo rozsah: ");
+      Serial.println(coord);
+      return false;
+    }
 }
 //------------------------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 //>>>>> Odešle herní desku danému hráči <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - pomocí server.write odešle celou herní desku
   */
 void sendBoard(byte code, byte playerNum){
@@ -28,7 +28,7 @@ void sendBoard(byte code, byte playerNum){
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Odešle herní desku danému všem <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - pomocí server.write odešle celou herní desku
   */
 void sendBoard(byte code){
@@ -40,7 +40,7 @@ void sendBoard(byte code){
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Synchronizuj IP hráčů s herní deskou <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - Synchronizuje IP adresy v boardu a s IP adresy v seznamu clientů (clients[])
   */
 void syncBoardIPs(){
@@ -62,8 +62,8 @@ void syncBoardIPs(){
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Zkontroluje, zda nejsou k dispozici data od hráče <<<<<
- /*   Princip:   
-  *    - 
+ /*   Princip:
+  *    -
   */
 void checkIncommingData(){
   for(int i = 0; i < maxPlayers; i++){
@@ -74,7 +74,7 @@ void checkIncommingData(){
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Přijme data od hráče <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - Přijme data od clienta
   *    - Pokud byly přijmutyoba packety, budou vyhodnoceny
   *    - Před vyhodnocením se provede smazání dalích dat, které client souběžně poslal (client může posílat data max 1x za sekundu)
@@ -91,7 +91,7 @@ void recieveData(byte index){
         }
       }
    }
-   
+
    if(clientsData[index][1][2] == 1){ //Byly vyplněny oba packety (pro porovnání)
       while(clients[index].available()){ //Zahození všech ostatních dat
         char bin = clients[index].read();
@@ -101,8 +101,8 @@ void recieveData(byte index){
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Smaže přijatá data daného clienta <<<<<
- /*   Princip:   
-  *    - 
+ /*   Princip:
+  *    -
   */
 void resetClientData(byte index){
   for(byte i = 0; i < 2; i++){
@@ -113,8 +113,8 @@ void resetClientData(byte index){
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Smaže přijatá data daného clienta <<<<<
- /*   Princip:   
-  *    - 
+ /*   Princip:
+  *    -
   */
 void processClientData(byte index){
   if(clientsData[index][0][0] == clientsData[index][1][0] && clientsData[index][0][1] == clientsData[index][1][1]){
@@ -130,6 +130,26 @@ void processClientData(byte index){
     Serial.print(index);
     Serial.print(" byla prijata chybna data, zahazuji");
     resetClientData(index);
+  }
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Identifikuje použité ethernet controler <<<<<
+ /*   Princip:
+ *      - Identifikuje použitý HW controller
+  *     -  0=noHW, 1=W5100, 2=W5200, 3=W5500
+  */
+byte getHWcontroller(){
+  if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+    return 0;
+  }
+  else if (Ethernet.hardwareStatus() == EthernetW5100) {
+    return 1;
+  }
+  else if (Ethernet.hardwareStatus() == EthernetW5200) {
+    return 2;
+  }
+  else if (Ethernet.hardwareStatus() == EthernetW5500) {
+    return 3;
   }
 }
 //------------------------------------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 
 #include <Ethernet.h>
 #include <SimpleTimer.h>
-/* ----------Časové intervaly různých událostí----------*/
+/* ----------Datum změny----------*/
 char makeDate[] = "23.02.2019";
 
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
@@ -21,6 +21,7 @@ const byte maxPlayers = 5;
 EthernetClient clients [maxPlayers];
 bool clientConnected = false;
 bool serverReady = false;
+
 
 //piny pro tlačítka
 bool pinReady = false; //Slouží k deaktivaci tlačítek aby se zabránilo vícedotykům současně
@@ -43,9 +44,9 @@ String buffik = "";
 #define meshX 11
 #define meshY 8
 /* ----------HRA----------*/
-byte serverPhase = 0; //označuje fázi hry= 0: čekání na připojení klientů, 1: kontrola klientů, správné nastavení hry, 2: fáze hry
+byte serverPhase = 0; //označuje fázi hry= 0: čekání na připojení klientů, 1: hra
 byte lastPlayer = 0; //Označuje posledního hráče, který hrál
-byte crossNum = 5; //Počet koleček, které je nutné spojit por výhru
+byte crossNum = 5; //Počet koleček, které je nutné spojit pro výhru
 byte clientsData [maxPlayers][2][3]; //první index: číslo hráče; druhý index: číslo zprávy (aby bylo provedeno, obě se musí rovnat); třetí index: datový packet1, datový packet2, přijato/nepřijato (0/1) - vyplní server při příjmu dat
 
 /* ----------Barvy----------*/
@@ -154,6 +155,7 @@ void recieveData(byte); //Přijme data a případně zpracuje, argument je index
 void checkIncommingData(void); //Kontroluje, zda nějaký client neposlal data
 void resetClientData(byte); //Smaže přijatá data daného clienta
 void processClientData(byte); //Provede požadované úkony pro daného hráče
+byte getHWcontroller(void); //Vrátí číslo použitého ethernet kontroléru
 /* SerialControl */
 void processBuffik(void); //Zpracuje přijatou zprávu přes sériovou linku
 void printLine(byte, byte); //Vypíše několik zadaných znaků za sebou (pro výpis oddělovacích čar na sériovém monitoru)
@@ -185,6 +187,19 @@ void setup() {
   Serial.println("Startuji piskvorkovy server");
   //Ethernet
   Ethernet.begin(mac, serverAddress);
+  //Kontrola připojení kabelu
+  if(getHWcontroller() > 1){ //POkud je kontrolér W5200 nebo W5500 (pro ostatní není funkce podporována)
+      if(Ethernet.linkStatus() == LinkOFF){
+        Serial.println("Zkontrolujte pripojeni kabelu");
+      }
+      while(Ethernet.linkStatus() == LinkOFF){
+          setLED (LEDcol_red, 100);
+          delay(1000);
+          setLED (LEDcol_red, 0);
+          delay(1000);
+      }
+  }
+
   Serial.print("Moje IP adresa: ");
   Serial.println(Ethernet.localIP());
   delay(200);
