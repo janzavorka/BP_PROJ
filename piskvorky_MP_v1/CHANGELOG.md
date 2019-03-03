@@ -1,12 +1,15 @@
 # BP_PROJ: Piskvorky v1
 
-### 26.20.2019
+### 03.03.2019
+- Úprava programu pro clienta pro komunikaci se serverem
+
+### 26.02.2019
 - Automatické detekce ethernet kontroléru při zapnutí
 - Pro kontroléry W5200 a W5500 kontrola připojení kabelu, chyba indikována blikající červenou LED
 - Vylepšení a dodělání fukcí pro řízení hry
 - Přidány funkce pro indikaci stavu hry pomocí RGB LED
 
-### 25.20.2019
+### 25.02.2019
 - Úprava funkcí pro řízení hry
 
 ### 23.02.2019
