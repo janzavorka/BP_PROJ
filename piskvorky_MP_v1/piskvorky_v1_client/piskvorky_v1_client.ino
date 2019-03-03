@@ -1,12 +1,12 @@
-/*>>>>>>> Piškvorky s arduino Ethernet <<<<<<<
+ /*>>>>>>> Piškvorky s arduino Ethernet <<<<<<<
  * - max 5 hráčů
  * - 1x arduino jako server, max 5x arduino jako client
- * 
+ *
  */
 
 #include <Ethernet.h>
 //Displej
-#include <UTFTGLUE.h>              
+#include <UTFTGLUE.h>
 //Dotyková plocha
 #include "TouchScreen.h"
 
@@ -129,21 +129,28 @@ TouchScreen Touch(XP, YP, XM, YM, 300);
 #define meshY 8
 
 /* ----------Herní data----------*/
-byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení 
+byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení
 byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, 1: připojování k serveru, 2: připojeno, čekání na začátek hry, 3: pro=bíhající hra, překreslování displeje, 4: můj tah)
 const byte maxPlayers = 5;
 
 /* ----------Piškvorky----------*/
-byte packetLength = 136; 
+const byte packetLength = 136; //Musí být dělitelné osmi
+bool boardAck [packetLength/8]; 
 byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
- *  90:     Hlášení prostřednictvím kódu 
- *            0:    vše OK, hraje se, překresli obrazovku
+ *  90:     Hlášení prostřednictvím kódu
+ *            0:    nic nedělej
+ *            1:    vše OK, hraje se, překresli obrazovku
+ *            2:    pouze překreslit
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
  *            9:    odpojuji
- *            10:   hraje nějaký hráč (pole 91)
- *            100:  hra skončila remízou  
+ *            11:   hraje hráč 1
+ *            12:   hraje hráč 2
+ *            13:   hraje hráč 3
+ *            14:   hraje hráč 4
+ *            15:   hraje hráč 5
+ *            100:  hra skončila remízou
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
  *            103:  vyhrál hráč 3
@@ -171,14 +178,14 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_actPlayer  91
 #define gb_filled     92
 #define gb_round      93
-#define gb_PC1        95  
+#define gb_PC1        95
 #define gb_PC2        97
 #define gb_PC3        99
 #define gb_PC4        101
 #define gb_PC5        103
 
 const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
-const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu 
+const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu
 
 bool screenRefresh = false; //Zda se má obrazovka překreslit
 
@@ -217,8 +224,8 @@ buttonRect::buttonRect(int corX1, int corX2, int corY1, int corY2, byte idecko, 
       LCD.setColor(LIGHTGREY);
       LCD.fillRect(x1,y1,x2,y2);
       LCD.setColor(WHITE);
-      LCD.drawRect(x1,y1,x2,y2); 
-      break; 
+      LCD.drawRect(x1,y1,x2,y2);
+      break;
   }
   button_index++;
 }
@@ -239,8 +246,7 @@ bool buttonRect::isTouched(int touchX, int touchY){
 
 buttonRect buttons[max_buttRect];
 
-//Pole tlačítek
-//DOTAŽENO SEM
+
 
 void drawMainFrame(uint16_t); //Vykreslí základní rámeček (v dané barvě)
 void drawMesh (uint16_t); //Vykreslí základní hrací mřížku (argument je barva)
@@ -255,11 +261,14 @@ void buttonPressed(int, int); //Argumentem souřadnice bodu, systém vyhodnotí 
 void processBoard(void); //Zpracuje novou přijatou herní desku
 uint16_t getPlayerColor(byte); //Zjistí barvu hráče, argument je číslo pozice v poli, kde údaj začíná
 byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí 0
+/* communication */
 bool recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
+void checkRecievedBoard(void); //Zkontroluje zda byla přijata celá herní deska (board)
+void sendData(byte, byte); //Odešle daná data serveru (3x po sobě pro kontrolu), první argument je zpráva a druhé je kód, podle kterého server zpravu vyhodnotí
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
-void setup() { 
+void setup() {
   pinMode(A0, OUTPUT);       //.kbv mcufriend have RD on A0
   digitalWrite(A0, HIGH);
   //Sériová linka
@@ -267,7 +276,7 @@ void setup() {
   LCD.InitLCD();
   LCD.setFont(SmallFont);
   LCD.clrScr(); //Vyčištění obrazovky (vyplnění černou)
-  
+
   //Ethernet
   LCD.setTextColor(YELLOW, BLACK);
     LCD.setTextSize(2);
@@ -281,11 +290,15 @@ void setup() {
   LCD.clrScr();
   Serial.print("Ziskana IP adresa: ");
   Serial.println(Ethernet.localIP());
-  
+
   screenRefresh = true;
   delay(100);
 
-  
+  //Reset pole pro potvrzení příjmu desky
+  for(byte i = 0; i < packetLength/8; i++){
+    boardAck[i] = false;
+  }
+
 }
 
 /*
@@ -323,9 +336,9 @@ void loop() {
         myNum = getMyPlayerNumber();
         LCD.clrScr();
         processBoard();
-      }     
+      }
       break;
-      
+
     case 3: //Běžící hra
       button_index = 0;
       if(recieveBoard()){
@@ -341,14 +354,14 @@ void loop() {
       }
       break;
    }
- 
-  
-  
+
+
+
   //Dotykáč
   if ((millis() - refreshTouchScreen > touchScreenOff) && ! touchScreenAct){ //Obnova funkce dotykové plochy
     touchScreenAct = true;
     refreshTouchScreen = millis();
-  } 
+  }
 
   if(touchScreenAct){
    touchPoint = Touch.getPoint();
@@ -361,7 +374,7 @@ void loop() {
   // pressure of 0 means no pressing!
   if (touchPoint.z > MINPRESSURE && touchPoint.z < MAXPRESSURE && touchScreenAct) {
      refreshTouchScreen = millis(); //Nastaví poslední čas stisku
-     //Standardní 
+     //Standardní
      TSx = map(touchPoint.y, TOUCH_XMAX, TOUCH_XMIN, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.x, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
      //Pro CLIENT 3
@@ -373,7 +386,7 @@ void loop() {
      Serial.print("\tXpix = "); Serial.print(TSx);
      Serial.print("\tYpix = "); Serial.print(TSy);
      Serial.print("\tPressure = "); Serial.println(touchPoint.z);
-     
+
      buttonPressed(TSx, TSy);
      touchScreenAct = false;
      if (gamePhase == 4){ //POkud je client na tahu
@@ -392,19 +405,19 @@ void loop() {
             break;
           }
         }
-        if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam jiný hráč) 
+        if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam jiný hráč)
         //Odesíláni
         client.write(meshX*row + column);
         gamePhase = 3;
         }
      }
-     
+
    }
 }
 
 
   delay(10);
-  
+
 }
 
 
@@ -412,36 +425,9 @@ void loop() {
  * >>>>>>>>>> FUNKCE <<<<<<<<<<
  */
  //------------------------------------------------------------------------------------------------------
-//>>>>> Vykreslení základního rámčku <<<<<
- /*   Princip:   
-  *    - Vykreslí modrý rámeček kolem celého displeje
-  */
-void drawMainFrame(uint16_t color){
-  LCD.setColor(color); //Nastavení barvy
-  LCD.drawRect(0, 0, 320, 240); //Vykreslení čtverce (souřadnice levý horní a pravý dolní roh)
-  LCD.drawRect(1, 1, 319, 239);
-  
-}
 
-//------------------------------------------------------------------------------------------------------
-//>>>>> Vykreslení základního hrací mřížku <<<<<
- /*   Princip:   
-  *    - vykreslí modrou mříž jak hrací plochu 
-  *    - velikost 11x8 polí
-  */
-void drawMesh(uint16_t color){
-  LCD.setColor(color); //Nastavení barvy
-  for(int i = 0; i < meshX; i++){ //Svislé
-    LCD.drawLine((int)i*resX/meshX, 0, (int)i*resX/meshX, resY); 
-  }
-  for(int i = 0; i < meshY; i++){ //Vodorovné
-    LCD.drawLine(0,(int)i*resY/meshY, resX, (int)i*resY/meshY); 
-  }
-}
-
-//------------------------------------------------------------------------------------------------------
 //>>>>> Vykreslení danou obrazovku podle ID <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - 0: čekání na server
   *    - 1: hraji
   *    - 2: hraje druhý hráč
@@ -449,7 +435,7 @@ void drawMesh(uint16_t color){
 
   void drawPage (byte id){
     switch(id){
-    
+
       case 0:
         button_index = 0;
         LCD.setColor(BLACK);
@@ -475,7 +461,7 @@ void drawMesh(uint16_t color){
         LCD.println("PRIPOJIT");
         screenRefresh = false;
         break;
-  
+
       case 1:
         button_index = 0;
         drawMainFrame(BLUE);
@@ -524,114 +510,12 @@ void drawMesh(uint16_t color){
 
 //------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------
-//>>>>> Vykreslí do mřížky kolečka na základě hodnoty v board <<<<<
- /*   Princip:   
-  *    - 
-  *    
-  */
-void drawPoints(){
-  byte row = 0;
-  byte column = 0;
-  uint16_t colors[maxPlayers];
 
-  for(int i = 0; i < maxPlayers; i++){ //Zjištění jednotlivých barev
-    colors[i] = getPlayerColor(colorAddr[i]);
-  }
-
-  for (int i = 0; i < meshX*meshY; i++){ //Překreslí všechny puntíky
-      if(board[i] != 0){
-        row = i/meshX;
-        column = i - row*meshX;
-        LCD.setColor(colors[board[i] -1]); //Nastaví barvu hráče podle čísla v poli
-        LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
-      }
-   }
-}
-
-
-//------------------------------------------------------------------------------------------------------
-//>>>>> Zracovává přijatou herí desku <<<<<
- /*   Princip:   
-  *    - POstupně zpracuje přijatou herní duesku
-  *    
-  */
-
-void processBoard(){
-  switch(board[gb_code]){
-    case 0: //Podle čísla hráče překreslit nebo hrát 
-      if(board[gb_actPlayer] == myNum){
-        drawMainFrame(BLUE);
-        drawMesh(BLUE);
-        gamePhase = 4;
-      }
-      else{
-        drawMainFrame(LIGHTGREY);
-        drawMesh(LIGHTGREY);
-        drawPoints();
-        gamePhase = 3;
-      }
-      break;
-
-    case 2: //Vložení kolečka do herní desky
-      drawMainFrame(BLUE);
-      drawMesh(BLUE);
-      gamePhase = 4;
-      break;
-
-    case 3:
-      gamePhase = 2; 
-      screenRefresh = true;
-      break;
-
-    case 100: //Remíza
-        //Překreslí pole
-        drawMainFrame(LIGHTGREY);
-        drawMesh(LIGHTGREY);
-        drawPoints();
-        //Informuje o remíze
-        LCD.setColor(BLACK);
-        LCD.fillRect(0,0, 320, 50);
-        LCD.setTextColor(YELLOW, BLACK);
-        LCD.setTextSize(3);
-        LCD.setCursor(20, 20);
-        LCD.println("Remiza");
-        delay(10000);
-        //prepareNewGame();
-      break;
-
-    case 101:
-    case 102:
-    case 103:
-    case 104:
-    case 105:
-      //Překreslí pole
-      drawMainFrame(LIGHTGREY);
-      drawMesh(LIGHTGREY);
-      drawPoints();
-      //Vypíše vítěze
-      byte winner = board[gb_code] - 100;
-      LCD.setColor(BLACK);
-      LCD.fillRect(0,0, 320, 50);
-      LCD.setTextColor(getPlayerColor(colorAddr[winner - 1]), BLACK);
-      LCD.setTextSize(3);
-      LCD.setCursor(20, 20);
-      if(winner == myNum){
-        LCD.println("Vitez");
-      }
-      else{
-        LCD.println("Vyhral hrac");
-        LCD.setCursor(250, 20);
-        LCD.println(winner);
-      }
-      break;
-  }
-}
-//------------------------------------------------------------------------------------------------------
 //>>>>> Vyhodocení stisku tlačítka <<<<<
- /*   Princip:   
+ /*   Princip:
   *    - Vezme souřadnice (argument) a vyhodnotí stisky tlačítka
-  *    - uvažuje jednotlivé fáze hry 
-  *    
+  *    - uvažuje jednotlivé fáze hry
+  *
   */
 void buttonPressed(int x, int y){
   byte cislo = 0;
@@ -662,101 +546,10 @@ void buttonPressed(int x, int y){
       clientConnected = false;
       break;
   }
-  
+
 }
 
 //------------------------------------------------------------------------------------------------------
-//>>>>> Připojení k serveru <<<<<
- /*   Princip:   
-  *    - nekonečná smyčka snaží cí se připojit k serveru
-  *    - pokud je připojení úspěšné, změní se fáze hry
-  *    - v případě úspěšného spoojení vrátí true
-  *    - hodnoty vrácené serverem: 0 = spojení odmítnuto (třeba z důvodu běžící hry); 1-5 = přiřazené číslo hráče
-  */
-bool connectToServer(){
-  byte server_code = 0;
-  if(!clientConnected){
-    Serial.println("Pokus o spojeni");
-    client.connect(serverAddress, 3333);
-    delay(20);
-    if (client.connected()){
-      Serial.println("Pripojuji");
-      client.write(250); //Aby připojení server správně zaznamenal (kód 250: chci se připojit)
-      delay(200);
-      while(client.connected()){ 
-        if(recieveBoard()){
-          if(getMyPlayerNumber > 0){
-            clientConnected = true;
-            myNum = getMyPlayerNumber();
-            Serial.println(myNum);
-            return true;
-          }
-          else{
-            Serial.println("Nepripojeno");
-            client.stop();
-            return false;
-          }
-        }
-        delay(500);
-      }
-    }
-    else{
-        Serial.println("NEPRIPOJENO");
-        return false;
-    }
-  }
-}
 
-//------------------------------------------------------------------------------------------------------
-//>>>>> Zjištění barvy hráče <<<<<
- /*   Princip:   
-  *    - argument je index v poli board, podle něho je zjištěna daná barva 
-  *    - návratová hodnota je ona barva
-  */
 
-uint16_t getPlayerColor(byte start){
-  return uint16_t(board[start] | uint16_t(board[start+1]) << 8);
-}
-//------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------
-//>>>>> Zjištění moje číslo hráče <<<<<
- /*   Princip:   
-  *    - Projde jednotlivé IP v boardu a pokusí se najít shodu s mojí IP = moje číslo
-  *    - pokud nenajde shodu vrátí -1
-  */
 
-byte getMyPlayerNumber(){
-  bool haveNumber = false;
-  IPAddress locIP = Ethernet.localIP();
-  for(byte i = 0; i < maxPlayers; i++){
-    if(board[IPaddr[i]] == locIP[0] && board[IPaddr[i]+1] == locIP[1] && board[IPaddr[i]+2] == locIP[2] && board[IPaddr[i]+3] == locIP[3]){
-      Serial.print("Cislo: "); Serial.println(i+1);
-      return (i+1);
-    }
-  }
-  return false;
-}
-//------------------------------------------------------------------------------------------------------
-//>>>>> Pokud je připojeno k serveru, přijímá herní desku <<<<<
- /*   Princip:   
-  *    - Zkusí jestli server něco odeslal, přijme celý board
-  */
-bool recieveBoard (){
-  byte index = 0;
-  if (client.connected() &&client.available() > 0){ //client.available();
-    Serial.println("prijem"); 
-    while (index < packetLength){
-      if(client.available() > 0){
-        board[index] = client.read();
-        Serial.println(board[index]);
-        index++;
-      }
-      delay(2);
-    }
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-//------------------------------------------------------------------------------------------------------
