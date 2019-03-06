@@ -1,5 +1,8 @@
 # BP_PROJ: Piskvorky v1
 
+### 06.03.2019
+- Program pro clienta: vylepšení vykreslování dat na displeji, začátek úprav vyhodnocování stisku tlačítek
+
 ### 03.03.2019
 - Úprava programu pro clienta pro komunikaci se serverem
 

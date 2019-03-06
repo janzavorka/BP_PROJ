@@ -37,7 +37,7 @@ bool recieveBoard (){
     Serial.println("prijem");
     while(index < 11){
       subBoard[index] = client.read();
-      if(index =< 8){
+      if(index <= 8){
         checkSum += subBoard[index];
       }
       index++;
@@ -51,6 +51,7 @@ bool recieveBoard (){
     }
     else{
       //vyžádej balík znova
+      sendData(subBoard[8], 20);
     }
   }
   else {
@@ -60,7 +61,7 @@ bool recieveBoard (){
 //------------------------------------------------------------------------------------------------------
 //>>>>> KOntrola, zda byla přijata deska celá, případně její vyhodnocení <<<<<
  /*   Princip:
-  *    - Zkontroluje zda byla přijata deska (true vyplněno v board ack) 
+  *    - Zkontroluje zda byla přijata deska (true vyplněno v board ack)
   *    - Vynuluje pole boardAck
   *    - Zavolá fci pro vyhodnocení board
   */
@@ -71,24 +72,33 @@ void checkRecievedBoard(void){
     }
   }
   //Nulování
-  for(byte i = 0; i < packetLength/8; i++){
-    boardAck[i] = false;
-  }
+  resetBoardAck();
+  //Vyhodnotí herní desku
   processBoard();
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Odeslání dat serveru <<<<<
  /*   Princip:
-  *    - Odešle serveru daná data 
+  *    - Odešle serveru daná data
   *    - Aby je server vyhodnotil, je nutné je poslat 2x po sobě, pro lepší odolnost se odesílá 3x
   *    - pokud je code == 10: bude se přenášet vyplnění pole, pokud je code == 20 jedná se o request pro znovuodeslání části pole board
   */
 void sendData(byte message, byte code){
-  byte data[] = {code, message}
+  byte data[] = {code, message};
   delay(50);
   for(byte i = 0; i < 3; i++){
     client.write(data, 2);
     delay(50);
+  }
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Resetování pole pro přijatá data <<<<<
+ /*   Princip:
+  *    - resetuje pole, které kontroluje zda daná data byla přijata (vyplní false)
+  */
+void resetBoardAck(){
+  for(byte i = 0; i < packetLength/8; i++){
+    boardAck[i] = false;
   }
 }
 //------------------------------------------------------------------------------------------------------

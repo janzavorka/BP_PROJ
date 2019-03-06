@@ -44,7 +44,7 @@ byte mac[] = {
 
 unsigned int localPort = 3333;      // local port to listen on
 EthernetClient client;
-bool clientConnected = false;
+bool connectingToServer = false;
 bool serverReady = false;
 
 //Herní server
@@ -135,7 +135,7 @@ const byte maxPlayers = 5;
 
 /* ----------Piškvorky----------*/
 const byte packetLength = 136; //Musí být dělitelné osmi
-bool boardAck [packetLength/8]; 
+bool boardAck [packetLength/8];
 byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 /* >>>>> Rozložení herního packetu <<<<<
  *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
@@ -254,6 +254,8 @@ void drawPage (byte); //Vykreslí obrazovku podle čísla
 void drawPogetMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí -1
 bool recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
 void drawPoints(void); //Vykreslí puntíky podle board
+/* displayControl */
+void drawHead (uint16_t); //Vykreslí hlavičku - nápis "piskvorky" danou barvou (argument)
 //void checkWin(byte); //Zkontroluje zda nějaký hráč nevyhrál (argument je políčko, na které bylo vloženo kolečko)
 void chechStatus(byte); //KOntroluje oznamovací kód (umístěn v board[90])
 bool connectToServer(void); //Začne se spojovat se serverem
@@ -265,6 +267,7 @@ byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hr
 bool recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
 void checkRecievedBoard(void); //Zkontroluje zda byla přijata celá herní deska (board)
 void sendData(byte, byte); //Odešle daná data serveru (3x po sobě pro kontrolu), první argument je zpráva a druhé je kód, podle kterého server zpravu vyhodnotí
+void resetBoardAck(void); //Vyplní pole pro potvrzování příjmu pole board hodnotami false (nepřijato)
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
@@ -295,17 +298,31 @@ void setup() {
   delay(100);
 
   //Reset pole pro potvrzení příjmu desky
-  for(byte i = 0; i < packetLength/8; i++){
-    boardAck[i] = false;
-  }
+  resetBoardAck();
 
+  //Nulování časových konstant
+  lastReconnect = 0;
+
+  //Pokud vše proběhlo v pořádku vykreslí se úvodní obrazovka
+  drawPage(0);
 }
 
 /*
  * >>>>>>>>>> LOOP <<<<<<<<<<
  */
 void loop() {
-    switch(gamePhase){
+  //Pokud uplynulo dostatek času od posledního pokusus o spojení A připojení je vyžaováno A client ještě není připojen
+  if ((millis() - lastReconnect > tryReconnect) && connectingToServer && !client.connected()){
+    lastReconnect = millis();
+    if(connectToServer()){
+      gamePhase = 2;
+      connectingToServer = false;
+      }
+  }
+
+
+
+    /*switch(gamePhase){
       case 0:
         if(screenRefresh){
           //Serial.println("Faze 0");
@@ -353,7 +370,7 @@ void loop() {
         processBoard();
       }
       break;
-   }
+   }*/
 
 
 
@@ -425,90 +442,6 @@ void loop() {
  * >>>>>>>>>> FUNKCE <<<<<<<<<<
  */
  //------------------------------------------------------------------------------------------------------
-
-//>>>>> Vykreslení danou obrazovku podle ID <<<<<
- /*   Princip:
-  *    - 0: čekání na server
-  *    - 1: hraji
-  *    - 2: hraje druhý hráč
-  */
-
-  void drawPage (byte id){
-    switch(id){
-
-      case 0:
-        button_index = 0;
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
-        drawMainFrame(BLUE);
-        LCD.setTextColor(YELLOW, BLACK);
-        LCD.setTextSize(3);
-        LCD.setCursor(80, 10);
-        LCD.println("Piskvorky");
-        LCD.setTextSize(2);
-        LCD.setCursor(20, 45);
-        LCD.println("Moje IP: ");
-        LCD.setCursor(150, 45);
-        LCD.println(Ethernet.localIP());
-        LCD.setCursor(20, 70);
-        LCD.println("Server IP: ");
-        LCD.setCursor(150, 70);
-        LCD.println(serverAddress);
-        buttons[button_index] = buttonRect(50, 270, 150, 210, 1, 1);
-        LCD.setTextColor(BLACK, LIGHTGREY);
-        LCD.setTextSize(3);
-        LCD.setCursor(90,170);
-        LCD.println("PRIPOJIT");
-        screenRefresh = false;
-        break;
-
-      case 1:
-        button_index = 0;
-        drawMainFrame(BLUE);
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
-        LCD.setTextColor(YELLOW, BLACK);
-        LCD.setTextSize(3);
-        LCD.setCursor(80, 10);
-        LCD.println("Piskvorky");
-        LCD.setCursor(20, 50);
-        LCD.setTextSize(2);
-        LCD.println("Pripojuji se k serveru");
-        buttons[button_index] = buttonRect(50, 270, 150, 210, 11, 1);
-        LCD.setTextColor(RED, LIGHTGREY);
-        LCD.setTextSize(3);
-        LCD.setCursor(90,170);
-        LCD.println("PRERUSIT");
-        screenRefresh = false;
-        break;
-
-      case 2:
-        LCD.clrScr();
-        button_index = 0;
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
-        drawMainFrame(BLUE);
-        LCD.setTextColor(getPlayerColor(colorAddr[myNum-1]), BLACK);
-        LCD.setTextSize(3);
-        LCD.setCursor(80, 10);
-        LCD.println("Piskvorky");
-        LCD.setTextSize(2);
-        LCD.setCursor(90, 50);
-        LCD.println("Pripojeno");
-        LCD.setCursor(20, 70);
-        LCD.println("Cekam na zahajeni hry");
-        buttons[button_index] = buttonRect(50, 270, 150, 210, 21, 1);
-        LCD.setTextColor(BLACK, LIGHTGREY);
-        LCD.setTextSize(3);
-        LCD.setCursor(100,170);
-        LCD.println("ODPOJIT");
-        screenRefresh = false;
-        break;
-    }
-  }
-
-
-//------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------
 
 //>>>>> Vyhodocení stisku tlačítka <<<<<
@@ -527,29 +460,29 @@ void buttonPressed(int x, int y){
         }
   }
   //Serial.print("cislo tlacitka: "); Serial.println(cislo);
+
   switch(cislo){
-    case 1:
-      gamePhase = 1;
-      screenRefresh = true;
+    case 00:
+      drawPage(1);
+      connectingToServer = true;
       break;
 
-    case 11:
-      gamePhase = 0;
-      screenRefresh = true;
+    case 10:
+      connectingToServer = false;
+      drawPage(0);
       break;
 
-    case 21:
-      gamePhase = 0;
-      screenRefresh = true;
-      client.flush();
+    case 20:
       client.stop();
-      clientConnected = false;
+      connectingToServer = false;
+      drawPage(0);
       break;
+  }
+
+  if(board[gb_actPlayer] == myNum){
+    //POkusit se vyhdnotit vložení herního žetonu
   }
 
 }
 
 //------------------------------------------------------------------------------------------------------
-
-
-

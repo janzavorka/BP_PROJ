@@ -85,7 +85,6 @@ uint16_t getPlayerColor(byte start){
   return uint16_t(board[start] | uint16_t(board[start+1]) << 8);
 }
 //------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------
 //>>>>> Zjištění moje číslo hráče <<<<<
  /*   Princip:
   *    - Projde jednotlivé IP v boardu a pokusí se najít shodu s mojí IP = moje číslo
