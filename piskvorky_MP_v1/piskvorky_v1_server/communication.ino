@@ -8,12 +8,15 @@ void sendBoard(byte code, byte playerNum){
   byte subBoard[subBoard_length]; //POle k odeslání
   int checkSum = 0; //Kontrolní součet
   board[gb_code] = code;
-
+  Serial.print("Odesilam data hraci ");
+  Serial.println(playerNum);
+  
   for(byte i = 0; i < packetLength/boardPart; i++){
     checkSum = 0;
     for(byte k = 0; k < boardPart; k++){
           subBoard[k] = board[k + boardPart*i];
           checkSum += subBoard[k];
+          //Serial.println(board[k + boardPart*i]);
     }
     subBoard[8] = i; //POřadové číslo packetu
     checkSum += subBoard[8];
@@ -82,11 +85,14 @@ void checkIncommingData(){
   */
 void recieveData(byte index){
    while(clients[index].available() > 1){
+    Serial.print("Prijem dat od uzivatele "); Serial.print(index); Serial.print("     ");
       for(byte i = 0; i < 2; i++){
         if(clientsData[index][i][2] == 0){ //Pokud tato data nebyla vyplněna
           clientsData[index][i][0] = clients[i].read();
+          Serial.print(clientsData[index][i][0]); Serial.print("; ");
           delay(5);
           clientsData[index][i][1] = clients[i].read();
+          Serial.print(clientsData[index][i][1]);
           clientsData[index][i][2] = 1;
         }
       }

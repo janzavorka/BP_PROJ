@@ -213,7 +213,7 @@ void setup() {
   delay(200);
 
   //Reset datových polí
-  cleanBoard();
+  setBoard();
   for(byte i = 0; i < maxPlayers; i++){
     resetClientData(i);
   }
@@ -229,11 +229,13 @@ void loop() {
     pinReady = true;
     refresh_buttonOff = millis();
   }
+  checkIncommingData();
   //Část se zpracováním hry
     if(serverPhase == 0){
       EthernetClient newClient = server.accept();
       delay(10);
       if ((newClient)) {
+        Serial.println("Pripojen novy uzivatel");
         bool clientOK = true; //Test clienta
         byte clientIndex = 100; //Index, ktery bude clientovi přiřazen
 
@@ -279,8 +281,9 @@ void loop() {
         if(clientOK){
           clients[clientIndex] = newClient;
           syncBoardIPs();
+          sendBoard(3);
           Serial.print("Novy client cislo ");
-          Serial.print(clientIndex);
+          Serial.print(clientIndex+1);
           Serial.print(" s IP adresou ");
           Serial.print(clients[clientIndex].remoteIP());
           Serial.print(" USPESNE pripojen \n");

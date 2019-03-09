@@ -4,7 +4,7 @@
   *    -
   */
 void stopGame (){
-  Serial.println("Zastavuji hru, tlacitko");
+  Serial.println("Zastavuji hru");
   board[gb_code] = 3;
   delay(5);
   sendBoard(3);
@@ -113,6 +113,7 @@ void checkGame(byte cross, byte player){
      }
     if(win){
       Serial.print("Vyhral hrac: "); Serial.println(player);
+      board[gb_actPlayer] = 0;
       sendBoard(100+player);
       timer.setTimeout(clientMessageLast, stopGame);
     }
@@ -183,16 +184,25 @@ void shiftPlayer(){
   */
 
 bool fillPlayerToken(byte coord, byte player){
-    if(coord >= 0 && coord < meshX*meshY){
-      if(board[coord] == 0){
-          board[coord] = player;
-          sendBoard(2);
-          return true;
+    if(player == board[gb_actPlayer]){
+      if(coord >= 0 && coord < meshX*meshY){
+        if(board[coord] == 0){
+            board[coord] = player;
+            sendBoard(2);
+            return true;
+        }
+        else{
+          Serial.print("CHYBA - hrac ");
+          Serial.print(player);
+          Serial.print(" se pokousi vyplnit obsazene pole: ");
+          Serial.println(coord);
+          return false;
+        }
       }
       else{
         Serial.print("CHYBA - hrac ");
         Serial.print(player);
-        Serial.print(" se pokousi vyplnit obsazene pole: ");
+        Serial.print(" se pokousi vyplnit pole mimo rozsah: ");
         Serial.println(coord);
         return false;
       }
@@ -200,8 +210,7 @@ bool fillPlayerToken(byte coord, byte player){
     else{
       Serial.print("CHYBA - hrac ");
       Serial.print(player);
-      Serial.print(" se pokousi vyplnit pole mimo rozsah: ");
-      Serial.println(coord);
+      Serial.print(" neni na tahu");
       return false;
     }
 }
