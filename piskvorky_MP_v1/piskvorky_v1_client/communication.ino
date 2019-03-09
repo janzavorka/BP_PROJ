@@ -8,17 +8,17 @@
 bool connectToServer(){
   byte server_code = 0;
   if(!client.connected()){
-    Serial.println("Pokus o spojeni");
+    //Serial.println("Pokus o spojeni");
     client.connect(serverAddress, 3333);
     delay(20);
     if (client.connected()){
-      Serial.println("Pripojuji");
+      //Serial.println("Pripojuji");
       client.write(100); //Aby připojení server správně zaznamenal (kód 250: chci se připojit)
       delay(200);
       return true;
     }
     else{
-        Serial.println("NEPRIPOJENO");
+        //Serial.println("NEPRIPOJENO");
         return false;
     }
   }
@@ -29,12 +29,12 @@ bool connectToServer(){
  /*   Princip:
   *    - Zkusí jestli server něco odeslal, přijme celý board
   */
-bool recieveBoard (){
+void recieveBoard (){
   byte index = 0;
   byte subBoard [11];
   int checkSum = 0;
   if (client.connected() && client.available() > 10){ //client.available();
-    Serial.println("prijem");
+    //Serial.println("prijem");
     while(index < 11){
       subBoard[index] = client.read();
       if(index <= 8){
@@ -43,19 +43,33 @@ bool recieveBoard (){
       index++;
       delay(3);
     }
-    if(int(subBoard[9] | int(subBoard[10]) << 8) == checkSum){ //Pokud sedí kontrolní součet = data byla přijata správně
+    if((int(subBoard[9]) | int(subBoard[10]) << 8) == checkSum){ //Pokud sedí kontrolní součet = data byla přijata správně
       boardAck[subBoard[8]] = true; //Potvrzení přijetí, na pozici 8 v subBoard je pořadové číslo packetu
       for(byte i = 0; i < 8; i++){ //Zápis dat do herní desky
-        board[subBoard[8] + i] = subBoard[i];
+        board[subBoard[8]*8 + i] = subBoard[i];
       }
+      //checkRecievedBoard();
+      //Kontrola zda byla deska přijata
+      for(byte i = 0; i < packetLength/8; i++){
+    if(!boardAck[i]){
+      return;
+    }
+  }
+  //Nulování
+  resetBoardAck();
+  //Vyhodnotí herní desku
+  
+  processBoard();
+  //
     }
     else{
       //vyžádej balík znova
+      //Serial.println("err SUM");
       sendData(subBoard[8], 20);
     }
   }
   else {
-    return false;
+    return;
   }
 }
 //------------------------------------------------------------------------------------------------------
@@ -65,7 +79,7 @@ bool recieveBoard (){
   *    - Vynuluje pole boardAck
   *    - Zavolá fci pro vyhodnocení board
   */
-void checkRecievedBoard(void){
+/*void checkRecievedBoard(void){
   for(byte i = 0; i < packetLength/8; i++){
     if(!boardAck[i]){
       return;
@@ -75,7 +89,7 @@ void checkRecievedBoard(void){
   resetBoardAck();
   //Vyhodnotí herní desku
   processBoard();
-}
+}*/
 //------------------------------------------------------------------------------------------------------
 //>>>>> Odeslání dat serveru <<<<<
  /*   Princip:

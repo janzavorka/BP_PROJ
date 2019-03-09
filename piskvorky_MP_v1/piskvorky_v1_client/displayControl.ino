@@ -36,7 +36,7 @@ void drawPoints(){
   byte column = 0;
   uint16_t colors[maxPlayers];
 
-  for(int i = 0; i < maxPlayers; i++){ //Zjištění jednotlivých barev
+  for(byte i = 0; i < maxPlayers; i++){ //Zjištění jednotlivých barev
     colors[i] = getPlayerColor(colorAddr[i]);
   }
 
@@ -62,12 +62,15 @@ void drawPoints(){
   */
 
   void drawPage (byte id){
+    if(id != lastPage){ //Pokud byla předchozí stránka jiná, dojde k vyčištění displeje
+      lastPage = id;
+      LCD.clrScr();
+    }
+    button_index = 0;
     switch(id){
-
       case 0:
-        button_index = 0;
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
+        //LCD.setColor(BLACK);
+        //LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
         drawHead(YELLOW);
         LCD.setTextSize(2);
@@ -86,12 +89,10 @@ void drawPoints(){
         LCD.println("PRIPOJIT");
         screenRefresh = false;
         break;
-
       case 1:
-        button_index = 0;
         drawMainFrame(BLUE);
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
+        //LCD.setColor(BLACK);
+        //LCD.fillRect(20, 40, 310, 90);
         drawHead(YELLOW);
         LCD.setCursor(20, 50);
         LCD.setTextSize(2);
@@ -99,19 +100,18 @@ void drawPoints(){
         buttons[button_index] = buttonRect(50, 270, 150, 210, 10, 1);
         LCD.setTextColor(RED, LIGHTGREY);
         LCD.setTextSize(3);
-        LCD.setCursor(90,170);
-        LCD.println("PRERUSIT");
-        screenRefresh = false;
-        break;
 
+        LCD.print("PRERUSIT", 90,170);
+        //screenRefresh = false;
+        break;
       case 2:
-        LCD.clrScr();
+        //LCD.clrScr();
         button_index = 0;
-        LCD.setColor(BLACK);
-        LCD.fillRect(20, 40, 310, 90);
+        //LCD.setColor(BLACK);
+        //LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
-        drawHead(getPlayerColor(colorAddr[myNum-1]));
-        LCD.setTextColor(getPlayerColor(colorAddr[myNum-1]), BLACK);
+        drawHead(getPlayerColor(getMyPlayerNumber()));
+        LCD.setTextColor(getPlayerColor(getMyPlayerNumber()), BLACK);
         LCD.setTextSize(2);
         LCD.setCursor(90, 50);
         LCD.println("Pripojeno");
@@ -122,7 +122,18 @@ void drawPoints(){
         LCD.setTextSize(3);
         LCD.setCursor(100,170);
         LCD.println("ODPOJIT");
-        screenRefresh = false;
+        break;
+      case 3:
+        if(board[gb_actPlayer] == getMyPlayerNumber()){ //Pokud jsem na řadě, obrazovka se vykreslí mojí barvou
+          drawMainFrame(getPlayerColor(getMyPlayerNumber()));
+          drawMesh(getPlayerColor(getMyPlayerNumber()));
+          drawPoints();
+        }
+        else{ //Pokud hraje někdo jiný, mřížka bude šedá
+          drawMainFrame(LIGHTGREY);
+          drawMesh(LIGHTGREY);
+          drawPoints();
+        }
         break;
     }
   }
@@ -136,8 +147,7 @@ void drawPoints(){
 void drawHead (uint16_t color){
   LCD.setTextColor(color, BLACK);
   LCD.setTextSize(3);
-  LCD.setCursor(80, 10);
-  LCD.println("Piskvorky");
+  LCD.print("Piskvorky", 80, 10, 1);
 }
 
 //------------------------------------------------------------------------------------------------------
