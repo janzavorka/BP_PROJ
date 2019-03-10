@@ -102,7 +102,7 @@ void sendData(byte message, byte code){
   delay(50);
   for(byte i = 0; i < 3; i++){
     client.write(data, 2);
-    delay(50);
+    delay(3);
   }
 }
 //------------------------------------------------------------------------------------------------------

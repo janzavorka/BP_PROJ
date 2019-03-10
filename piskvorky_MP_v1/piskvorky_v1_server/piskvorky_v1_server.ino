@@ -34,7 +34,7 @@ const byte resetPIN = 38;
 #define buttonOff 1000 //Po jakou dobu bude dotyková plocha deaktivována (zabrání multidotykům)
 unsigned long long refresh_buttonOff = 0;
 
-#define clientMessageLast 8000 //Doba zobrazení zprávy na straně clienta (v milisekundách)
+const long clientMessageLast = 8000; //Doba zobrazení zprávy na straně clienta (v milisekundách)
 
 //Herní server
 IPAddress serverAddress(10,0,0,8);
@@ -131,6 +131,7 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 
 //Nastavení maximálního jasu
 #define LED_br 100
+namespace std {void __throw_bad_function_call() { while(1); }; } //Pro správné fungování simpleTimer knihovny
 
 //Barvy
 byte LEDcol_red[] = {255, 0, 0};
@@ -229,6 +230,7 @@ void loop() {
     pinReady = true;
     refresh_buttonOff = millis();
   }
+  timer.run(); //Aby timery správně běžely (knihovna simpleTimer)
   checkIncommingData();
   //Část se zpracováním hry
     if(serverPhase == 0){

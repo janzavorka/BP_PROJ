@@ -10,7 +10,7 @@ void sendBoard(byte code, byte playerNum){
   board[gb_code] = code;
   Serial.print("Odesilam data hraci ");
   Serial.println(playerNum);
-  
+
   for(byte i = 0; i < packetLength/boardPart; i++){
     checkSum = 0;
     for(byte k = 0; k < boardPart; k++){
@@ -69,8 +69,10 @@ void syncBoardIPs(){
   *    -
   */
 void checkIncommingData(){
+  //Serial.println("testuji prijem");
   for(int i = 0; i < maxPlayers; i++){
-    if(clients[i].available()){
+    if(clients[i].available() > 1){
+      Serial.print("Prijimam data od hrace "); Serial.print(i); Serial.print(" pocet dat "); Serial.println(clients[i].available());
       recieveData(i);
     }
   }
@@ -84,23 +86,26 @@ void checkIncommingData(){
   *       tímto se zabrání dalším chybám pokud by se do komunikace připletla nějká další data (jinak by vždy příjem končil neshodou obou packetů)
   */
 void recieveData(byte index){
-   while(clients[index].available() > 1){
-    Serial.print("Prijem dat od uzivatele "); Serial.print(index); Serial.print("     ");
+   //while(clients[index].available() > 1){
       for(byte i = 0; i < 2; i++){
-        if(clientsData[index][i][2] == 0){ //Pokud tato data nebyla vyplněna
-          clientsData[index][i][0] = clients[i].read();
+        if(clientsData[index][i][2] == 0 && clients[index].available() > 1){ //Pokud tato data nebyla vyplněna a nějaká jsou k dispozici - přečti je
+          Serial.print("Prijem dat od uzivatele "); Serial.print(index); Serial.print("     ");
+          clientsData[index][i][0] = clients[index].read();
           Serial.print(clientsData[index][i][0]); Serial.print("; ");
           delay(5);
-          clientsData[index][i][1] = clients[i].read();
-          Serial.print(clientsData[index][i][1]);
+          clientsData[index][i][1] = clients[index].read();
+          Serial.println(clientsData[index][i][1]);
           clientsData[index][i][2] = 1;
         }
       }
-   }
+   //}
 
    if(clientsData[index][1][2] == 1){ //Byly vyplněny oba packety (pro porovnání)
-      while(clients[index].available()){ //Zahození všech ostatních dat
+     delay(100);
+     Serial.println("Vyprazdneni: ");
+      while(clients[index].available() > 0){ //Zahození všech ostatních dat
         char bin = clients[index].read();
+        Serial.println(bin);
       }
       processClientData(index);
    }
@@ -141,7 +146,7 @@ void processClientData(byte index){
   else{
     Serial.print("Od hrace ");
     Serial.print(index+1);
-    Serial.print(" byla prijata chybna data, zahazuji");
+    Serial.println(" byla prijata chybna data, zahazuji");
     resetClientData(index);
   }
 }

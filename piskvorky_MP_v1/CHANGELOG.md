@@ -1,5 +1,9 @@
 # BP_PROJ: Piskvorky v1
 
+### 09.03.2019
+- Dokončení programu pro clienta (kvůli místu v paměti odstraněna sériová linka)
+- Malé úpravy v kódu pro server, odstraněna chyba v přijímací funkci
+
 ### 06.03.2019
 - Program pro clienta: vylepšení vykreslování dat na displeji, začátek úprav vyhodnocování stisku tlačítek
 
