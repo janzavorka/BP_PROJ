@@ -106,7 +106,7 @@ void drawPoints(){
         break;
       case 2:
         //LCD.clrScr();
-        button_index = 0;
+        //button_index = 0;
         //LCD.setColor(BLACK);
         //LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
