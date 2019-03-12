@@ -7,7 +7,7 @@
 #include <Ethernet.h>
 #include <SimpleTimer.h>
 /* ----------Datum změny----------*/
-char makeDate[] = "23.02.2019";
+char makeDate[] = "12.03.2019";
 
 /* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
 //Client 1
@@ -24,6 +24,7 @@ bool serverReady = false;
 
 //Casovac
 SimpleTimer timer;
+namespace std {void __throw_bad_function_call() { while(1); }; } //Pro správné fungování simpleTimer knihovny
 
 //piny pro tlačítka
 bool pinReady = false; //Slouží k deaktivaci tlačítek aby se zabránilo vícedotykům současně
@@ -81,25 +82,20 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *  90:     Hlášení prostřednictvím kódu
  *            0:    nic nedělej
  *            1:    vše OK, hraje se, překresli obrazovku
- *            2:    pouze překreslit
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
- *            9:    odpojuji
- *            11:   hraje hráč 1
- *            12:   hraje hráč 2
- *            13:   hraje hráč 3
- *            14:   hraje hráč 4
- *            15:   hraje hráč 5
+ *            9:    odpojuji (výzva pro hráče aby se také odpojil)
  *            100:  hra skončila remízou
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
  *            103:  vyhrál hráč 3
  *            104:  vyhrál hráč 4
  *            105:  vyhrál hráč 5
- *            201:  problémy s hráčem 1
- *            202: ....
- *            205: problémy s hráčem 5
+ *            201:  problémy s hráčem 1 (odpojil se)
+ *            202:  problémy s hráčem 2 (odpojil se)
+*             203:  problémy s hráčem 3 (odpojil se)
+              204:  problémy s hráčem 4 (odpojil se)
+ *            205:  problémy s hráčem 5 (odpojil se)
  *  91:     Číslo hrajícího hráče
- *  92:     Číslo vyplněného pole (vyplňuje client) //NEPLATí
  *  93:     Počet odehraných kol, zvyšuje se na straně serveru
  *  95-96:  Barva hráče 1
  *  97-98:  Barva hráče 2
@@ -123,25 +119,54 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
 #define gb_PC4        101
 #define gb_PC5        103
 
+const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
+const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu
+
+
 /* ----------Ovládání LED----------*/
 //Piny
 #define LED_red 6
 #define LED_green 7
 #define LED_blue 8
 
-//Nastavení maximálního jasu
+//Nastavení maximálního jasu všech LED
 #define LED_br 100
-namespace std {void __throw_bad_function_call() { while(1); }; } //Pro správné fungování simpleTimer knihovny
 
-//Barvy
+//Barvy pro LED
 byte LEDcol_red[] = {255, 0, 0};
 byte LEDcol_green[] = {0, 255, 0};
 byte LEDcol_blue[] = {0, 0, 255};
 byte LEDcol_orange[] = {255, 50, 0};
+byte LEDcol_violet[] = {255,0,255};
 //byte LEDcol_red[] = {255, 0, 0};
 
-const byte colorAddr [] = {gb_PC1, gb_PC2, gb_PC3, gb_PC4, gb_PC5}; //Pole adres barev hráčů v poli board
-const byte IPaddr [] = {105, 109, 113, 117, 121}; //Počáteční adresy (indexy) jednotlivých IP adres hráčů v boardu
+//RGB informační LED připojená k serveru
+class RGB_LED{
+  private:
+    byte p_RED = 0;
+    byte p_GREEN = 0;
+    byte p_BLUE = 0;
+    byte static_col[3] = {255,255,255}; //Pro statické svícení
+    byte blink_col[3] = {255,255,255}; //Pro blikání
+    bool blinkState = false;
+    byte intensity = 0;
+    byte blinkCount = 0;
+    int blinkTimerID = 0;
+
+  public:
+    RGB_LED();
+    RGB_LED(byte Red, byte Green, byte Blue, byte intens);
+    void changeStaticColor(byte color[]);
+    void changeIntensity(byte inten);
+    void changeBlinkColor(byte color[], byte times);
+    void blink(void);
+    void LEDoff(void);
+    void LEDon(void);
+    void checkLEDstat(void);
+};
+
+RGB_LED signalLED;
+
 /* ----------PROTOTYPY----------*/
 void cleanBoard(void); //Vyplní herní desku nulami
 void syncBoardIPs(void); //Synchronizuje IP adresy v boardu a s IP adresy v seznamu clientů (clients[])
@@ -165,8 +190,8 @@ byte getHWcontroller(void); //Vrátí číslo použitého ethernet kontroléru
 void processBuffik(void); //Zpracuje přijatou zprávu přes sériovou linku
 void printLine(byte, byte); //Vypíše několik zadaných znaků za sebou (pro výpis oddělovacích čar na sériovém monitoru)
 /* Ovládání LED */
-void setLED (byte, byte); //Nastaví Barvu LED podle požadavků (barva, jas)
-void setLEDgamePhase(void); //Nastaví barvu LEDky podle herní fáze
+//void setLED (byte, byte); //Nastaví Barvu LED podle požadavků (barva, jas)
+//void setLEDgamePhase(void); //Nastaví barvu LEDky podle herní fáze
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
@@ -181,27 +206,24 @@ void setup() {
   randomSeed(analogRead(0));
   delay(10);
   //Nastavení LED
-  pinMode(LED_red, OUTPUT);
-  pinMode(LED_green, OUTPUT);
-  pinMode(LED_blue, OUTPUT);
 
+  signalLED = RGB_LED(LED_red, LED_green, LED_blue, 100);
   //Turn off LED
-  analogWrite(LED_red, 255);
-  analogWrite(LED_green, 255);
-  analogWrite(LED_blue, 255);
+
 
   Serial.println("Startuji piskvorkovy server");
   //Ethernet
   Ethernet.begin(mac, serverAddress);
   //Kontrola připojení kabelu
-  if(getHWcontroller() > 1){ //POkud je kontrolér W5200 nebo W5500 (pro ostatní není funkce podporována)
+  if(getHWcontroller() > 1){ //Pokud je kontrolér W5200 nebo W5500 (pro ostatní není funkce podporována)
       if(Ethernet.linkStatus() == LinkOFF){
         Serial.println("Zkontrolujte pripojeni kabelu");
       }
       while(Ethernet.linkStatus() == LinkOFF){
-          setLED (LEDcol_red, 100);
+          signalLED.changeStaticColor (LEDcol_red);
+          signalLED.LEDon();
           delay(1000);
-          setLED (LEDcol_red, 0);
+          signalLED.LEDoff();
           delay(1000);
       }
   }
@@ -219,7 +241,8 @@ void setup() {
     resetClientData(i);
   }
 
-  setLED(LEDcol_blue, 100);
+  //setLED(LEDcol_blue, 100);
+  signalLED.changeStaticColor (LEDcol_blue);
 }
 
 /*
@@ -258,6 +281,7 @@ void loop() {
             if(clients[i].remoteIP() == newClient.remoteIP()){
                clientOK = false;
                Serial.println("Stejny hrac je jiz pripojen");
+               sendBoard(board[gb_code], i+1); //Deska se odešle hráči znovu
                break;
             }
         }
@@ -284,6 +308,7 @@ void loop() {
           clients[clientIndex] = newClient;
           syncBoardIPs();
           sendBoard(3);
+          signalLED.changeBlinkColor(LEDcol_violet, 3);
           Serial.print("Novy client cislo ");
           Serial.print(clientIndex+1);
           Serial.print(" s IP adresou ");
@@ -315,6 +340,7 @@ void loop() {
       board[IPaddr[i]+1] = 0;
       board[IPaddr[i]+2] = 0;
       board[IPaddr[i]+3] = 0;
+      signalLED.changeBlinkColor(LEDcol_orange, 3);
     }
   }
 
@@ -335,6 +361,9 @@ void loop() {
   delay(50);
 }
 
+void blinkAll(){
+  signalLED.blink();
+}
 
 /*
  * >>>>>>>>>> FUNKCE <<<<<<<<<<
@@ -343,20 +372,20 @@ void loop() {
  /*   Princip:
   *    -
   */
-void setLED (byte color[], byte br){
+/*void setLED (byte color[], byte br){
   byte L_RED = (byte)(color[0]*(br/100.0)*(LED_br/100.0));
   byte L_GREEN = (byte)(color[1]*(br/100.0)*(LED_br/100.0));
   byte L_BLUE = (byte)(color[2]*(br/100.0)*(LED_br/100.0));
   analogWrite(LED_red, 255-L_RED);
   analogWrite(LED_green, 255-L_GREEN);
   analogWrite(LED_blue, 255-L_BLUE);
-}
+}*/
 //------------------------------------------------------------------------------------------------------
 //>>>>> Nastaví LED podle herní fáze <<<<<
 /*   Princip:
  *    -
  */
-void setLEDgamePhase(){
+/*void setLEDgamePhase(){
   switch (serverPhase) {
     case 0:
       setLED (LEDcol_blue, 100);
@@ -367,5 +396,5 @@ void setLEDgamePhase(){
     default:
       setLED (LEDcol_blue, 0);
   }
-}
+}*/
  //------------------------------------------------------------------------------------------------------

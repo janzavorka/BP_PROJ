@@ -9,7 +9,7 @@ void stopGame (){
   delay(5);
   sendBoard(3);
   serverPhase = 0;
-  setLEDgamePhase(); //Rozsvítí LEDku podle herní fáze (proměnná serverPhase)
+  signalLED.changeStaticColor(LEDcol_blue);
   setBoard(); //Vyčistí herní pole
 }
 //------------------------------------------------------------------------------------------------------
@@ -40,8 +40,11 @@ byte getNextPlayerNumber(byte player1){
   *    - podle výhry/prohry/remízy/pokračování hry vrací kód
   */
 void checkGame(byte cross, byte player){
-  if(board[gb_round] >= meshX*meshY){
-    board[gb_code] = 100;
+  if(board[gb_round] >= meshX*meshY){ //Pokud hra skončila remízou (jsou obsazena všechna pole)
+    board[gb_actPlayer] = 0;
+    sendBoard(100);
+    timer.setTimeout(clientMessageLast, stopGame); //Zpráva o remíze se zobrazí na určitou dobu, pak se resetuje hra
+    signalLED.changeBlinkColor(LEDcol_green, 10);
   }
   else{
     byte row = 0;
@@ -116,6 +119,7 @@ void checkGame(byte cross, byte player){
       board[gb_actPlayer] = 0;
       sendBoard(100+player);
       timer.setTimeout(clientMessageLast, stopGame);
+      signalLED.changeBlinkColor(LEDcol_green, 10);
     }
     else{
       Serial.println("Nikdo nevyhral, pokracuji");
@@ -151,15 +155,14 @@ void startGame (){
       Serial.print("Je k dispozici jen ");
       Serial.print(ONplayers);
       Serial.println(" hracu, hra nemuze zacit.");
-      setLED(LEDcol_orange, 100);
-      timer.setTimeout(1000, setLEDgamePhase);
+      signalLED.changeBlinkColor(LEDcol_red, 3);
       stopGame();
       return;
     }
     sendBoard(2); //Pošle všem příkaz k překreslení obrazovky (bez hráče)
-
+    board[gb_round] = 0; //Vynulování počtu odehraných kol
     board[gb_actPlayer] = getNextPlayerNumber(random(1, maxPlayers)); //Náhodně se vybere číslo začínajícího hráče
-    setLEDgamePhase();
+    signalLED.changeStaticColor(LEDcol_green);
     delay(200);
     sendBoard(1);
   }
@@ -188,6 +191,7 @@ bool fillPlayerToken(byte coord, byte player){
       if(coord >= 0 && coord < meshX*meshY){
         if(board[coord] == 0){
             board[coord] = player;
+            board[gb_round]++; //Zvýší se počet kol
             sendBoard(2);
             return true;
         }

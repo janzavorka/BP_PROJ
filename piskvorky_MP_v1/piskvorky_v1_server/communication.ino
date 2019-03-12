@@ -18,7 +18,7 @@ void sendBoard(byte code, byte playerNum){
           checkSum += subBoard[k];
           //Serial.println(board[k + boardPart*i]);
     }
-    subBoard[8] = i; //POřadové číslo packetu
+    subBoard[8] = i; //Pořadové číslo packetu
     checkSum += subBoard[8];
     //Vložení kontrolního součtu
     subBoard[9] = byte(checkSum & 0xFF);
