@@ -38,3 +38,6 @@
 - Příkaz: _"led rrr,ggg,bbb,inten"_, kde:
     - _rrr,ggg,bbb_ jsou voleny z <0;&nbsp;255> a reprezentují jednotlivé barvy
     - _inten_ je volena z <0;&nbsp;100> a reprezentuje celkovou intenzitu LED
+    
+ ### Notes.md
+ - Několik zjištění a postřehů z tvorby tohoto projektu
