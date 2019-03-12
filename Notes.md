@@ -10,3 +10,4 @@
 ### Kalibrace displejů
 - Při kalibraci displeje se standardně připojí Arduino k počítači pomocí převodníku USB->USART aby bylo možné číst údaje při kalibraci ze sériové linky
 - Připojený displej ovšem odebírá kolem 300 mA což s při připojení delším USB kabelem vytvoří úbytek napětí a kalibrace není tak přesná (výkyv klidně o 300 mV)
+- Eliminováno připojením externího zdroje 5 V
