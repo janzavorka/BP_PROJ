@@ -58,7 +58,7 @@ void recieveBoard (){
   //Nulování
   resetBoardAck();
   //Vyhodnotí herní desku
-  
+
   processBoard();
   //
     }
@@ -99,10 +99,10 @@ void recieveBoard (){
   */
 void sendData(byte message, byte code){
   byte data[] = {code, message};
-  delay(50);
+  delay(20);
   for(byte i = 0; i < 3; i++){
     client.write(data, 2);
-    delay(3);
+    delay(2);
   }
 }
 //------------------------------------------------------------------------------------------------------

@@ -44,7 +44,7 @@ void drawPoints(){
       if(board[i] != 0){
         row = i/meshX;
         column = i - row*meshX;
-        LCD.setColor(colors[board[i] -1]); //Nastaví barvu hráče podle čísla v poli
+        LCD.setColor(getPlayerColor(board[i])); //Nastaví barvu hráče podle čísla v poli
         LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       }
    }
@@ -135,6 +135,10 @@ void drawPoints(){
           drawPoints();
         }
         break;
+      case 4: //Stejná jako 3, navíc vytvoří černý obdélník por výpis hlášky
+        drawPage(3);
+        LCD.setColor(BLACK);
+        LCD.fillRect(0,0, 320, 50);
     }
   }
 

@@ -1,6 +1,6 @@
 //>>>>> Zracovává přijatou herí desku <<<<<
  /*   Princip:
-  *    - POstupně zpracuje přijatou herní duesku
+  *    - Postupně zpracuje přijatou herní duesku
   *
   */
 
@@ -12,10 +12,6 @@ void processBoard(){
       case 1: //Podle čísla hráče překreslit nebo hrát
         drawPage(3);
         break;
-      case 2: //Pouze překreslení
-        drawPage(3);
-        break;
-
       case 3:
         drawPage(2);
         break;
@@ -24,8 +20,6 @@ void processBoard(){
           //Překreslí pole
           drawPage(3);
           //Informuje o remíze
-          LCD.setColor(BLACK);
-          LCD.fillRect(0,0, 320, 50);
           LCD.setTextColor(YELLOW, BLACK);
           LCD.setTextSize(3);
           LCD.setCursor(20, 20);
@@ -43,8 +37,6 @@ void processBoard(){
         drawPage(3);
         //Vypíše vítěze
         byte winner = board[gb_code] - 100;
-        LCD.setColor(BLACK);
-        LCD.fillRect(0,0, 320, 50);
         LCD.setTextColor(getPlayerColor(winner), BLACK);
         LCD.setTextSize(3);
         LCD.setCursor(20, 20);
