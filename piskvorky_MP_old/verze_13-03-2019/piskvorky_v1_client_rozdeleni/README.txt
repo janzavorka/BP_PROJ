@@ -1,0 +1,1 @@
+Jednotlivé soubory obsahují stejný program, liší se pouze nastavením MAC adresy a kalibrací dotykového displeje pro jednotlivé desky.
