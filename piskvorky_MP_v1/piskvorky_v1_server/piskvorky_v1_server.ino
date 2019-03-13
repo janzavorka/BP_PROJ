@@ -358,10 +358,10 @@ void loop() {
       stopGame();
     }
   }
-  delay(50);
+  delay(10);
 }
 
-void blinkAll(){
+//void blinkAll(){
   signalLED.blink();
 }
 

@@ -27,13 +27,17 @@ void RGB_LED::changeStaticColor(byte color[]){
   for(byte i = 0; i < 3; i++){
     static_col[i] = color[i];
   }
-  LEDon();
+  if (!timer.isEnabled(blinkTimerID)){ //POkud LED nebliká, provede se změna barvy
+    LEDon();
+  }
 }
 
 //Změna intenzity LED
 void RGB_LED::changeIntensity(byte intens){
   intensity = intens;
-  LEDon();
+  if (!timer.isEnabled(blinkTimerID)){ //POkud LED nebliká, provede se změna intenzity
+    LEDon();
+  }
 }
 
 //Zabliká LED (kolikrát určeno proměnou times), times se násobí dvakrát aby seděl počet bliknutí
@@ -42,7 +46,12 @@ void RGB_LED::changeBlinkColor(byte color[], byte times){
     blink_col[i] = color[i];
   }
   if(!timer.isEnabled(blinkTimerID)){ //Hlídá zda neběží jiné blikání
-    blinkTimerID  = timer.setTimer(300, std::bind(&RGB_LED::blink,this), times*2+1);
+    blinkTimerID  = timer.setTimer(250, std::bind(&RGB_LED::blink,this), times*2+1);
+    blinkCount = times*2+1;
+  }
+  else{
+    timer.deleteTimer(blinkTimerID);
+    blinkTimerID  = timer.setTimer(250, std::bind(&RGB_LED::blink,this), times*2+1);
     blinkCount = times*2+1;
   }
 }

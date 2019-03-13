@@ -43,8 +43,8 @@ void checkGame(byte cross, byte player){
   if(board[gb_round] >= meshX*meshY){ //Pokud hra skončila remízou (jsou obsazena všechna pole)
     board[gb_actPlayer] = 0;
     sendBoard(100);
+    signalLED.changeBlinkColor(LEDcol_green, clientMessageLast/500);
     timer.setTimeout(clientMessageLast, stopGame); //Zpráva o remíze se zobrazí na určitou dobu, pak se resetuje hra
-    signalLED.changeBlinkColor(LEDcol_green, 10);
   }
   else{
     byte row = 0;
@@ -118,8 +118,9 @@ void checkGame(byte cross, byte player){
       Serial.print("Vyhral hrac: "); Serial.println(player);
       board[gb_actPlayer] = 0;
       sendBoard(100+player);
+      signalLED.changeBlinkColor(LEDcol_green, clientMessageLast/500);
       timer.setTimeout(clientMessageLast, stopGame);
-      signalLED.changeBlinkColor(LEDcol_green, 10);
+      //signalLED.changeBlinkColor(LEDcol_green, 80);
     }
     else{
       Serial.println("Nikdo nevyhral, pokracuji");
