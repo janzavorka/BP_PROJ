@@ -1,6 +1,18 @@
 # BP_PROJ: Piskvorky v1
 
 ### 09.03.2019
+- Program pro server:
+  - Doladěno funguvání indikační LED
+  - Provedeno několik testů
+
+- Program pro server:
+  - Upravena funkce pro odesílání dat serveru
+  - Přidána funkce pro kontrolu spojení se serverem (v případě, že došlo ke ztrátě spojení, je spojení zrušeno i ze strany clienta a vypíše se chybová hláška)
+  - Přidáno vyhodnoce kódu devět (vyžádané odpojení ze strany serveru)
+  - Kalibrace displejů
+  - Drobné kosmetické úpravy kódu a doplnění komentářů
+
+### 09.03.2019
 - Dokončení programu pro clienta (kvůli místu v paměti odstraněna sériová linka)
 - Malé úpravy v kódu pro server, odstraněna chyba v přijímací funkci
 
