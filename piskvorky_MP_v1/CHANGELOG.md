@@ -11,6 +11,8 @@
   - Přidáno vyhodnoce kódu devět (vyžádané odpojení ze strany serveru)
   - Kalibrace displejů
   - Drobné kosmetické úpravy kódu a doplnění komentářů
+- Zhotoveny kalibrace Clientů 1 a 2 dle zjištění popsané v [notes](Notes.md).
+
 
 ### 09.03.2019
 - Dokončení programu pro clienta (kvůli místu v paměti odstraněna sériová linka)
