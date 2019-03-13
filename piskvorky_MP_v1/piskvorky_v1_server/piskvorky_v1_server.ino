@@ -361,9 +361,6 @@ void loop() {
   delay(10);
 }
 
-//void blinkAll(){
-  signalLED.blink();
-}
 
 /*
  * >>>>>>>>>> FUNKCE <<<<<<<<<<
