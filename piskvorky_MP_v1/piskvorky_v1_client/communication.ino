@@ -1,15 +1,12 @@
 //>>>>> Připojení k serveru <<<<<
  /*   Princip:
-  *    - nekonečná smyčka snaží cí se připojit k serveru
-  *    - pokud je připojení úspěšné, změní se fáze hry
+  *    - pokusí se připojit k serveru, v případě spojení zapíše pošle 100 (informace, že chce být připojen)
   *    - v případě úspěšného spoojení vrátí true
-  *    - hodnoty vrácené serverem: 0 = spojení odmítnuto (třeba z důvodu běžící hry); 1-5 = přiřazené číslo hráče
   */
 bool connectToServer(){
-  byte server_code = 0;
   if(!client.connected()){
     //Serial.println("Pokus o spojeni");
-    client.connect(serverAddress, 3333);
+    client.connect(serverAddress, localPort);
     delay(20);
     if (client.connected()){
       //Serial.println("Pripojuji");
@@ -27,38 +24,39 @@ bool connectToServer(){
 //------------------------------------------------------------------------------------------------------
 //>>>>> Pokud je připojeno k serveru, přijímá herní desku <<<<<
  /*   Princip:
-  *    - Zkusí jestli server něco odeslal, přijme celý board
+  *    - Zkusí jestli server něco odeslal
+  *    - přijímá postupně jednotlivé subpackety, kontroluje kontrolní součet
+  *    - správně přijaté subpackety potvrzuje v poli boardAck
+  *    - v případě, že nesedí kontrolní součet, vyžádá si data znovu
   */
 void recieveBoard (){
   byte index = 0;
   byte subBoard [11];
   int checkSum = 0;
   if (client.connected() && client.available() > 10){ //client.available();
-    //Serial.println("prijem");
     while(index < 11){
       subBoard[index] = client.read();
       if(index <= 8){
         checkSum += subBoard[index];
       }
       index++;
-      delay(3);
+      //delay(3);
     }
     if((int(subBoard[9]) | int(subBoard[10]) << 8) == checkSum){ //Pokud sedí kontrolní součet = data byla přijata správně
       boardAck[subBoard[8]] = true; //Potvrzení přijetí, na pozici 8 v subBoard je pořadové číslo packetu
       for(byte i = 0; i < 8; i++){ //Zápis dat do herní desky
         board[subBoard[8]*8 + i] = subBoard[i];
       }
-      //checkRecievedBoard();
       //Kontrola zda byla deska přijata
       for(byte i = 0; i < packetLength/8; i++){
     if(!boardAck[i]){
       return;
     }
   }
-  //Nulování
+  //Nulování potvrzovacího pole
   resetBoardAck();
+  
   //Vyhodnotí herní desku
-
   processBoard();
   //
     }
@@ -73,24 +71,6 @@ void recieveBoard (){
   }
 }
 //------------------------------------------------------------------------------------------------------
-//>>>>> KOntrola, zda byla přijata deska celá, případně její vyhodnocení <<<<<
- /*   Princip:
-  *    - Zkontroluje zda byla přijata deska (true vyplněno v board ack)
-  *    - Vynuluje pole boardAck
-  *    - Zavolá fci pro vyhodnocení board
-  */
-/*void checkRecievedBoard(void){
-  for(byte i = 0; i < packetLength/8; i++){
-    if(!boardAck[i]){
-      return;
-    }
-  }
-  //Nulování
-  resetBoardAck();
-  //Vyhodnotí herní desku
-  processBoard();
-}*/
-//------------------------------------------------------------------------------------------------------
 //>>>>> Odeslání dat serveru <<<<<
  /*   Princip:
   *    - Odešle serveru daná data
@@ -99,7 +79,6 @@ void recieveBoard (){
   */
 void sendData(byte message, byte code){
   byte data[] = {code, message};
-  delay(20);
   for(byte i = 0; i < 3; i++){
     client.write(data, 2);
     delay(2);
@@ -114,5 +93,23 @@ void resetBoardAck(){
   for(byte i = 0; i < packetLength/8; i++){
     boardAck[i] = false;
   }
+}
+//------------------------------------------------------------------------------------------------------
+
+//>>>>> Odpojení od serveru <<<<<
+ /*   Princip:
+  *    - zruší spojení se serverem a vypíše chybovou hlášku na displej
+  */
+void disconnectFromServer(){
+  client.stop();
+  serverConnection = false;
+  LCD.setColor(BLACK);
+  LCD.fillRect(0,0, 320, 50);
+  LCD.setTextColor(MAROON, BLACK);
+  LCD.setTextSize(3);
+  LCD.print("ODPOJEN", 20, 20);
+  delay(5000);
+  drawPage(0);
+  
 }
 //------------------------------------------------------------------------------------------------------

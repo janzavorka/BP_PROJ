@@ -69,8 +69,6 @@ void drawPoints(){
     button_index = 0;
     switch(id){
       case 0:
-        //LCD.setColor(BLACK);
-        //LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
         drawHead(YELLOW);
         LCD.setTextSize(2);
@@ -91,8 +89,6 @@ void drawPoints(){
         break;
       case 1:
         drawMainFrame(BLUE);
-        //LCD.setColor(BLACK);
-        //LCD.fillRect(20, 40, 310, 90);
         drawHead(YELLOW);
         LCD.setCursor(20, 50);
         LCD.setTextSize(2);
@@ -100,31 +96,22 @@ void drawPoints(){
         buttons[button_index] = buttonRect(50, 270, 150, 210, 10, 1);
         LCD.setTextColor(RED, LIGHTGREY);
         LCD.setTextSize(3);
-
         LCD.print("PRERUSIT", 90,170);
-        //screenRefresh = false;
         break;
       case 2:
-        //LCD.clrScr();
-        //button_index = 0;
-        //LCD.setColor(BLACK);
-        //LCD.fillRect(20, 40, 310, 90);
         drawMainFrame(BLUE);
         drawHead(getPlayerColor(getMyPlayerNumber()));
         LCD.setTextColor(getPlayerColor(getMyPlayerNumber()), BLACK);
         LCD.setTextSize(2);
-        LCD.setCursor(90, 50);
-        LCD.println("Pripojeno");
-        LCD.setCursor(20, 70);
-        LCD.println("Cekam na zahajeni hry");
+        LCD.print("Pripojeno", 90, 50);
+        LCD.print("Cekam na zahajeni hry", 20, 70);
         buttons[button_index] = buttonRect(50, 270, 150, 210, 20, 1);
         LCD.setTextColor(BLACK, LIGHTGREY);
         LCD.setTextSize(3);
-        LCD.setCursor(100,170);
-        LCD.println("ODPOJIT");
+        LCD.print("ODPOJIT", 100, 170);
         break;
       case 3:
-        if(board[gb_actPlayer] == getMyPlayerNumber()){ //Pokud jsem na řadě, obrazovka se vykreslí mojí barvou
+        if(board[gb_actPlayer] == getMyPlayerNumber() && board[gb_code] == 1){ //Pokud jsem na řadě, obrazovka se vykreslí mojí barvou
           drawMainFrame(getPlayerColor(getMyPlayerNumber()));
           drawMesh(getPlayerColor(getMyPlayerNumber()));
           drawPoints();

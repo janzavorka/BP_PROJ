@@ -1,7 +1,7 @@
  /*>>>>>>> Piškvorky s arduino Ethernet <<<<<<<
  * - max 5 hráčů
  * - 1x arduino jako server, max 5x arduino jako client
- *
+ * - Více informací na GitHubu: https://github.com/janzavorka/BP_PROJ
  */
 
 #include <Ethernet.h>
@@ -14,8 +14,9 @@
 #if !defined(SmallFont)
 extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 #endif
-
-/* ----------Nastavení ethernetu----------*/ //(ZMĚNIT)
+/* ---------- KONFIGURACE ----------*/
+//Nastavení MAC adres pro jednotlivé clienty
+//Každý client by měl mít unikatní IP adresu
 //Client 1
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
@@ -58,29 +59,27 @@ IPAddress serverAddress(10,0,0,8);
 //Maximální a minimální tlak
 #define MINPRESSURE 10
 #define MAXPRESSURE 1000
-//Údaje pro kalibraci1
-/*#define TS_MINX 177
-#define TS_MINY 886
-#define TS_MAXX 347
-#define TS_MAXY 550*/
 
 int TSx, TSy = 0;
 TSPoint touchPoint;
 bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabránění vícedotykům najednou
 
-//Kalibrace jednotlivých displajů (ZMĚNIT)
-
+/* ---------- KONFIGURACE ----------*/
+//Kalibrace jednotlivých displajů 
+//Kalibraci lle provést například pomocí příkladu v knihovně UTFGLU
+//MCUFRIEND_kbv -> TouchScreen_calibr_kbv
+//Uložené kalibrační hodnoty pro použité displeje
 //Client 1
-#define TOUCH_XMIN 170
+#define TOUCH_XMIN 221
 #define TOUCH_XMAX 950
-#define TOUCH_YMIN 146
+#define TOUCH_YMIN 200
 #define TOUCH_YMAX 950
 
 //Client 2
-/*#define TOUCH_XMIN  170
-#define TOUCH_XMAX  935
-#define TOUCH_YMIN  146
-#define TOUCH_YMAX  920*/
+/*#define TOUCH_XMIN  233
+#define TOUCH_XMAX  937
+#define TOUCH_YMIN  210
+#define TOUCH_YMAX  910*/
 
 //Client 3 (nutné změnit i v kódu u čtení z displaye - zapojení displeje má jinou orientaci)
 /*#define TOUCH_XMIN 945
@@ -134,6 +133,7 @@ byte lastPage = 255;
 byte myNum = 0; //Číslo v herním poli "board", je přidělováno serverem při navázání spojení
 byte gamePhase = 0; //fáze hry (podle toho se vykreslí obrazovka)(0:úvodní, 1: připojování k serveru, 2: připojeno, čekání na začátek hry, 3: pro=bíhající hra, překreslování displeje, 4: můj tah)
 const byte maxPlayers = 5;
+bool serverConnection = false; //Zda bylo spojení úspěšně navázáno
 
 /* ----------Piškvorky----------*/
 const byte packetLength = 136; //Musí být dělitelné osmi
@@ -144,7 +144,7 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *  90:     Hlášení prostřednictvím kódu
  *            0:    nic nedělej
  *            1:    vše OK, hraje se, překresli obrazovku
- *            2:    pouze překreslit
+ *            2:    pouze překreslit, nikdo nehraje
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
  *            9:    odpojuji
  *            11:   hraje hráč 1
@@ -254,7 +254,6 @@ void drawMainFrame(uint16_t); //Vykreslí základní rámeček (v dané barvě)
 void drawMesh (uint16_t); //Vykreslí základní hrací mřížku (argument je barva)
 void drawPage (byte); //Vykreslí obrazovku podle čísla
 void drawPogetMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí -1
-//bool recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
 void drawPoints(void); //Vykreslí puntíky podle board
 /* displayControl */
 void drawHead (uint16_t); //Vykreslí hlavičku - nápis "piskvorky" danou barvou (argument)
@@ -267,7 +266,6 @@ uint16_t getPlayerColor(byte); //Zjistí barvu hráče, argument je číslo pozi
 byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí 0
 /* communication */
 void recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
-//void checkRecievedBoard(void); //Zkontroluje zda byla přijata celá herní deska (board)
 void sendData(byte, byte); //Odešle daná data serveru (3x po sobě pro kontrolu), první argument je zpráva a druhé je kód, podle kterého server zpravu vyhodnotí
 void resetBoardAck(void); //Vyplní pole pro potvrzování příjmu pole board hodnotami false (nepřijato)
 /*
@@ -286,7 +284,7 @@ void setup() {
   LCD.setTextColor(YELLOW, BLACK);
     LCD.setTextSize(2);
     //LCD.setCursor(20, 45);
-    LCD.print("Zkontrolujte pripojeni \t kabelu", 20, 45);
+    LCD.print("Zkontrolujte pripojeni \n kabelu", 20, 45);
   while(!Ethernet.begin(mac)){ //IP adresa z DHCP serveru
    // Serial.println("Zkontrolujte pripojeni kabelu");
     delay(1000);
@@ -317,20 +315,24 @@ void loop() {
   if ((millis() - lastReconnect > tryReconnect) && connectingToServer && !client.connected()){
     lastReconnect = millis();
     if(connectToServer()){
-      //gamePhase = 2;
       connectingToServer = false;
+      serverConnection = true;
       }
   }
 
+  //Kontrola spojení se serverem
+  if(!client.connected() && serverConnection){
+    disconnectFromServer();
+  }
 
+  //Zkontroluj zda nejsou přijatá data
+  recieveBoard();
 
-  //Dotykáč
+  //Obnovení funkce dotykové plochy
   if ((millis() - refreshTouchScreen > touchScreenOff) && ! touchScreenAct){ //Obnova funkce dotykové plochy
     touchScreenAct = true;
     refreshTouchScreen = millis();
   }
-  //Příjem data
-  recieveBoard();
 
   if(touchScreenAct){
    touchPoint = Touch.getPoint();
@@ -339,8 +341,7 @@ void loop() {
    pinMode(XM, OUTPUT);
    digitalWrite(YP, HIGH);
    digitalWrite(XM, HIGH);
-  // we have some minimum pressure we consider 'valid'
-  // pressure of 0 means no pressing!
+  // Zkontroluje tlak na dotykovou plochu (0 znamená žádný tlak/dotyk), stisk se vyhodnotí až od určité hodnoty
   if (touchPoint.z > MINPRESSURE && touchPoint.z < MAXPRESSURE && touchScreenAct) {
      refreshTouchScreen = millis(); //Nastaví poslední čas stisku
      touchScreenAct = false;
@@ -350,16 +351,15 @@ void loop() {
      //Pro CLIENT 3
      /*TSx = map(touchPoint.x, TOUCH_XMIN, TOUCH_XMAX, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.y, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);*/
-     //Kontrola stisku
+     //Kontrola stisku (seriova linka pro debug)
      /*Serial.print("X = "); Serial.print(touchPoint.x);
      Serial.print("\tY = "); Serial.print(touchPoint.y);
      Serial.print("\tXpix = "); Serial.print(TSx);
      Serial.print("\tYpix = "); Serial.print(TSy);
      Serial.print("\tPressure = "); Serial.println(touchPoint.z);*/
-
      buttonPressed(TSx, TSy);
-   }
-}
+    }
+  }
 
 
   delay(20);
@@ -376,8 +376,9 @@ void loop() {
 //>>>>> Vyhodocení stisku tlačítka <<<<<
  /*   Princip:
   *    - Vezme souřadnice (argument) a vyhodnotí stisky tlačítka
-  *    - uvažuje jednotlivé fáze hry
-  *
+  *    - Každé tlačítko má unikátní ID, podle toho dojde k vyhodnocení
+  *    - V případě, že je rozehraná hra (je vykreslena herní mříž, uvažuje dotyky jako pokládání žetonů)
+  *    - Bere v úvahu zda je daný hráč na řadě
   */
 void buttonPressed(int x, int y){
   byte cislo = 255; //Defaultní hodnota (nelze 0 jinak bude vždy spouštět tlačítko 0)
@@ -400,6 +401,7 @@ void buttonPressed(int x, int y){
       connectingToServer = false;
       if(client.connected()){
         client.stop();
+        serverConnection = false;
       }
       drawPage(0);
       break;
@@ -407,14 +409,15 @@ void buttonPressed(int x, int y){
     case 20:
       client.stop();
       connectingToServer = false;
+      serverConnection = false;
       drawPage(0);
       break;
     default:
       break;
   }
 
-  if(board[gb_actPlayer] == getMyPlayerNumber()){
-    //POkusit se vyhdnotit vložení herního žetonu
+  if(board[gb_actPlayer] == getMyPlayerNumber() && board[gb_code] == 1){ //Zkontroluje zda daný hráč je na řadě a kód je 1 (hra běží)
+    //Pokusit se vyhdnotit vložení herního žetonu
     byte row = 0;
     byte column = 0;
     for(int i = 0; i < meshX; i++){ //Zjištění místa v hracím poli
@@ -431,7 +434,7 @@ void buttonPressed(int x, int y){
         }
       }
       if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam jiný hráč)
-      //Odesíláni
+      //Odesíláni vybraného pole
       sendData(meshX*row + column, 10);
       }
   }

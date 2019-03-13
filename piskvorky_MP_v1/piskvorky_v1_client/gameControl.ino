@@ -15,7 +15,10 @@ void processBoard(){
       case 3:
         drawPage(2);
         break;
-
+       
+      case 9: //Vyžádané odpojení ze strany serveru
+        disconnectFromServer();
+        break;
       case 100: //Remíza
           //Překreslí pole
           drawPage(3);
@@ -24,23 +27,21 @@ void processBoard(){
           LCD.setTextSize(3);
           LCD.setCursor(20, 20);
           LCD.println("Remiza");
-          //delay(10000);
-          //prepareNewGame();
         break;
 
       case 101:
       case 102:
       case 103:
       case 104:
-      case 105:
-        //Překreslí pole
-        drawPage(3);
-        //Vypíše vítěze
+      case 105:{
         byte winner = board[gb_code] - 100;
+        //Překreslí pole
+        drawPage(4);
+        //Vypíše vítěze
         LCD.setTextColor(getPlayerColor(winner), BLACK);
         LCD.setTextSize(3);
         LCD.setCursor(20, 20);
-        if(winner == getMyPlayerNumber()){
+        if(getMyPlayerNumber() == winner){
           LCD.println("Vitez");
         }
         else{
@@ -48,6 +49,20 @@ void processBoard(){
           LCD.setCursor(250, 20);
           LCD.println(winner);
         }
+      }
+        break;
+      case 201:
+      case 202:
+      case 203:
+      case 204:
+      case 205:
+        LCD.setColor(BLACK);
+        LCD.fillRect(0,0, 320, 50);
+        LCD.setTextColor(getPlayerColor(board[gb_code]-200), BLACK);
+        LCD.setTextSize(3);
+        LCD.print("Odpojen hrac", 20, 20);
+        LCD.setCursor(250, 20);
+        LCD.println(board[gb_code] - 200);
         break;
     }
   }
