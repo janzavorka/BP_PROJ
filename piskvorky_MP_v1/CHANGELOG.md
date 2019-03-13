@@ -11,7 +11,7 @@
   - Přidáno vyhodnoce kódu devět (vyžádané odpojení ze strany serveru)
   - Kalibrace displejů
   - Drobné kosmetické úpravy kódu a doplnění komentářů
-- Zhotoveny kalibrace Clientů 1 a 2 dle zjištění popsané v [notes](Notes.md).
+- Zhotoveny kalibrace Clientů 1 a 2 dle zjištění popsané v [notes](https://github.com/janzavorka/BP_PROJ/blob/master/Notes.md).
 
 
 ### 09.03.2019
