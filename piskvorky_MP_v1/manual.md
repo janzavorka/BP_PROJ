@@ -21,6 +21,7 @@ Význam: <img src="manual_data/LED_state/blue.png" width="10" height="10" /> sv�
 |  Příkaz |                         Význam                         |
 |:-------:|:------------------------------------------------------:|
 |   help  | Vypíše nápovědu (dostupné příkazy)                     |
+|   info  | Vypiší informace o serveru (HW, verze SW, adpo.)       |
 | clients | Zobrazí čísla a IP adresy připojených clientů          |
 |  start  | Spustí hru (ekvivalent zeleného tlačítka)              |
 |  reset  | Přeruší a resetuje hru (ekvivalent červeného tlačítka) |
