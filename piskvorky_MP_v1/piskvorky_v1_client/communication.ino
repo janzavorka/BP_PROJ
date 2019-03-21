@@ -55,7 +55,7 @@ void recieveBoard (){
   }
   //Nulování potvrzovacího pole
   resetBoardAck();
-  
+
   //Vyhodnotí herní desku
   processBoard();
   //
@@ -108,8 +108,9 @@ void disconnectFromServer(){
   LCD.setTextColor(MAROON, BLACK);
   LCD.setTextSize(3);
   LCD.print("ODPOJEN", 20, 20);
+  lastPage = 255;
   delay(5000);
   drawPage(0);
-  
+
 }
 //------------------------------------------------------------------------------------------------------

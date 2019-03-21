@@ -15,13 +15,13 @@ void processBoard(){
       case 3:
         drawPage(2);
         break;
-       
+
       case 9: //Vyžádané odpojení ze strany serveru
         disconnectFromServer();
         break;
       case 100: //Remíza
           //Překreslí pole
-          drawPage(3);
+          drawPage(4);
           //Informuje o remíze
           LCD.setTextColor(YELLOW, BLACK);
           LCD.setTextSize(3);
@@ -56,6 +56,7 @@ void processBoard(){
       case 203:
       case 204:
       case 205:
+        lastPage = 255; //Aby se při příští překreslení vyplnila obrazovka černou
         LCD.setColor(BLACK);
         LCD.fillRect(0,0, 320, 50);
         LCD.setTextColor(getPlayerColor(board[gb_code]-200), BLACK);
@@ -65,9 +66,6 @@ void processBoard(){
         LCD.println(board[gb_code] - 200);
         break;
     }
-  }
-  else{
-    //Serial.println("Nejsi ve hre");
   }
 }
 //------------------------------------------------------------------------------------------------------

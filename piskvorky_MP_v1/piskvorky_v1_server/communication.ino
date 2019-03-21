@@ -30,7 +30,7 @@ void sendBoard(byte code, byte playerNum){
   }
 }
 //------------------------------------------------------------------------------------------------------
-//>>>>> Odešle herní desku danému všem <<<<<
+//>>>>> Odešle herní desku všem <<<<<
  /*   Princip:
   *    - pomocí server.write odešle celou herní desku
   */
@@ -40,6 +40,15 @@ void sendBoard(byte code){
       sendBoard(code, i+1);
     }
   }
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Odešle herní desku všem beze změny kódu <<<<<
+ /*   Princip:
+  *    - pomocí server.write odešle celou herní desku
+  *    - void fce(void): vhodné pro použití s timery
+  */
+void sendBoardR(){
+  sendBoard(board[gb_code]);
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Synchronizuj IP hráčů s herní deskou <<<<<
@@ -91,10 +100,10 @@ void recieveData(byte index){
         if(clientsData[index][i][2] == 0 && clients[index].available() > 1){ //Pokud tato data nebyla vyplněna a nějaká jsou k dispozici - přečti je
           //Serial.print("Prijem dat od uzivatele "); Serial.print(index); Serial.print("     ");
           clientsData[index][i][0] = clients[index].read();
-          Serial.print(clientsData[index][i][0]); Serial.print("; ");
+          //Serial.print(clientsData[index][i][0]); Serial.print("; ");
           delay(2);
           clientsData[index][i][1] = clients[index].read();
-          Serial.println(clientsData[index][i][1]);
+          //Serial.println(clientsData[index][i][1]);
           clientsData[index][i][2] = 1;
         }
       }
@@ -104,7 +113,6 @@ void recieveData(byte index){
      delay(8);
       while(clients[index].available() > 0){ //Zahození všech ostatních dat
         char bin = clients[index].read();
-        Serial.println(bin);
       }
       processClientData(index);
    }
@@ -148,6 +156,33 @@ void processClientData(byte index){
     Serial.println(" byla prijata chybna data, zahazuji");
     resetClientData(index);
   }
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Zrealizuje odpojení daného hráče <<<<<
+ /*   Princip:
+  */
+void disconnectPlayer(byte player){
+    byte index = player -1;
+    Serial.print(player);
+    Serial.println(" STOP");
+    clients[index].stop();
+    board[IPaddr[index]] = 0;
+    board[IPaddr[index]+1] = 0;
+    board[IPaddr[index]+2] = 0;
+    board[IPaddr[index]+3] = 0;
+    signalLED.changeBlinkColor(LEDcol_orange, 3);
+    sendErrMessage(200+player);
+}
+//------------------------------------------------------------------------------------------------------
+//>>>>> Odešle chybovou právu všem hráčům, po určité době obnoví předchozí stav hry <<<<<
+ /*   Princip:
+  */
+void sendErrMessage(byte message){
+    byte LastCode = board[gb_code]; //Zálohuje původní hodnotu a pak jí vrátí
+    sendBoard(message);
+    board[gb_code] = LastCode;
+    delay(50);
+    timer.setTimeout(clientErrMessageLast, sendBoardR);
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Identifikuje použité ethernet controler <<<<<

@@ -36,6 +36,7 @@ const byte resetPIN = 38;
 unsigned long long refresh_buttonOff = 0;
 
 const long clientMessageLast = 8000; //Doba zobrazení zprávy na straně clienta (v milisekundách)
+const long clientErrMessageLast = 4000; //Doba zobrazení chybového hlášení na straně clienta
 
 //Herní server
 IPAddress serverAddress(10,0,0,8);
@@ -170,6 +171,7 @@ RGB_LED signalLED;
 /* ----------PROTOTYPY----------*/
 void cleanBoard(void); //Vyplní herní desku nulami
 void syncBoardIPs(void); //Synchronizuje IP adresy v boardu a s IP adresy v seznamu clientů (clients[])
+void sendBoardR(void); //Odešle data veme beze změny kódu
 void sendBoard(byte); //Odešle herní desku všem hráčům (argument číslo řídicího kódu)
 void sendBoard(byte, byte); //Odešle herní desku konkrétnímu hráči (argument číslo řídicího kódu a číslo clienta/hráče)
 void setBoard(void); //Připraví herní desku
@@ -186,6 +188,8 @@ void checkIncommingData(void); //Kontroluje, zda nějaký client neposlal data
 void resetClientData(byte); //Smaže přijatá data daného clienta
 void processClientData(byte); //Provede požadované úkony pro daného hráče
 byte getHWcontroller(void); //Vrátí číslo použitého ethernet kontroléru
+void disconnectPlayer(byte); //Odpojí dané hráče (včetně resetování boardu a informování ostatních hráčů)
+void sendErrMessage(byte); //Pošle chybovou zprávu
 /* SerialControl */
 void processBuffik(void); //Zpracuje přijatou zprávu přes sériovou linku
 void printLine(byte, byte); //Vypíše několik zadaných znaků za sebou (pro výpis oddělovacích čar na sériovém monitoru)
@@ -333,14 +337,7 @@ void loop() {
   // stop any clients which disconnect
   for (byte i = 0; i < maxPlayers; i++) {
     if ((clients[i]) && !clients[i].connected()) {
-      Serial.print(i);
-      Serial.println(" STOP");
-      clients[i].stop();
-      board[IPaddr[i]] = 0;
-      board[IPaddr[i]+1] = 0;
-      board[IPaddr[i]+2] = 0;
-      board[IPaddr[i]+3] = 0;
-      signalLED.changeBlinkColor(LEDcol_orange, 3);
+      disconnectPlayer(i+1);
     }
   }
 

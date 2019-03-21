@@ -34,11 +34,7 @@ void drawMesh(uint16_t color){
 void drawPoints(){
   byte row = 0;
   byte column = 0;
-  uint16_t colors[maxPlayers];
-
-  for(byte i = 0; i < maxPlayers; i++){ //Zjištění jednotlivých barev
-    colors[i] = getPlayerColor(colorAddr[i]);
-  }
+  //uint16_t colors[maxPlayers];
 
   for (int i = 0; i < meshX*meshY; i++){ //Překreslí všechny puntíky
       if(board[i] != 0){

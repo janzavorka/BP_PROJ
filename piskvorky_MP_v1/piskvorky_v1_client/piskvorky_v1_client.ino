@@ -65,7 +65,7 @@ TSPoint touchPoint;
 bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabránění vícedotykům najednou
 
 /* ---------- KONFIGURACE ----------*/
-//Kalibrace jednotlivých displajů 
+//Kalibrace jednotlivých displajů
 //Kalibraci lle provést například pomocí příkladu v knihovně UTFGLU
 //MCUFRIEND_kbv -> TouchScreen_calibr_kbv
 //Uložené kalibrační hodnoty pro použité displeje
@@ -82,10 +82,10 @@ bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabráněn�
 #define TOUCH_YMAX  910*/
 
 //Client 3 (nutné změnit i v kódu u čtení z displaye - zapojení displeje má jinou orientaci)
-/*#define TOUCH_XMIN 945
-#define TOUCH_XMAX 155
-#define TOUCH_YMIN 156
-#define TOUCH_YMAX 936*/
+/*#define TOUCH_XMIN 950
+#define TOUCH_XMAX 205
+#define TOUCH_YMIN 190
+#define TOUCH_YMAX 945*/
 
 
 /* ----------Časové intervaly různých událostí----------*/
@@ -434,6 +434,9 @@ void buttonPressed(int x, int y){
         }
       }
       if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam jiný hráč)
+      //Vyplní ihned daný žeton na obraovku (jinak by docházelo k vykreslení až po zpracování serverem, zpoždění několik stovek ms, uživatelsky nepříjemné)
+      LCD.setColor(getPlayerColor(getMyPlayerNumber())); //Nastaví barvu hráče podle čísla v poli
+      LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       //Odesíláni vybraného pole
       sendData(meshX*row + column, 10);
       }
