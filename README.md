@@ -34,7 +34,7 @@
 |:---------:|
 |Krabička pro clienta (Arduino Ethernet s 2,4" displejem)|
 
-| <img src="piskvorky_case/server_ArdDue_case/Sestava_krabicka2.png" width="49%" alt="Krabička pro server" /> <img src="piskvorky_case/server_ArdDue_case/Sestava_krabicka1.png" width="49%" alt="Krabička pro server" /> |
+| <img src="piskvorky_case/server_ArdDue_case/sestava_krabicka2.png" width="49%" alt="Krabička pro server" /> <img src="piskvorky_case/server_ArdDue_case/sestava_krabicka1.png" width="49%" alt="Krabička pro server" /> |
 |:---------:|
 |Krabička pro server (Arduino Due s Ethernet modulem + tlačítka a signalizační LED)|
 
