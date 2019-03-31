@@ -5,3 +5,6 @@
 *.ino.eep
 *.ino.elf
 *.ino.hex
+
+# Files generated for 3D printer
+piskvorky_case\3DprinterPrusa_data
