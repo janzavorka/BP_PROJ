@@ -1,6 +1,19 @@
 # BP_PROJ
 
 
+### piskvorky_MP_v1 
+- Piškvorky pro až 5 hráčů
+- 1x arduino Due jako server, max 5x arduino Ethernet s dotykovým displejem jako client
+- připojovánou přes router s DHCP (serveru nutno přidělit pevnou IP)
+- aktualizovaný návod na ovládání [zde](https://github.com/janzavorka/BP_PROJ/blob/master/piskvorky_MP_v1/manual.md)
+---
+
+### Piskvorky_red
+- Původní verze verze hry pouze pro dva hráče
+- HW: 2x Arduino Ethernet, 2x 2,4" dotykový display
+- jedno arduino jako server, druhé jako client (pevná IP adresa)
+---
+
 ### Knihovny
 - Knihovny použité pro ovládání (nemusí být aktuální verze)
 - Domovské stránky knihoven:
@@ -10,20 +23,8 @@
         - [Adafruit_TouchScreen](https://github.com/adafruit/Adafruit_TouchScreen)
 ---
 
-### Piskvorky_red
-- HW: 2x Arduino Ethernet, 2x 2,4" dotykový display
-- jedno arduino jako server, druhé jako client (pevná IP adresa)
----
-
 ### Menu 
 - Návrh původního menu pro piškvorky 
----
-
-### piskvorky_MP_v1 
-- Piškvorky pro až 5 hráčů
-- 1x arduino Due jako server, max 5x arduino Ethernet s dotykovým displejem jako client
-- připojovánou přes router s DHCP (serveru nutno přidělit pevnou IP)
-- aktualizovaný návod na ovládání [zde](https://github.com/janzavorka/BP_PROJ/blob/master/piskvorky_MP_v1/manual.md)
 ---
 
 ### piskvorky_case
