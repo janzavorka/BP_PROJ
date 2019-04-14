@@ -19,8 +19,8 @@ Význam: <img src="manual_data/LED_state/blue.png" height="20" /> svítí, <img 
 
 ### Funkce tlačítek na serveru
 #### ![Zelené tlacitko](https://placehold.it/15/c5f015/000000?text=+) `Zelené tlačítko`:
-  - Pokud neběží hra (indikační LED svítí modře <img src="manual_data/LED_state/blue.png" width="10" height="10" />) - stiskem tlačítka dojde ke spuštění hry (s ověřením zda je k dispozici dostatek hráčů)
-  - Pokud hra již běží (indikační LED svítí zeleně <img src="manual_data/LED_state/green.png" width="10" height="10" />) - stiskem tlačítka dojde k posunutí tahu na dalšího hráče
+  - Pokud neběží hra (indikační LED svítí modře <img src="manual_data/LED_state/blue.png" height="20" />) - stiskem tlačítka dojde ke spuštění hry (s ověřením zda je k dispozici dostatek hráčů)
+  - Pokud hra již běží (indikační LED svítí zeleně <img src="manual_data/LED_state/green.png" height="20" />) - stiskem tlačítka dojde k posunutí tahu na dalšího hráče
 
 #### ![Cervene tlacitko](https://placehold.it/15/f03c15/000000?text=+) `Červené tlačítko`:
   - Pokud je stisknuto, dojde k přerušení hry aktuálně běžící hry (dosavadní stav hry je resetován)
