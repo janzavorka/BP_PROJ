@@ -1,7 +1,15 @@
-/*
-* Řízení informační LED
-* pro správné fungování je nutná knihovna SimpleTimer
-* více informací o jednotlivých stavech LED je k dispozici na githubu
+/*>>>>>>> Piškvorky s arduinem po LAN <<<<<<<
+*  !!! Součást programu pro server, samostatně nefunkční !!!
+*
+* - Autor: Jan Závorka
+* - Email: zavorja4@fel.cvut.cz
+* - Domovská stránka projektu: https://github.com/janzavorka/BP_PROJ
+* - Seznam souborů: piskvorky_MP_server.ino; boardControl.ino; communication.ino; gameControl.ino; indicatioLED.ino; SerialControl.ino
+*
+* ----- Popis:
+* - Řízení informační RGB LED
+* - Pro správné fungování je nutná knihovna SimpleTimer
+* - Více informací o jednotlivých stavech LED je k dispozici na githubu
 */
 
 
@@ -46,12 +54,12 @@ void RGB_LED::changeBlinkColor(byte color[], byte times){
     blink_col[i] = color[i];
   }
   if(!timer.isEnabled(blinkTimerID)){ //Hlídá zda neběží jiné blikání
-    blinkTimerID  = timer.setTimer(250, std::bind(&RGB_LED::blink,this), times*2+1);
+    blinkTimerID  = timer.setTimer(200, std::bind(&RGB_LED::blink,this), times*2+1);
     blinkCount = times*2+1;
   }
   else{
     timer.deleteTimer(blinkTimerID);
-    blinkTimerID  = timer.setTimer(250, std::bind(&RGB_LED::blink,this), times*2+1);
+    blinkTimerID  = timer.setTimer(200, std::bind(&RGB_LED::blink,this), times*2+1);
     blinkCount = times*2+1;
   }
 }

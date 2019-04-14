@@ -78,10 +78,12 @@ void recieveBoard (){
   *    - pokud je code == 10: bude se přenášet vyplnění pole, pokud je code == 20 jedná se o request pro znovuodeslání části pole board
   */
 void sendData(byte message, byte code){
-  byte data[] = {code, message};
-  for(byte i = 0; i < 3; i++){
-    client.write(data, 2);
-    delay(2);
+  if(client.connected()){
+    byte data[] = {code, message};
+    for(byte i = 0; i < 3; i++){
+      client.write(data, 2);
+      delay(2);
+    }
   }
 }
 //------------------------------------------------------------------------------------------------------
@@ -103,6 +105,7 @@ void resetBoardAck(){
 void disconnectFromServer(){
   client.stop();
   serverConnection = false;
+  board[gb_code] = 0;
   LCD.setColor(BLACK);
   LCD.fillRect(0,0, 320, 50);
   LCD.setTextColor(MAROON, BLACK);

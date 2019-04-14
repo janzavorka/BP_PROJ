@@ -38,11 +38,17 @@ void drawPoints(){
 
   for (int i = 0; i < meshX*meshY; i++){ //Překreslí všechny puntíky
       if(board[i] != 0){
-        row = i/meshX;
-        column = i - row*meshX;
+        //row = i/meshX;
+        //column = i - row*meshX;
         LCD.setColor(getPlayerColor(board[i])); //Nastaví barvu hráče podle čísla v poli
-        LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
+        //LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       }
+      else{
+        LCD.setColor(BLACK); //Nastaví barvu hráče podle čísla v poli
+      }
+      row = i/meshX;
+      column = i - row*meshX;
+      LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
    }
 }
 
@@ -81,7 +87,6 @@ void drawPoints(){
         LCD.setTextSize(3);
         LCD.setCursor(90,170);
         LCD.println("PRIPOJIT");
-        screenRefresh = false;
         break;
       case 1:
         drawMainFrame(BLUE);

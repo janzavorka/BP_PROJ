@@ -321,7 +321,7 @@ void loop() {
   }
 
   //Kontrola spojení se serverem
-  if(!client.connected() && serverConnection){
+  if(!client.connected() && serverConnection && client){
     disconnectFromServer();
   }
 

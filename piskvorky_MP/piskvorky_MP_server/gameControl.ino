@@ -1,11 +1,61 @@
+/*>>>>>>> Piškvorky s arduinem po LAN <<<<<<<
+*  !!! Součást programu pro server, samostatně nefunkční !!!
+*
+* - Autor: Jan Závorka
+* - Email: zavorja4@fel.cvut.cz
+* - Domovská stránka projektu: https://github.com/janzavorka/BP_PROJ
+* - Seznam souborů: piskvorky_MP_server.ino; boardControl.ino; communication.ino; gameControl.ino; indicatioLED.ino; SerialControl.ino
+*
+* --- Popis:
+* - Část zodpovědná za řízení průběhu hry
+*/
+
+//>>>>> spustí hru <<<<<
+ /*   Princip:
+  *    - Zajistí nastavení herního pole, vybere prvního hráče a odešle řídicí kód
+  */
+void startGame (){
+  if(serverPhase == 1){
+    Serial.println("Aktualne bezi hra");
+  }
+  else{
+    Serial.println("Spoustim hru");
+    serverPhase = 1;
+    syncBoardIPs();
+    byte ONplayers = 0; //Pocet hracu online
+
+    for (byte i = 0; i < maxPlayers; i++){ //Kontrola, zda jsou připojení alespoň dva hráči
+      if(clients[i]){
+        ONplayers++;
+      }
+    }
+
+    if(ONplayers < 2){
+      Serial.print("Je k dispozici jen ");
+      Serial.print(ONplayers);
+      Serial.println(" hracu, hra nemuze zacit.");
+      signalLED.changeBlinkColor(LEDcol_red, 3);
+      stopGame();
+      return;
+    }
+    sendBoard(2); //Pošle všem příkaz k překreslení obrazovky (bez hráče)
+    board[gb_round] = 0; //Vynulování počtu odehraných kol
+    board[gb_actPlayer] = getNextPlayerNumber(random(1, maxPlayers)); //Náhodně se vybere číslo začínajícího hráče
+    DEBUG_PRINT("Zacina hrac: ");
+    DEBUG_PRINTLN(board[gb_actPlayer]);
+    signalLED.changeStaticColor(LEDcol_green);
+    delay(200);
+    sendBoard(1);
+  }
+}
 //------------------------------------------------------------------------------------------------------
 //>>>>> Zastaví běžící hru <<<<<
  /*   Princip:
-  *    -
+  *    - Pošle ukončující řídicí kód
+  *    - Změní barvu ndikační LED
   */
 void stopGame (){
   Serial.println("Zastavuji hru");
-  board[gb_code] = 3;
   delay(5);
   sendBoard(3);
   serverPhase = 0;
@@ -15,7 +65,7 @@ void stopGame (){
 //------------------------------------------------------------------------------------------------------
 //>>>>> Vrátí šíslo dalšího hráče <<<<<
  /*   Princip:
-  *    - zkontroluje pole clientts, aby se jednalo o hráče, který je připojen
+  *    - zkontroluje pole clients, aby se jednalo o hráče, který je připojen
   *    - hrac1 je číslo předchozího (aktuálně hrajícího hráče)
   */
 byte getNextPlayerNumber(byte player1){
@@ -37,38 +87,37 @@ byte getNextPlayerNumber(byte player1){
   *    - vyhodnocuje výhru hráče
   *    - vyhodnocuje remízu (vysoký počet herních kol)
   *    - automaticky zapíše do kódu v boardu
-  *    - podle výhry/prohry/remízy/pokračování hry vrací kód
   */
 void checkGame(byte cross, byte player){
   if(board[gb_round] >= meshX*meshY){ //Pokud hra skončila remízou (jsou obsazena všechna pole)
     board[gb_actPlayer] = 0;
     sendBoard(100);
-    signalLED.changeBlinkColor(LEDcol_green, clientMessageLast/500);
+    signalLED.changeBlinkColor(LEDcol_green, clientMessageLast/400); //Délka signalizace LED dopočtena z délky zobrazení chybové zprávy
     timer.setTimeout(clientMessageLast, stopGame); //Zpráva o remíze se zobrazí na určitou dobu, pak se resetuje hra
   }
-  else{
+  else{ //Vyhodnocení žetonů v poli (děje se pro naposled vyplněný žeton daného hráče)
     byte row = 0;
     byte column = 0;
     byte count = 0; //počet puntíků za sebou
     bool win = false;
-    row = cross/11;
-    column = cross%11;
+    row = cross/11; //v jakém řádku se nachází vyplněný žeton
+    column = cross%11; //v jakém sloupci se nachází vyplněný žeton
 
-     for(byte i = 0; i < meshX; i++){ //v řádku
+     for(byte i = 0; i < meshX; i++){ //kontrola celého řádku
         if(board[11*row + i ] == player){
-          count++;
+          count++; //Počet žetonů vedle sebe
         }
         else{
-          count = 0;
+          count = 0; //Pokud cizí žeton, počet se vynuluje
         }
-        if (count >= crossNum){
+        if (count >= crossNum){ //Pokud je dostatečný počet, hráč vyhrál
           win = true;
           break;
         }
 
      }
     count = 0;
-     for(int i = 0; i < meshY; i++){ //v sloupec
+     for(int i = 0; i < meshY; i++){ //kontrola daného sloupce
         if(board[column + i*11 ] == player){
           count++;
         }
@@ -82,10 +131,10 @@ void checkGame(byte cross, byte player){
 
      }
      count = 0;
-      //Do kříže
+
      byte index = 0;
      index = cross % 12;
-     while (index < meshX*meshY){
+     while (index < meshX*meshY){ //Kontrola do kříže jeden směr
         if(board[index] == player){
           count++;
         }
@@ -101,7 +150,7 @@ void checkGame(byte cross, byte player){
 
      count = 0;
      index = cross % 10;
-     while (index < meshX*meshY){
+     while (index < meshX*meshY){ //Kontrola do kříže druhý směr
         if(board[index] == player){
           count++;
         }
@@ -114,69 +163,34 @@ void checkGame(byte cross, byte player){
           break;
         }
      }
-    if(win){
-      Serial.print("Vyhral hrac: "); Serial.println(player);
+    if(win){ //Pokud někdo vyhrál, odešle se zpráva
+      Serial.print("Vyhral hrac: ");
+      Serial.println(player);
       board[gb_actPlayer] = 0;
       sendBoard(100+player);
       signalLED.changeBlinkColor(LEDcol_green, clientMessageLast/500);
       timer.setTimeout(clientMessageLast, stopGame);
-      //signalLED.changeBlinkColor(LEDcol_green, 80);
+
     }
-    else{
+    else{ //Jinak pokračuje další hráč
+      #ifdef DEBUG
       Serial.println("Nikdo nevyhral, pokracuji");
+      #endif
+
       shiftPlayer();
     }
   }
 }
 //------------------------------------------------------------------------------------------------------
-
-//>>>>> spustí hru <<<<<
- /*   Princip:
-  *    -
-  */
-void startGame (){
-  if(serverPhase == 1){
-    Serial.println("Aktualne bezi hra");
-  }
-  else{
-    Serial.println("Spoustim hru");
-    serverPhase = 1;
-    syncBoardIPs();
-    byte ONplayers = 0; //Pocet hracu online
-    //Cislo prvniho hrace
-    //byte firstPlayer = random(1, maxPlayers);
-
-    for (byte i = 0; i < maxPlayers; i++){ //Kontrola, zda jsou připojení alespoň dva hráči
-      if(clients[i]){
-        ONplayers++;
-      }
-    }
-
-    if(ONplayers < 2){
-      Serial.print("Je k dispozici jen ");
-      Serial.print(ONplayers);
-      Serial.println(" hracu, hra nemuze zacit.");
-      signalLED.changeBlinkColor(LEDcol_red, 3);
-      stopGame();
-      return;
-    }
-    sendBoard(2); //Pošle všem příkaz k překreslení obrazovky (bez hráče)
-    board[gb_round] = 0; //Vynulování počtu odehraných kol
-    board[gb_actPlayer] = getNextPlayerNumber(random(1, maxPlayers)); //Náhodně se vybere číslo začínajícího hráče
-    signalLED.changeStaticColor(LEDcol_green);
-    delay(200);
-    sendBoard(1);
-  }
-}
-//------------------------------------------------------------------------------------------------------
 //>>>>> Posune (předá) hru dalšímu hráči <<<<<
  /*   Princip:
-  *    -
+  *    - Vloží do pole číslo dalšího hráče
   */
 
 void shiftPlayer(){
-    byte nextPlayer = getNextPlayerNumber(board[gb_actPlayer]); //Získej číslo dalšího hráče
-    board[gb_actPlayer] = nextPlayer;
+    board[gb_actPlayer] = getNextPlayerNumber(board[gb_actPlayer]); //Získej číslo dalšího hráče
+    DEBUG0GAMEFL_PRINT("Dalsi hrac na rade je cislo: ");
+    DEBUG0GAMEFL_PRINTLN(board[gb_actPlayer]);
     sendBoard(1); //Odešle desku s číslem dalšího hráče a s povelem k překreslení
 
 }
@@ -197,25 +211,25 @@ bool fillPlayerToken(byte coord, byte player){
             return true;
         }
         else{
-          Serial.print("CHYBA - hrac ");
-          Serial.print(player);
-          Serial.print(" se pokousi vyplnit obsazene pole: ");
-          Serial.println(coord);
+          DEBUG0GAMEFL_PRINT("CHYBA - hrac ");
+          DEBUG0GAMEFL_PRINT(player);
+          DEBUG0GAMEFL_PRINT(" se pokousi vyplnit obsazene pole: ");
+          DEBUG0GAMEFL_PRINTLN(coord);
           return false;
         }
       }
       else{
-        Serial.print("CHYBA - hrac ");
-        Serial.print(player);
-        Serial.print(" se pokousi vyplnit pole mimo rozsah: ");
-        Serial.println(coord);
+        DEBUG0GAMEFL_PRINT("CHYBA - hrac ");
+        DEBUG0GAMEFL_PRINT(player);
+        DEBUG0GAMEFL_PRINT(" se pokousi vyplnit pole mimo rozsah: ");
+        DEBUG0GAMEFL_PRINTLN(coord);
         return false;
       }
     }
     else{
-      Serial.print("CHYBA - hrac ");
-      Serial.print(player);
-      Serial.print(" neni na tahu");
+      DEBUG0GAMEFL_PRINT("CHYBA - hrac ");
+      DEBUG0GAMEFL_PRINT(player);
+      DEBUG0GAMEFL_PRINTLN(" neni na tahu");
       return false;
     }
 }
