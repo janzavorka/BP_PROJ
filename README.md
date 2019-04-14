@@ -1,11 +1,11 @@
 # BP_PROJ
 
 
-### piskvorky_MP_v1 [➥](piskvorky_MP_v1/)
+### piskvorky_MP [➥](piskvorky_MP/)
 - Piškvorky pro až 5 hráčů
 - 1x arduino Due jako server, max 5x arduino Ethernet s dotykovým displejem jako client
 - připojovánou přes router s DHCP (serveru nutno přidělit pevnou IP)
-- aktualizovaný návod na ovládání [zde](https://github.com/janzavorka/BP_PROJ/blob/master/piskvorky_MP_v1/manual.md)
+- aktualizovaný návod na ovládání [zde](https://github.com/janzavorka/BP_PROJ/blob/master/piskvorky_MP/manual.md)
 ---
 
 ### Piskvorky_red [➥](Piskvorky_red/)
@@ -24,7 +24,7 @@
 ---
 
 ### Menu [➥](Menu/)
-- Návrh původního menu pro piškvorky 
+- Návrh původního menu pro piškvorky
 ---
 
 ### piskvorky_case [➥](piskvorky_case/)
@@ -40,7 +40,7 @@
 |Krabička pro server (Arduino Due s Ethernet modulem + tlačítka a signalizační LED)|
 
  ---
- 
+
 ### piskvorky_MP_old [➥](piskvorky_MP_old/)
 - Starší funkční verze projektu
 ---
@@ -61,6 +61,6 @@
     - _rrr,ggg,bbb_ jsou voleny z <0;&nbsp;255> a reprezentují jednotlivé barvy
     - _inten_ je volena z <0;&nbsp;100> a reprezentuje celkovou intenzitu LED
  ---
- 
+
  ### Notes.md [➥](Notes.md)
  - Několik zjištění a postřehů z tvorby tohoto projektu
