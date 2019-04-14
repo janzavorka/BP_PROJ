@@ -6,11 +6,11 @@ Význam: <img src="manual_data/LED_state/blue.png" height="20" /> svítí, <img 
 
 | Stav                                                                        | Význam        |
 | :------------------------------------------------------------------------:  |:-------------:|
-| <img src="manual_data/LED_state/black.png" height="20" />        | server je vypnutý/nemá napájení |
-| <img src="manual_data/LED_state/blue.png" height="20px" />         | server je připraven             |  
+| <img src="manual_data/LED_state/black.png" height="20" />                   | server je vypnutý/nemá napájení |
+| <img src="manual_data/LED_state/blue.png" height="20px" />                  | server je připraven             |  
 | <img src="manual_data/LED_state/violet_blink.png"  height="20" />   3x      | nový client připojen            |
 | <img src="manual_data/LED_state/orange_blink.png"  height="20" />   3x      | client se odpojil/byl odpojen   |
-| <img src="manual_data/LED_state/green.png" height="20" />        | aktuálně běží hra               |
+| <img src="manual_data/LED_state/green.png" height="20" />                   | aktuálně běží hra               |
 | <img src="manual_data/LED_state/green_blink.png" height="20" />             | hra ukončena (výhra/remíza)     |
 | <img src="manual_data/LED_state/red_blink.png" height="20" />       3x      | chyba (nedostatek hráčů pro hru)|
 | <img src="manual_data/LED_state/red_blink.png" height="20" />     stále     | chyba sítě (připojení kabelu)   |
