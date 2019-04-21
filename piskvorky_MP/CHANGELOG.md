@@ -1,4 +1,13 @@
-# BP_PROJ: Piskvorky v1
+# BP_PROJ: Piskvorky MP
+
+### 21.04.2019
+- Program pro clienta:
+  - Upraveny přidání schémata v nastavení pro jednotlivé clienty pomocí direktiv (#define CLIENT_x_)
+  - Přidán režim doutykové plochy displeje _TOUCH\_LANDSCAPE_ případně _TOUCH\_PORTRAIT_
+  - Přidán síťové režimy:
+    - _ETHMODE\_DHCP_: client získává IP adresu z DHCP serveru
+    - _ETHMODE\_STATIC_: client používá statickou IP adresu nastavenou v kódu
+  - Přidány komentáře ke konfiguracím
 
 ### 14.04.2019
 - Program pro server:
