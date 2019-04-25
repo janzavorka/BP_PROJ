@@ -9,5 +9,8 @@
 # Files generated for 3D printer
 piskvorky_case/3DprinterPrusa_data/
 
+# Notes for case build
+piskvorky_case/notes/
+
 # Unfinished bachelor thesis
 BAP/
