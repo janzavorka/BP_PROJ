@@ -1,5 +1,13 @@
 # BP_PROJ: Piskvorky MP
 
+### 05.05.2019
+- Server:
+  - Přidáno nastavení síťového režimu (_ETHMODE\_DHCP_ a _ETHMODE\_STATIC_, stejný princip jako u clienta)
+  - Upraveny podmínky u direktiv _#elif_ (přidáno _defined()_)
+- Client:
+    - Upraveny podmínky u direktiv _#elif_ (přidáno _defined()_)
+
+
 ### 21.04.2019
 - Program pro clienta:
   - Upraveny přidání schémata v nastavení pro jednotlivé clienty pomocí direktiv (#define CLIENT_x_)
