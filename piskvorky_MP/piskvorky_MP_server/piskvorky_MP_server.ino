@@ -59,9 +59,13 @@
 #include <SimpleTimer.h> //Časovače
 
 /* ----------Datum změny----------*/
-char makeDate[] = "14.04.2019";
+char makeDate[] = "05.05.2019";
 
 /* !!! ---------- KONFIGURACE - nastavení ethernetu ---------- !!! */
+//Režimy sítě: ETHMODE_DHCP=server získá IP adresu z DHCP serveru; ETHMODE_STATIC=použije se nastavená IP adresa
+//Při módu, kdy je IP adresa přiřazena DHCP serverem, je nutné aby se IP adresa neměnila a aby byla správně nastavena na straně clientů
+#define ETHMODE_STATIC //Varianty: ETHMODE_DHCP; ETHMODE_STATIC
+
 // Nastavení MAC adresy (měla by být unikátní)
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0x00
@@ -90,16 +94,16 @@ bool pinReady = false; //Slouží k deaktivaci tlačítek aby se zabránilo víc
 
 /* !!! ---------- KONFIGURACE - nastavení pinů a LED ---------- !!! */
 //Piny tlačítka start a reset
-#define startPIN 40
-#define resetPIN 38
+#define startPIN 2
+#define resetPIN 3
 //
 //Piny na kterých jsou připojené jednotlivé barvy LED, musí podporovat PWM
-#define LED_red 6
-#define LED_green 7
-#define LED_blue 8
+#define LED_red 7
+#define LED_green 5
+#define LED_blue 6
 //
 //Nastavení maximálního jasu všech LED, interval <0; 100>
-const byte LED_br = 100;
+const byte LED_br = 40;
 /* !!! ---------- KONEC nastavení pinů a LED ---------- !!! */
 
 /* ----------Časové intervaly různých událostí----------*/
@@ -208,7 +212,7 @@ const byte boardPart = 8; //Délka části pole board
 byte LEDcol_red[] = {255, 0, 0};
 byte LEDcol_green[] = {0, 255, 0};
 byte LEDcol_blue[] = {0, 0, 255};
-byte LEDcol_orange[] = {255, 50, 0};
+byte LEDcol_orange[] = {255, 80, 0};
 byte LEDcol_violet[] = {255,0,255};
 //byte LEDcol_red[] = {255, 0, 0};
 
@@ -281,8 +285,8 @@ void setup() {
   //Alokace paměti pro string buffik
   buffik.reserve(max_buffik);
   //Tlačítka
-  pinMode(startPIN, INPUT);
-  pinMode(resetPIN, INPUT);
+  pinMode(startPIN, INPUT_PULLUP);
+  pinMode(resetPIN, INPUT_PULLUP);
   randomSeed(analogRead(0)); //Seed pro funkci random()
   delay(10);
 
@@ -308,7 +312,9 @@ void setup() {
   }
 
   //Ethernet
-  if(serverAddress == (IPAddress)(0,0,0,0)){ //Pokud neni zadána IP, je přiřazena DHCP serverem
+
+ #ifdef ETHMODE_DHCP
+ //Rezim, kdy je IP adresa přiřazena DHCP serverem
     Serial.println("Ziskavam adresu z DHCP serveru");
     signalLED.changeStaticColor (LEDcol_red);
     signalLED.LEDon();
@@ -323,10 +329,12 @@ void setup() {
       delay(400);
       signalLED.LEDon();
     }
-  }
-  else{ //Jinak se použije zadaná IP adresa
-    Ethernet.begin(mac, serverAddress);
-  }
+#elif defined(ETHMODE_STATIC)
+ //Pouzije se daná IP adresa
+ Ethernet.begin(mac, serverAddress);
+#else
+  #error "Error - je nutne vybrat sitovy rezim (viz. KONFIGURACE - nastavení sítě)"
+#endif
 
 
   Serial.print("Server IP adresa: ");
@@ -441,7 +449,7 @@ void loop() {
 
   //Kontrola stisku tlačítek, nepoužívá se interrupt - mohl by rozhodit odesílání
   if(pinReady){ //Pokud je tlačítko aktivní (zabraňuje vícedotykům)
-    if(digitalRead(startPIN) == HIGH){
+    if(digitalRead(startPIN) == LOW){
       pinReady = false;
       refresh_buttonOff = millis(); //čas užití tlačítka (pro funkci, která tlačítka po určené době obnoví)
       if(serverPhase == 1){//Pokud je spuštěná hra, přepni na dalšího hráče
@@ -451,7 +459,7 @@ void loop() {
         startGame();
       }
     }
-    if(digitalRead(resetPIN) == HIGH){
+    if(digitalRead(resetPIN) == LOW){
       pinReady = false;
       refresh_buttonOff = millis();
       stopGame();
