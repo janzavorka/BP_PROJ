@@ -1,5 +1,5 @@
 /*>>>>>>> Piškvorky s arduinem po LAN <<<<<<<
-*  !!! Součást programu pro server, samostatně nefunkční !!!
+*  !!! Součást programu pro klienta, samostatně nefunkční !!!
 *
 * - Autor: Jan Závorka
 * - Email: zavorja4@fel.cvut.cz
@@ -21,7 +21,7 @@
 //Jednotlivá schémata pro různá zařízení typu client
 //Lze nakonfigurovat MAC adresu a kalibrační hodnoty dotykové plochy pro jednotlivé clienty, pak se přepíná změnou #define CLIENT1 - CLIENT5
 //V případě, že není žádný vybrán, použije se defaultní nastavení
-#define CLIENT1 //Konfigurace pro jednotlivé clienty
+#define CLIENT3 //Konfigurace pro jednotlivé clienty
 /* ---------- KONEC - nastavení schémat----------*/
 
 
@@ -39,29 +39,29 @@ extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
 };
-#elif CLIENT2
+#elif defined(CLIENT2)
 //Client 2
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xDD
 };
-#elif CLIENT3
+#elif defined(CLIENT3)
 //Client 3
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xCD
 };
-#elif CLIENT4
+#elif defined(CLIENT4)
 //Client 4
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xBD
 };
-#elif CLIENT5
+#elif defined(CLIENT5)
 //Client 5
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xAD
 };
 #else
 //Defaultní hodnoty
-#warning Je pouzita defaultni MAC adresa
+#warning "Je pouzita defaultni MAC adresa"
 byte mac [] = {
   0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xAB
 }
@@ -70,7 +70,7 @@ byte mac [] = {
 
 /* ---------- KONFIGURACE - nastavení sítě ----------*/
 //Nastavení lokálního síťového režimu a parametrů
-//Režimy připojení: ETHMODE_DHCP=client získá IP adresu z DHCP serveru; ETHMODE_STATIC=použije se nastavená IP adresa
+//Režimy sítě: ETHMODE_DHCP=client získá IP adresu z DHCP serveru; ETHMODE_STATIC=použije se nastavená IP adresa
 //V případě ETHMODE_STATIC lze využít schémata pro jednotlivá zařízení typu client (viz. KONFIGURACE - nastavení schémat)
 //IP adresa herního serveru, ke kterému se bude client připojovat
 
@@ -80,22 +80,21 @@ byte mac [] = {
   #ifdef CLIENT1
   IPAddress clientAddress(10,0,0,138);
 
-  #elif CLIENT2
+  #elif defined(CLIENT2)
   IPAddress clientAddress(10,0,0,139);
 
-  #elif CLIENT3
+  #elif defined(CLIENT3)
   IPAddress clientAddress(10,0,0,140);
 
-  #elif CLIENT4
+  #elif defined(CLIENT4)
   IPAddress clientAddress(10,0,0,141);
 
-  #elif CLIENT5
+  #elif defined(CLIENT5)
   IPAddress clientAddress(10,0,0,142);
-
   #else
   //Defaultní nastavení
   IPAddress clientAddress(10,0,0,100);
-  #warning Pozor - je pouzito defaultni nastaveni IP, pro kazdeho clienta nutno zmenit
+  #warning "Pozor - je pouzito defaultni nastaveni IP, pro kazdeho clienta nutno zmenit"
   #endif
 #endif
 
@@ -138,27 +137,27 @@ bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabráněn�
 #define TOUCH_YMIN 200
 #define TOUCH_YMAX 950
 #define TOUCH_LANDSCAPE
-#elif CLIENT2
+#elif defined(CLIENT2)
 //Client 2
 #define TOUCH_XMIN  233
 #define TOUCH_XMAX  937
 #define TOUCH_YMIN  210
 #define TOUCH_YMAX  910
 #define TOUCH_LANDSCAPE
-#elif CLIENT3
+#elif defined(CLIENT3)
 //Client 3 (nutné změnit i v kódu u čtení z displaye - zapojení displeje má jinou orientaci)
 #define TOUCH_XMIN 950
 #define TOUCH_XMAX 205
 #define TOUCH_YMIN 190
 #define TOUCH_YMAX 945
 #define TOUCH_PORTRAIT
-#elif CLIENT4
+#elif defined(CLIENT4)
 //Client 4
 #define TOUCH_XMIN 0
 #define TOUCH_XMAX 100
 #define TOUCH_YMIN 0
 #define TOUCH_YMAX 100
-#elif CLIENT5
+#elif defined(CLIENT5)
 //Client 5
 #define TOUCH_XMIN 0
 #define TOUCH_XMAX 100
@@ -377,12 +376,12 @@ void setup() {
     delay(1000);
   }
 
-  #elif ETHMODE_STATIC
+  #elif defined(ETHMODE_STATIC)
   Ethernet.begin(mac, clientAddress);
 
   #else
   //Pokud nebyl vybrán žádný režim, vypíše se chyba
-  #error Error - je nutne vybrat sitovy rezim (viz. KONFIGURACE - nastavení sítě)
+  #error "Error - je nutne vybrat sitovy rezim (viz. KONFIGURACE - nastavení sítě)"
   #endif
 
   delay(400);
@@ -446,12 +445,12 @@ void loop() {
      //Standardní
      TSx = map(touchPoint.y, TOUCH_XMAX, TOUCH_XMIN, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.x, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
-     #elif TOUCH_PORTRAIT
+     #elif defined(TOUCH_PORTRAIT)
      //Pro CLIENT 3
      TSx = map(touchPoint.x, TOUCH_XMIN, TOUCH_XMAX, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.y, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
      #else
-     #error  Error: Je nutne nastavit orientaci dotykove plochy, TOUCH_PORTRAIT nebp TOUCH_LANDSCAPE
+     #error  "Error: Je nutne nastavit orientaci dotykove plochy, TOUCH_PORTRAIT nebp TOUCH_LANDSCAPE"
      #endif
      //Kontrola stisku (seriova linka pro debug)
      /*Serial.print("X = "); Serial.print(touchPoint.x);
