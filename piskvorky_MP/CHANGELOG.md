@@ -1,5 +1,9 @@
 # BP_PROJ: Piskvorky MP
 
+### 06.05.2019
+- Úprava MAC adresa na ty, které mají desky Arduino Ethernet přiřazené od výrobce (na štítku zespodu)
+- Výměna displeje pro klienta číslo 3, přidání kalibračních dat pro nový displej 
+
 ### 05.05.2019
 - Server:
   - Přidáno nastavení síťového režimu (_ETHMODE\_DHCP_ a _ETHMODE\_STATIC_, stejný princip jako u clienta)

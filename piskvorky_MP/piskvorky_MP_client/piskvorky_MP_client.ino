@@ -21,7 +21,7 @@
 //Jednotlivá schémata pro různá zařízení typu client
 //Lze nakonfigurovat MAC adresu a kalibrační hodnoty dotykové plochy pro jednotlivé clienty, pak se přepíná změnou #define CLIENT1 - CLIENT5
 //V případě, že není žádný vybrán, použije se defaultní nastavení
-#define CLIENT3 //Konfigurace pro jednotlivé clienty
+#define CLIENT3 //Výběr profilu pro clienta
 /* ---------- KONEC - nastavení schémat----------*/
 
 
@@ -31,23 +31,23 @@ extern uint8_t SmallFont[];   //.kbv GLUE defines as GFXFont ref
 #endif
 /* ---------- KONFIGURACE - nastavení mac adres----------*/
 //Nastavení MAC adres pro jednotlivé clienty
-//Každý client by měl mít unikatní MAC adresu
+//Každý client by měl mít unikatní MAC adresu, u oficiálních Arduino desek bývá štítek nalepen přímo na kitu
 //Pro každého clienta je možné nadefinovat vlastní MAC a pak při nahrávání (kompilaci) měnit #define CLIENTx
 
 #ifdef CLIENT1
 //Client 1
 byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xED
+  0x90, 0xA2, 0xDA, 0x11, 0x08, 0x18
 };
 #elif defined(CLIENT2)
 //Client 2
 byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xDD
+  0x90, 0xA2, 0xDA, 0x11, 0x09, 0x78
 };
 #elif defined(CLIENT3)
 //Client 3
 byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0xCD
+  0x90, 0xA2, 0xDA, 0x11, 0x08, 0xA0
 };
 #elif defined(CLIENT4)
 //Client 4
@@ -145,12 +145,12 @@ bool touchScreenAct = true; //Aktivuje/deaktivuje dotykovou plochu - zabráněn�
 #define TOUCH_YMAX  910
 #define TOUCH_LANDSCAPE
 #elif defined(CLIENT3)
-//Client 3 (nutné změnit i v kódu u čtení z displaye - zapojení displeje má jinou orientaci)
-#define TOUCH_XMIN 950
-#define TOUCH_XMAX 205
-#define TOUCH_YMIN 190
-#define TOUCH_YMAX 945
-#define TOUCH_PORTRAIT
+//Client 3
+#define TOUCH_XMIN 230
+#define TOUCH_XMAX 960
+#define TOUCH_YMIN 220
+#define TOUCH_YMAX 920
+#define TOUCH_LANDSCAPE
 #elif defined(CLIENT4)
 //Client 4
 #define TOUCH_XMIN 0
@@ -360,7 +360,7 @@ void setup() {
   pinMode(A0, OUTPUT);       //.kbv mcufriend have RD on A0
   digitalWrite(A0, HIGH);
   //Sériová linka
-  //Serial.begin(9600);
+  Serial.begin(9600);
   LCD.InitLCD();
   LCD.setFont(SmallFont);
   LCD.clrScr(); //Vyčištění obrazovky (vyplnění černou)
@@ -446,18 +446,17 @@ void loop() {
      TSx = map(touchPoint.y, TOUCH_XMAX, TOUCH_XMIN, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.x, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
      #elif defined(TOUCH_PORTRAIT)
-     //Pro CLIENT 3
      TSx = map(touchPoint.x, TOUCH_XMIN, TOUCH_XMAX, 0, 320); //Prohození proměnný...aby sedělo s rozlišením
      TSy = map(touchPoint.y, TOUCH_YMIN, TOUCH_YMAX, 0 ,240);
      #else
      #error  "Error: Je nutne nastavit orientaci dotykove plochy, TOUCH_PORTRAIT nebp TOUCH_LANDSCAPE"
      #endif
      //Kontrola stisku (seriova linka pro debug)
-     /*Serial.print("X = "); Serial.print(touchPoint.x);
+     Serial.print("X = "); Serial.print(touchPoint.x);
      Serial.print("\tY = "); Serial.print(touchPoint.y);
      Serial.print("\tXpix = "); Serial.print(TSx);
      Serial.print("\tYpix = "); Serial.print(TSy);
-     Serial.print("\tPressure = "); Serial.println(touchPoint.z);*/
+     Serial.print("\tPressure = "); Serial.println(touchPoint.z);
      buttonPressed(TSx, TSy);
     }
   }
@@ -540,6 +539,7 @@ void buttonPressed(int x, int y){
       LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       //Odesíláni vybraného pole
       sendData(meshX*row + column, 10);
+      board[gb_actPlayer] = 0; //Nastaveni aktuálního hráče na 0, aby nebylo mozne vepisovat dalsi žetony
       }
   }
 
