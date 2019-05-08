@@ -1,0 +1,19 @@
+\babel@toc {czech}{}
+\contentsline {section}{\numberline {1}\IeC {\'U}vod}{1}{section.1}
+\contentsline {section}{\numberline {2}Hardware}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Za\IeC {\v r}\IeC {\'\i }zen\IeC {\'\i } typu server}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Za\IeC {\v r}\IeC {\'\i }zen\IeC {\'\i } typu klient}{5}{subsection.2.2}
+\contentsline {section}{\numberline {3}Popis softwaru}{7}{section.3}
+\contentsline {subsection}{\numberline {3.1}Knihovny}{7}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Konfigura\IeC {\v c}n\IeC {\'\i } hodnoty}{7}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Konfigurace serveru}{8}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Konfigurace klienta}{9}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {3.3}Komunikace server - klient}{12}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Komunikace klient - server}{12}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Sestaven\IeC {\'\i } spojen\IeC {\'\i }}{14}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}Pr\IeC {\r u}b\IeC {\v e}h hry}{14}{subsection.3.6}
+\contentsline {section}{\numberline {4}O\IeC {\v z}even\IeC {\'\i } a u\IeC {\v z}\IeC {\'\i }v\IeC {\'a}n\IeC {\'\i }}{15}{section.4}
+\contentsline {section}{\numberline {5}Conclusions and future research}{17}{section.5}
+\contentsline {section}{Reference}{19}{section.5}
+\contentsline {section}{\numberline {6}Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{20}{section.6}
+\contentsline {section}{\numberline {A}Appendix A}{21}{appendix.A}

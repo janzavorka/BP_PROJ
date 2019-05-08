@@ -1,0 +1,90 @@
+\section{Popis softwaru}
+\subsection{Knihovny}
+Pro realizaci byly použity následující knihovny:
+\begin{itemize}
+  \item \textit{Ethernet library}: knihovna slouží pro připojení Arduina k internetu. Jak je uvedeno na webových stránkách \cite{EthLib} jsou podporovány desky a shieldy založené na konrolérech W5100, W5200, W5500. Tato knihvna je použita jak u serveru tak i u klientů. U serveru připojený ethernet shield obsadí piny 10, 11, 12, 13. Komunikace Arduina se shieldem (ethernet kontrolérem) probíhá po SPI sběrnici.
+
+  \item \textit{MCUFRIEND\_kbv library}: knihovna slouží k ovládání displeje u klienta. Pro správnou funkci je nutné, jak se zmiňuje autor na domovské stránce knihovny~\cite{lib_MCUFRIEND_kbv}, je nutné mít k dispozici také knihovnu \textit{Adafruit\_GFX} \cite{lib_adafruitGFX}. Pro použití displeje se nejdříve vytvoří instance třídy \texttt{UTFGLUE}, kde je nutné správně definovat piny pro daný shield, v tomto případě \texttt{UTFTGLUE LCD(0x0154,A2,A1,A3,A4,A0);}. Pro řízení displeje jsou pak volány patřičné metody formou \textit{LCD.metoda(parametry);}, například pro vyplnění celého displeje černou \texttt{LCD.clrScr();}. Pomocí ukázkouvého zdrojového kódu z této knihovny \textit{(examples/TouchScreen\_
+calibr\_kbv)} byly získány kalibrační hodnoty pro dotykovou plochu displeje.
+
+  \item \textit{Adafruit\_TouchScreen}: slouží k zaznamenání hodnot ze čtyřvodičové dotykové plochy. Stejně jako u knihovny pro displej je nejdříve nutné vytvořit instanci dané třídy \texttt{TouchScreen} v tomto případě tak \texttt{TouchScreen Touch(XP, YP, XM, YM, 300);}, kde \textit{XP, YP, XM, YM} jsou piny, na které je vyvedená dotyková plocha (pro použitý shield jsou to: XP = 6, YP = A1, XM = A2, YM = 7). Hodnota 300 by pak dle popisu knihovny \cite{lib_touch} označuje elektrický odpor dotykové plochy X (měřeno multimetrem mezi piny XP a XM). Pro použité shiledy je hodnota přibližně $300  \ \mathrm{\Omega}$. Dále je třeba určit minimální a maximální tlak pro vyhodnocení dotyku pomocí \texttt{\#define MINPRESSURE} a \texttt{\#define MAXPRESSURE}. Vyhovující jsou hodnoty uvedené v ukázkových kódech pro knihovnu a to konkrétně 10 pro \texttt{MINPRESSURE} a 1000 pro \texttt{MAXPRESSURE}.
+
+  \item \textit{SimpleTimer Library for Arduino}: jednoduchá knihovna, která slouží k řízení určitých časových událostí (kde není třeba velká přesnot), například pro zobrazení a skrytí chybových hlášek, blikání indikační svítivé diody u serveru. Dle webových stránek \cite{lib_simpleTimer} je knihovna založená na funkci \texttt{milis();} (vrací počet milisekund od začátku běhu programu) a nevyužívá přerušení ani harwarový timer.
+\end{itemize}
+
+\subsection{Konfigurační hodnoty}
+V této kapitole jsou popsány jednotlivé konfigurační hodnoty, která by mohlo být třeba upravit pro správnou funkci celého zařízení. Změny se vždy provádí přímo ve zdrojovému kódu, vždy pouze v hlavní souboru: \textit{piskvorky\_MP\_client.ino} pro klienta a \textit{piskvorky\_MP\_server.ino} pro server. Jak už bylo zmíněno v kapitole \ref{sec:HWclient}, nebylo možné, kvůli malé paměti pro program, implementovat menu, proto je nutné změny provádět přímo ve zdrojovém kódu a dané zařízení pak přeprogramovat. V případě serveru je k dispozici microUSB konektor, který je dostupný skrze obdélníkový otvor na boku zařízení. V případě clienta je nutné demontovat víko, odpojit napájecí modul (v modré bužírce) a připojit Arduino k počítači pomocí převodníku USB - UART.
+
+Jednotlivé konfigurační bloky jsou vždy ohraničeny komentáři mezi nimiž se nacházejí jednotlivé proměnné a popis jejich funkce a omezení hodnot. Níže je uveden příklad ohraničení bloku pro nastavení sítě (IP adresa a port):
+\begin{verbatim}
+/* ---------- KONFIGURACE - nastavení sítě ----------*/
+
+/* ---------- KONEC - nastavení sítě ----------*/
+\end{verbatim}
+
+
+\subsubsection{Konfigurace serveru}
+\label{sec:server-nastaveni}
+%Nastavení sítě
+V prvním případě je nutné vybrav síťový režim, v případě \textit{ETHMODE\_STATIC} je použita IP adresa, která je uložena v proměnné \textit{serverAddress}. V případě volby \textit{ETHMODE\_DHCP} je adresa přiřazena DHCP serverem a je nutné dodržet aby se přiřazená adresa neměnila a byla zároveň nastavená u jednotlivých klientů.
+
+Dále je třeba nastavit příslušnou MAC adresu, v případě použitého nebyla přiřazena výrobcem, takže je nutné nějakou zvolit. Vzhledem k tomu, že zařízení se provozuje na samostatné lokální síti, byla MAC adresa vybrána náhodně, v případě, že v síti jsou další zařízení, je možné vybrat MAC adresu například podle postupu popsaného v \cite{vyberMAC}. Vezme se MAC adresa nějaké zařízení v síti a poslední bajt se zvětší o jedna a takto vzniklá MAC adresa se přiřadí shieldu.
+Vybraná MAC adresa je v poli \texttt{mac}.
+
+Jako poslední je potřeba přiřadit port, na kterém budou zařízení komunikovat. Dle normy \cite{norm_RFC6335} je možné zvolit jakoukýkoliv dynamický port (49152-65535), protože tyto porty nebudou nikdy přiřazeny žádné službě. Port je uložen v proměnné \texttt{localPort} a stejný port musí být nastaven i u clientů.
+\lstinputlisting[language=C++, style=customc_config, firstline=1, lastline=8, title= Blok konfigurace ethernet shieldu pro server]{codes/server_config.cpp}
+
+%Nastavení pinů
+Jak je popsáno v kapitole \ref{sec:HWserver}, jsou k serveru připojena dvě tlačítka a jedna barevná svítivá dioda. V případě, že je nutné tyto periferie připojit jinak, je možné změnit čísla pinů v kofiguračním bloku \textit{nastavení pinů a LED}. Tlačítka využívají interní pull-up rezistory a jejich zapojení je uvedeno na obrázku \ref{fig:server_module}.
+\lstinputlisting[language=C++, style=customc_config, firstline=10, lastline=22, title= Blok konfigurace pinů pro svítivou diodu a tlačítka]{codes/server_config.cpp}
+
+%Nastavení barev
+Jako poslední je možné nastavit jakou barvu budou mít jednotliví klienti. V ukázkové případě jsou barvy přiřazeny z výběru, který je uveden v kódu, ale je možné také definovat vlastní ve formátu RGB565 (16-bit barva).
+\lstinputlisting[language=C++, style=customc_config, firstline=24, lastline=30, title= Blok konfigurace jednotlivých barev pro klienty/hráče]{codes/server_config.cpp}
+
+\subsubsection{Konfigurace klienta}
+\label{sec:client-nastaveni}
+%Nastavení profilů
+Klientů se v celé sestavě nachází několik (v tomto případě tři) a liší se pouze určitým nastavením (IP adresa, MAC adresa, kalibrační hodnoty displeje) proto jsou vytvořeny profily pro jednotlivé klienty (softwarově omezeno na pět). Každému profilu se nastaví požadované parametry a při nahrávání programu do Arduina se pak profily mění pomocí \texttt{\#define CLIENTx}, kde x je číslo jednotlivých klientů/profilů. Pokud není zvolen žádný profil, použití je defaultní hodnoty a uživatel je o tom informován při překladu pomocí direktivy \texttt{\#warning} (zobrazí se hlášení, ale překlad neukončí).
+\lstinputlisting[language=C++, style=customc_config, firstline=1, lastline=3, title= Blok výběru profilu pro klienta]{codes/client_config.cpp}
+
+%Nastavení MAC adres
+V této části se přiřazují jednotlivé MAC adresy daným profilům. Výhodou oficiálních Arduino Ethernet desek je, že mají MAC adresu přidělenou výrobcem a je možné jí nalézt na bílém štítku ze spodní strany.
+\lstinputlisting[language=C++, style=customc_config, firstline=6, lastline=38, title= Blok přiřazení MAC adres jednotlivým klientským profilům]{codes/client_config.cpp}
+
+%Nastavení IP adres
+Stejně jako v případě serveru i zde je možné vybrat ze dvou režimů sítě a to \textit{ETHMODE\_STATIC} a \textit{ETHMODE\_DHCP}. V případě volby \textit{ETHMODE\_DHCP} není na adresu přiřazenou DHCP serverem kladen žádný zvláštní nárok. V případě použití \textit{ETHMODE\_STATIC} je ještě nutné dodefinovat IP adresy pro jednotlivé klienty. Opět lze s výhodou využít profilů, pokud se použije defaultní, je o tom uživatel opět při překladu informován.
+Kromě toho je ještě nutné doplnit IP adresu serveru, ke kterému se budou klienti připojovat. Ta byla nastavena při konfiguraci serveru (kapitola \ref{sec:server-nastaveni}) stejně tak jako port, který je také nutné zvolit stejný.
+\lstinputlisting[language=C++, style=customc_config, firstline=40, lastline=66, title= Blok nastavení síťového režimu a IP adres]{codes/client_config.cpp}
+
+%Nastavení kalibrace displeju
+Jako poslední je nutné nastavi kalibrační hodnoty dotykové plochy displeje. Nejjednodušší způsob jejich získání je použít ukázkový program v knihovně \textit{MCUFRIEND\_kbv library}, který lze nalézt  v \textit{(examples/TouchScreen\_
+calibr\_kbv)}. V ukázkovém programu je třeba upravit podle použitého shiledu nastavení pinů. Poté stačí postupovat podle pokynů na displeji a výsledek se vypíše na sériovou linku (lze použítintegrovaný v Arduino IDE - \textit{Tools->Serial Monitor}). Krom kalibračních hodnot je také nutné doplnit orientaci displeje (\texttt{\#define TOUCH\_LANDSCAPE} nebo \texttt{\#define TOUCH\_PORTRAIT}), v případě, že nebude zvolena ani jedna možnou, překlad budou ukončen a vypsána chybová hláška (direktiva \texttt{\#error}). I v tomto případě lze s výhodou využít profilů.
+\lstinputlisting[language=C++, style=customc_config, firstline=68, lastline=109, title= Blok nastavení kalibračních hodnot dotykové plochy]{codes/client_config.cpp}
+
+\subsection{Komunikace server - klient}
+\label{sec:comm_server-client}
+Server komunikuje s klienty pomocí pole \textit{board}. Jedná se o jednorozměrné pole typu \textit{byte} o velikosti 136 (velikost musí být dělitelná osmi). V tomto poli jsou vyplněné všechny důležité informace o stavu hry i jednotlivých hráčích, význam jednotlivých hodnot v poli \textit{board} je popsán v tabulce \ref{tab:packet_server-client}.
+
+Při odesílání je toto pole rozděleno na části po osmi bajtech. Každá tato část je vybavena pořadovým číslem a dvoubajtovým kontrolním součtem (v něm je zahrnuto i pořadové číslo) a následně odeslána připojeným klientům.
+
+Klienti postupně přijímají všechny části a v případě bezchybného příjmu data vyhodnotí. V případě, že klient na základě kontrolního součtu identifikoval chybnou část, odešle podle pravidel komunikace klient->server (popsáno v kapitole \ref{sec:comm_client-server}). Server pak v případě přijetí požadavku odešle danému klientovi vyžadovanou část pole.
+
+\input{tables/board_content.tex}
+
+\subsection{Komunikace klient - server}
+\label{sec:comm_client-server}
+Klient komunikuje se serverem, až na výjimku při sestavení spojení, prostřednictvím dvoubajtového pole. Popis jednotlivých částí pole je v tabulce \ref{tab:clietn-server}. Pro kontrolu přenosu se každá zpráva odešle třikrát. Na straně serveru se pak porovnají dvě ze tří přijatých zpráv a ostatní přijatá data se zahodí. Klient může poslat data maximálně jednou za sekundu (posláním dat se rozumí odeslání tří stejných zpráv).
+
+Pokud při porovnání server zjistí, že přijeté zprávy nejsou stejné, odešle danému klientovi znovu herní desku. V případě, že byl daný hráč na tahu a přenos požadavku na vyplnění pole se nezdařil, je mu prostřednictvím znovuodeslání pole znovu aktivován tah.
+
+V případě, že klient přijal od serveru chybná data, odešle požadavek ve tvaru \mbox{\{20, x\}}, kde \textit{x} je číslo chybně přijaté části pole.
+
+\input{tables/client_packet.tex}
+
+
+\subsection{Sestavení spojení}
+\inProgress
+
+\subsection{Průběh hry}
+\inProgress

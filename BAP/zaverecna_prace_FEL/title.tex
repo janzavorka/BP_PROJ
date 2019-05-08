@@ -1,0 +1,104 @@
+%%Uvodni stranka
+\definecolor{cvutcolor}{cmyk}{1, 0.43, 0, 0} %modra CVUT
+\newlength{\titlewidth}
+\setlength{\titlewidth}{\textwidth}
+\addtolength{\titlewidth}{-1.7cm}
+\newlength{\heightofhw}
+
+\newcommand{\TitlePage}[2]{{
+	\thispagestyle{empty}
+	\parbox{0.7cm}{\color{cvutcolor}\rule{0.35cm}{\textheight}}
+	{\parbox[0][\textheight][t]{\titlewidth}{
+		\sffamily 
+		%\vspace{1pt}
+		\includegraphics[height=4.1cm]{img/ctu_logo_blue.pdf} 
+		\put(10,40){\parbox{8cm}{\Large České\\[0.3em] vysoké učení\\[0.3em] technické\\[0.3em] v Praze\\[.6em]}} \\[.1em]		
+		\textbf{\Large 
+			\color{cvutcolor} Fakulta Elektrotechnická \\[0.3em]
+			\color{black} Katedra radioelektroniky
+		}\\[6em]
+		\color{black}{\Large \textbf{Bakalářská práce}}\\[0.8em]
+		{\huge \textbf{#2}}\\[0.8em]
+		\color{cvutcolor}{\Large \textbf{#1}}\\[0.8em]
+		\vfill{}
+        
+%        \textbf{\large 
+%			\color{black} Supervisor: \\[0.3em]
+%			\color{cvutcolor} Ing. Stanislav Vítek, Ph.D.
+%		}\\[5cm]
+        
+%         \textbf{\large 
+% 			\color{black} Supervisor specialist: \\[0.3em]
+% 			\color{cvutcolor} Ing. Ladislav Sieger, CSc.
+%             \\[0.3em]
+% 		}\\[2em]
+		\textbf{\Large \color{black} Praha, \todayMonthYear}
+		\vspace{2pt}
+	}}
+	\newpage
+}}
+
+
+
+
+% \begin{titlepage}
+% \pagestyle{empty}
+
+% \begin{minipage}{95mm}
+% 	\vspace{1mm}
+% 	\includegraphics[height=20mm]{images/logo_mmtg.pdf}\\
+% 	\textsc{\scriptsize Department of Radioelectronics}\\
+% \end{minipage}
+% \begin{minipage}{60mm}
+% 	\includegraphics[height=21mm]{images/logo_fee.pdf}\\
+% 	\textsc{\scriptsize Doctoral program in Radioelectronics}\\
+% \end{minipage}\\ [2cm]
+
+% \hspace{1cm}\LARGE\textsc{Doctoral Thesis Proposal}\\\vspace{10mm}
+% \hspace{5mm}{\color{cvut}\rule{15cm}{1mm}}\\\vspace{10mm}
+% \hspace{1cm}\parbox[c][2.5cm][c]{13cm}{\Huge\textbf{EMCCD camera image processing}}\\\vspace{15mm}
+% \hspace{5mm}{\color{cvut}\rule{15cm}{1mm}}
+
+% \vspace{2cm}\hspace{1cm}
+% \LARGE\textsc{Maria Nasyrova}
+
+% \vspace{2cm}\hspace{1cm}
+% \begin{minipage}{10cm}
+% 	\LARGE
+% 	Thesis supervisor
+% 	\newline Ing. Stanislav V{í}tek, Ph.D.
+% 	\newline CTU in Prague
+% \end{minipage}
+
+% \vfill\hspace{1cm}
+% \LARGE Prague, September 2018
+
+% \newpage
+
+% \vspace*{1cm}
+
+% \begin{tabular}{ll}
+% \large \textbf{Applicant} & \large Ing. Maria Nasyrova\\
+% \large  & \large Czech Technical University in Prague\\
+% \large  & \large Faculty of Electrical Engineering\\
+% \large  & \large Department of Radioelectronics\\
+% \large  & \large Technická 2\\
+% \large  & \large 166 27, Praha 6\\
+% \large  & \large office: +420 224 352 113\\
+% \large  & \large email:	 nasyrmar@fel.cvut.cz\\
+% \large  & \large \\
+% \large  & \large \\
+% \large \textbf{Thesis supervisor} & \large Ing. Stanislav V{í}tek, Ph.D.\\
+% \large  & \large Czech Technical University in Prague\\
+% \large  & \large Faculty of Electrical Engineering\\
+% \large  & \large Department of Radioelectronics\\
+% \large  & \large Technická 2\\
+% \large  & \large 166 27, Praha 6\\
+% \large  & \large office: +420 224 352 226\\
+% \large  & \large \\
+% \large  & \large \\
+% \large  & \large \\
+
+% \end{tabular}
+
+% \end{titlepage}
