@@ -4,10 +4,13 @@
 * - Autor: Jan Závorka
 * - Email: zavorja4@fel.cvut.cz
 * - Domovská stránka projektu: https://github.com/janzavorka/BP_PROJ
-* - Seznam souborů: piskvorky_MP_server.ino; boardControl.ino; communication.ino; gameControl.ino; indicatioLED.ino; SerialControl.ino
+* - Seznam souborů: piskvorky_MP_client.ino; communication.ino; gameControl.ino; DisplayControl.ino
 *
 * --- Popis:
-* - Funkce zodpovědné za řízení herní desky (board) - pole, které uchovává stav hry a další informace
+* - Hra piškvorky pro max 5 hráčů
+* - Jednotliví hráči jsou vybaveni deskami ArduinoEthernet s dotykovým displejem
+* - Hru řídí server postavený na Arduino Due s Ethernet shieldem
+* - Komunikace probíhá po lokální síti
 */
 
 //ethernet
@@ -100,7 +103,7 @@ byte mac [] = {
 
 
 IPAddress serverAddress(10,0,0,8);  //Nastavení IP adresy serveru
-unsigned int localPort = 3333;      //Port
+unsigned int localPort = 55555;      //Port
 /* ---------- KONEC - nastavení sítě ----------*/
 
 
@@ -231,12 +234,7 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *            1:    vše OK, hraje se, překresli obrazovku
  *            2:    pouze překreslit, nikdo nehraje
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
- *            9:    odpojuji
- *            11:   hraje hráč 1
- *            12:   hraje hráč 2
- *            13:   hraje hráč 3
- *            14:   hraje hráč 4
- *            15:   hraje hráč 5
+ *            9:    odpojit se
  *            100:  hra skončila remízou
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
@@ -247,7 +245,6 @@ byte board [136]; //0: nikdo, 1: hráč 1; 2: hráč 2
  *            202: ....
  *            205: problémy s hráčem 5
  *  91:     Číslo hrajícího hráče
- *  92:     Číslo vyplněného pole (vyplňuje client) //NEPLATí
  *  93:     Počet odehraných kol, zvyšuje se na straně serveru
  *  95-96:  Barva hráče 1
  *  97-98:  Barva hráče 2
@@ -333,26 +330,28 @@ bool buttonRect::isTouched(int touchX, int touchY){
 
 buttonRect buttons[max_buttRect];
 
+/* ----------PROTOTYPY----------*/
+/* piskvorky_MP_client */
+void buttonPressed(int, int); //Argumentem souřadnice bodu, systém vyhodnotí stisk
 
-
+/* displayControl.ino */
 void drawMainFrame(uint16_t); //Vykreslí základní rámeček (v dané barvě)
 void drawMesh (uint16_t); //Vykreslí základní hrací mřížku (argument je barva)
-void drawPage (byte); //Vykreslí obrazovku podle čísla
-void drawPogetMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí -1
 void drawPoints(void); //Vykreslí puntíky podle board
-/* displayControl */
+void drawPage (byte); //Vykreslí obrazovku podle čísla
 void drawHead (uint16_t); //Vykreslí hlavičku - nápis "piskvorky" danou barvou (argument)
-//void checkWin(byte); //Zkontroluje zda nějaký hráč nevyhrál (argument je políčko, na které bylo vloženo kolečko)
-void chechStatus(byte); //KOntroluje oznamovací kód (umístěn v board[90])
-bool connectToServer(void); //Začne se spojovat se serverem
-void buttonPressed(int, int); //Argumentem souřadnice bodu, systém vyhodnotí stisk
+
+/* gameControl.ino */
 void processBoard(void); //Zpracuje novou přijatou herní desku
 uint16_t getPlayerColor(byte); //Zjistí barvu hráče, argument je číslo pozice v poli, kde údaj začíná
 byte getMyPlayerNumber (void); //Podle IP adres v boardu zjistí moje číslo hráče, pokud nenajde shodu, vrátí 0
-/* communication */
+
+/* communication.ino */
+bool connectToServer(void); //Začne se spojovat se serverem
 void recieveBoard (void); //Pokud byla serverem odeslána herní deska, přijme ji (vratí true), pokud není co přijmout, vrátí false
 void sendData(byte, byte); //Odešle daná data serveru (3x po sobě pro kontrolu), první argument je zpráva a druhé je kód, podle kterého server zpravu vyhodnotí
 void resetBoardAck(void); //Vyplní pole pro potvrzování příjmu pole board hodnotami false (nepřijato)
+void disconnectFromServer(void); //Odpojí se od serveru
 /*
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */

@@ -1,3 +1,15 @@
+/*>>>>>>> Piškvorky s arduinem po LAN <<<<<<<
+*  !!! Součást programu pro klienta, samostatně nefunkční !!!
+*
+* - Autor: Jan Závorka
+* - Email: zavorja4@fel.cvut.cz
+* - Domovská stránka projektu: https://github.com/janzavorka/BP_PROJ
+* - Seznam souborů: piskvorky_MP_client.ino; communication.ino; gameControl.ino; DisplayControl.ino
+*
+* --- Popis:
+* - Část zodpovědná za vykreslování navázání a udržení spojení a výměnu dat.
+*/
+
 //>>>>> Připojení k serveru <<<<<
  /*   Princip:
   *    - pokusí se připojit k serveru, v případě spojení zapíše pošle 100 (informace, že chce být připojen)
@@ -87,7 +99,7 @@ void sendData(byte message, byte code){
   }
 }
 //------------------------------------------------------------------------------------------------------
-//>>>>> Resetování pole pro přijatá data <<<<<
+//>>>>> Resetování potvrzovacího pole pro přijatá data <<<<<
  /*   Princip:
   *    - resetuje pole, které kontroluje zda daná data byla přijata (vyplní false)
   */

@@ -1,3 +1,15 @@
+/*>>>>>>> Piškvorky s arduinem po LAN <<<<<<<
+*  !!! Součást programu pro klienta, samostatně nefunkční !!!
+*
+* - Autor: Jan Závorka
+* - Email: zavorja4@fel.cvut.cz
+* - Domovská stránka projektu: https://github.com/janzavorka/BP_PROJ
+* - Seznam souborů: piskvorky_MP_client.ino; communication.ino; gameControl.ino; DisplayControl.ino
+*
+* --- Popis:
+* - Část zodpovědná za vykreslování dat na dsiplej
+*/
+
 //>>>>> Vykreslení základního rámčku <<<<<
  /*   Princip:
   *    - Vykreslí modrý rámeček kolem celého displeje
@@ -28,7 +40,8 @@ void drawMesh(uint16_t color){
 //------------------------------------------------------------------------------------------------------
 //>>>>> Vykreslí do mřížky kolečka na základě hodnoty v board <<<<<
  /*   Princip:
-  *    -
+  *    - Ujistí barvu hráče a vykreslí puntíky do hracího pole
+  *    - Případně vymaže chybně vykreslnené puntíky
   *
   */
 void drawPoints(){
@@ -38,13 +51,10 @@ void drawPoints(){
 
   for (int i = 0; i < meshX*meshY; i++){ //Překreslí všechny puntíky
       if(board[i] != 0){
-        //row = i/meshX;
-        //column = i - row*meshX;
         LCD.setColor(getPlayerColor(board[i])); //Nastaví barvu hráče podle čísla v poli
-        //LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       }
       else{
-        LCD.setColor(BLACK); //Nastaví barvu hráče podle čísla v poli
+        LCD.setColor(BLACK); //Pokud není pole obsazeno, překreslí se černým puntíkem (oprava chybné identifikace stisku)
       }
       row = i/meshX;
       column = i - row*meshX;
@@ -132,7 +142,7 @@ void drawPoints(){
 
 
 //------------------------------------------------------------------------------------------------------
-//>>>>> Vykreslení danou obrazovku podle ID <<<<<
+//>>>>> Vykreslí hlavičku <<<<<
  /*   Princip:
   *    - Vykreslí hlavičku "Piškvorky" podle požadované barvy (argument)
   */

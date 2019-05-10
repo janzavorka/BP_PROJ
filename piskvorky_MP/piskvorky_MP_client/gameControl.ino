@@ -1,7 +1,19 @@
+/*>>>>>>> Piškvorky s arduinem po LAN <<<<<<<
+*  !!! Součást programu pro klienta, samostatně nefunkční !!!
+*
+* - Autor: Jan Závorka
+* - Email: zavorja4@fel.cvut.cz
+* - Domovská stránka projektu: https://github.com/janzavorka/BP_PROJ
+* - Seznam souborů: piskvorky_MP_client.ino; communication.ino; gameControl.ino; DisplayControl.ino
+*
+* --- Popis:
+* - část zodpovědná za zpracování přijatých herních dat a práci s parametry hráče
+*/
+
 //>>>>> Zracovává přijatou herí desku <<<<<
  /*   Princip:
   *    - Postupně zpracuje přijatou herní duesku
-  *
+  *    - Podle přijatého kódu nechá vykreslit danou obrazovku
   */
 
 void processBoard(){
@@ -71,7 +83,7 @@ void processBoard(){
 //------------------------------------------------------------------------------------------------------
 //>>>>> Zjištění barvy hráče <<<<<
  /*   Princip:
-  *    - argument je index v poli board, podle něho je zjištěna daná barva
+  *    - argument je číslo hráče, podle něho je zjištěna daná barva
   *    - návratová hodnota je ona barva
   */
 
@@ -82,7 +94,7 @@ uint16_t getPlayerColor(byte player){
 //>>>>> Zjištění moje číslo hráče <<<<<
  /*   Princip:
   *    - Projde jednotlivé IP v boardu a pokusí se najít shodu s mojí IP = moje číslo
-  *    - pokud nenajde shodu vrátí -1
+  *    - pokud nenajde shodu vrátí 0
   */
 
 byte getMyPlayerNumber(){
