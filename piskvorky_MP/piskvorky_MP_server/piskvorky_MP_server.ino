@@ -76,7 +76,7 @@ byte mac[] = {
 IPAddress serverAddress(10,0,0,8);
 //
 //Port na kterém bude probíhat komunikace
-unsigned int localPort = 3333;
+unsigned int localPort = 55555;
 /* !!! ---------- KONEC nastavení ethernetu ---------- !!! */
 
 EthernetServer server = EthernetServer(localPort);
@@ -161,23 +161,22 @@ byte clientsData [maxPlayers][2][3]; //první index: číslo hráče; druhý ind
 byte packetLength = 136;
 byte board [136];  //Herní deska
 /* >>>>> Rozložení herního packetu <<<<<
- *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla - 1=hráč 1, 2=hráč 2, ...)
+ *  0-89:   Obsazení herních polí (standadně 0, server doplňuje čísla)
  *  90:     Hlášení prostřednictvím kódu
  *            0:    nic nedělej
  *            1:    vše OK, hraje se, překresli obrazovku
+ *            2:    pouze překreslit, nikdo nehraje
  *            3:    připravit novou hru, čekání na hráče (úvodní obrazovka)
- *            9:    odpojuji (výzva pro hráče aby se také odpojil) //NEVYUZITO
+ *            9:    odpojit se
  *            100:  hra skončila remízou
  *            101:  vyhrál hráč 1
  *            102:  vyhrál hráč 2
  *            103:  vyhrál hráč 3
  *            104:  vyhrál hráč 4
  *            105:  vyhrál hráč 5
- *            201:  problémy s hráčem 1 (odpojil se)
- *            202:  problémy s hráčem 2 (odpojil se)
-*             203:  problémy s hráčem 3 (odpojil se)
-              204:  problémy s hráčem 4 (odpojil se)
- *            205:  problémy s hráčem 5 (odpojil se)
+ *            201:  problémy s hráčem 1
+ *            202: ....
+ *            205: problémy s hráčem 5
  *  91:     Číslo hrajícího hráče
  *  93:     Počet odehraných kol, zvyšuje se na straně serveru
  *  95-96:  Barva hráče 1
