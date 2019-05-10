@@ -1,8 +1,12 @@
 # BP_PROJ: Piskvorky MP
 
+### 10.05.2019
+- Změna komunikačního portu na 55555, dle RFC6335
+- Úprava komnetřá v kódu pro klienta
+
 ### 06.05.2019
 - Úprava MAC adresa na ty, které mají desky Arduino Ethernet přiřazené od výrobce (na štítku zespodu)
-- Výměna displeje pro klienta číslo 3, přidání kalibračních dat pro nový displej 
+- Výměna displeje pro klienta číslo 3, přidání kalibračních dat pro nový displej
 
 ### 05.05.2019
 - Server:
