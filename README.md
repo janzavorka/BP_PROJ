@@ -45,8 +45,12 @@
 - Starší funkční verze projektu
 ---
 
+### BAP [➥](BAP/zaverecna_prace_FEL/)
+-  Bakalářská práce, předmět BBAP15	 [(pdf)](BAP/zaverecna_prace_FEL/main.pdf)
+---
+
 ### Zprava_BPROJ [➥](Zprava_BPROJ/)
--  Výstupní zpráva z celého projektu pro předmět B2BPROJ4
+-  Výstupní zpráva z celého projektu pro předmět B2BPROJ4 [(pdf)](Zprava_BPROJ/BPROJ_zprava.pdf)
 ---
 
 ### RGB_LED_cal [➥](RGB_LED_cal/)
