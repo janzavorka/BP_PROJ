@@ -10,9 +10,16 @@
 \BOOKMARK [2][-]{subsection.3.3}{Komunikace server - klient}{section.3}% 10
 \BOOKMARK [2][-]{subsection.3.4}{Komunikace klient - server}{section.3}% 11
 \BOOKMARK [2][-]{subsection.3.5}{Sestaven\355 spojen\355}{section.3}% 12
-\BOOKMARK [2][-]{subsection.3.6}{Prubeh hry}{section.3}% 13
-\BOOKMARK [1][-]{section.4}{O\236even\355 a u\236\355v\341n\355}{}% 14
-\BOOKMARK [1][-]{section.5}{Conclusions and future research}{}% 15
-\BOOKMARK [1][-]{section.5}{Reference}{}% 16
-\BOOKMARK [1][-]{section.6}{Seznam pou\236it\351ho softwaru}{}% 17
-\BOOKMARK [1][-]{appendix.A}{Appendix A}{}% 18
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Pr\355prava serveru}{subsection.3.5}% 13
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Pr\355prava klient}{subsection.3.5}% 14
+\BOOKMARK [3][-]{subsubsection.3.5.3}{Sestaven\355 pojen\355}{subsection.3.5}% 15
+\BOOKMARK [2][-]{subsection.3.6}{R\355zen\355 prubehu hry}{section.3}% 16
+\BOOKMARK [1][-]{section.4}{O\236iven\355 a obsluha}{}% 17
+\BOOKMARK [2][-]{subsection.4.1}{Ovl\341d\341n\355 klienta}{section.4}% 18
+\BOOKMARK [2][-]{subsection.4.2}{Ovl\341d\341n\355 serveru}{section.4}% 19
+\BOOKMARK [1][-]{section.5}{Z\341ver}{}% 20
+\BOOKMARK [1][-]{section.5}{Reference}{}% 21
+\BOOKMARK [1][-]{section*.24}{Seznam pou\236it\351ho softwaru}{}% 22
+\BOOKMARK [1][-]{appendix.A}{Zdrojov\375 k\363d server}{}% 23
+\BOOKMARK [1][-]{appendix.B}{Zdrojov\375 k\363d klient}{}% 24
+\BOOKMARK [1][-]{appendix.C}{STL soubory krabicek}{}% 25

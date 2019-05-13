@@ -1,10 +1,11 @@
 \section{Popis softwaru}
 \subsection{Knihovny}
+\label{sec:knihovny}
 Pro realizaci byly použity následující knihovny:
 \begin{itemize}
   \item \textit{Ethernet library}: knihovna slouží pro připojení Arduina k internetu. Jak je uvedeno na webových stránkách \cite{EthLib} jsou podporovány desky a shieldy založené na konrolérech W5100, W5200, W5500. Tato knihvna je použita jak u serveru tak i u klientů. U serveru připojený ethernet shield obsadí piny 10, 11, 12, 13. Komunikace Arduina se shieldem (ethernet kontrolérem) probíhá po SPI sběrnici.
 
-  \item \textit{MCUFRIEND\_kbv library}: knihovna slouží k ovládání displeje u klienta. Pro správnou funkci je nutné, jak se zmiňuje autor na domovské stránce knihovny~\cite{lib_MCUFRIEND_kbv}, je nutné mít k dispozici také knihovnu \textit{Adafruit\_GFX} \cite{lib_adafruitGFX}. Pro použití displeje se nejdříve vytvoří instance třídy \texttt{UTFGLUE}, kde je nutné správně definovat piny pro daný shield, v tomto případě \texttt{UTFTGLUE LCD(0x0154,A2,A1,A3,A4,A0);}. Pro řízení displeje jsou pak volány patřičné metody formou \textit{LCD.metoda(parametry);}, například pro vyplnění celého displeje černou \texttt{LCD.clrScr();}. Pomocí ukázkouvého zdrojového kódu z této knihovny \textit{(examples/TouchScreen\_
+  \item \textit{MCUFRIEND\_kbv library}: knihovna slouží k ovládání displeje u klienta. Pro správnou funkci je nutné, jak se zmiňuje autor na domovské stránce knihovny~\cite{lib_MCUFRIEND_kbv},  mít k dispozici také knihovnu \textit{Adafruit\_GFX} \cite{lib_adafruitGFX}. Pro použití displeje se nejdříve vytvoří instance třídy \texttt{UTFGLUE}, kde je nutné správně definovat piny pro daný shield, v tomto případě \texttt{UTFTGLUE LCD(0x0154,A2,A1,A3,A4,A0);}. Pro řízení displeje jsou pak volány patřičné metody formou \textit{LCD.metoda(parametry);}, například pro vyplnění celého displeje černou \texttt{LCD.clrScr();}. Pomocí ukázkouvého zdrojového kódu z této knihovny \textit{(examples/TouchScreen\_
 calibr\_kbv)} byly získány kalibrační hodnoty pro dotykovou plochu displeje.
 
   \item \textit{Adafruit\_TouchScreen}: slouží k zaznamenání hodnot ze čtyřvodičové dotykové plochy. Stejně jako u knihovny pro displej je nejdříve nutné vytvořit instanci dané třídy \texttt{TouchScreen} v tomto případě tak \texttt{TouchScreen Touch(XP, YP, XM, YM, 300);}, kde \textit{XP, YP, XM, YM} jsou piny, na které je vyvedená dotyková plocha (pro použitý shield jsou to: XP = 6, YP = A1, XM = A2, YM = 7). Hodnota 300 by pak dle popisu knihovny \cite{lib_touch} označuje elektrický odpor dotykové plochy X (měřeno multimetrem mezi piny XP a XM). Pro použité shiledy je hodnota přibližně $300  \ \mathrm{\Omega}$. Dále je třeba určit minimální a maximální tlak pro vyhodnocení dotyku pomocí \texttt{\#define MINPRESSURE} a \texttt{\#define MAXPRESSURE}. Vyhovující jsou hodnoty uvedené v ukázkových kódech pro knihovnu a to konkrétně 10 pro \texttt{MINPRESSURE} a 1000 pro \texttt{MAXPRESSURE}.
@@ -68,7 +69,7 @@ Server komunikuje s klienty pomocí pole \textit{board}. Jedná se o jednorozmě
 
 Při odesílání je toto pole rozděleno na části po osmi bajtech. Každá tato část je vybavena pořadovým číslem a dvoubajtovým kontrolním součtem (v něm je zahrnuto i pořadové číslo) a následně odeslána připojeným klientům.
 
-Klienti postupně přijímají všechny části a v případě bezchybného příjmu data vyhodnotí. V případě, že klient na základě kontrolního součtu identifikoval chybnou část, odešle podle pravidel komunikace klient->server (popsáno v kapitole \ref{sec:comm_client-server}). Server pak v případě přijetí požadavku odešle danému klientovi vyžadovanou část pole.
+Klienti postupně přijímají všechny části a v případě bezchybného příjmu data vyhodnotí. V případě, že klient na základě kontrolního součtu identifikoval chybnou část, odešle podle pravidel komunikace klient - server (popsáno v kapitole \ref{sec:comm_client-server}). Server pak v případě přijetí požadavku odešle danému klientovi vyžadovanou část pole.
 
 \input{tables/board_content.tex}
 
@@ -78,13 +79,50 @@ Klient komunikuje se serverem, až na výjimku při sestavení spojení, prostř
 
 Pokud při porovnání server zjistí, že přijeté zprávy nejsou stejné, odešle danému klientovi znovu herní desku. V případě, že byl daný hráč na tahu a přenos požadavku na vyplnění pole se nezdařil, je mu prostřednictvím znovuodeslání pole znovu aktivován tah.
 
-V případě, že klient přijal od serveru chybná data, odešle požadavek ve tvaru \mbox{\{20, x\}}, kde \textit{x} je číslo chybně přijaté části pole.
+V případě, že klient přijal od serveru chybná data, odešle požadavek ve tvaru \mbox{\{20, x\}}, kde \textit{x} je číslo chybně přijaté části pole. Pokud je toto serverem správně přiato, odešle požadovanou část znovu (dle pravide komunikace server  -klient, kapitola \ref{sec:comm_server-client})
 
 \input{tables/client_packet.tex}
 
 
 \subsection{Sestavení spojení}
-\inProgress
+\subsubsection{Příprava serveru}
+Při spuštění serveru dojde nejprve k identifikaci ethernet kontroléru. V případě, že je identifikován kontrolér WIZnet W5200 nebo WIZnet W5500, je k dispozici funkce \texttt{Ethernet.linkstatus()}, která umožňuje získat informaci v fyzickém připojení kabelu. Pokud není kabel připojen, je to signalizováno blikáním signalizační svítivé diody červenou barvou (viz. tabulka \ref{tab:LED_man}) a program nepokračuje dále, dokud není kabel připojen. Ostatní ethernet kontroléry bohužel neposkitují, jak je popsáno v kapitole \ref{sec:HWclient}, informaci o připojení kabelu, takže je celá tato sekvence přeskočena.
 
-\subsection{Průběh hry}
-\inProgress
+V případě, že server získává adresu z DHCP serveru, je možné ještě ověřit správné připojení pomocí kontroly získané adresy. V knihovně Arduino Ethernet \cite{EthLib} je toto řešeno návratovou hodnotou funkce \texttt{Ethernet.begin(mac)} (v režimu DHCP má pouze jeden parametr a to lokální MAC adresu, jinak funkce \texttt{Ethernet.begin(mac)} nemá návratovou hodnotu).
+
+Pokud je však nastaven mód se statickou IP adresou a je použit shield s ethernet kontrolérem například WIZnet W5100 (jako je tomu v této práci), není zde žádná vhodná možnost kontroly správného připojení. Jedna z možností by byla, že by se server pokusil poslat zprávu \textit{Echo Request} nějakému známému zařízení v síti a očekávat odpověď \textit{Echo Reply}. Ale vzhledem k tomu, že jako centrální prvek je v tomto zapojení zvolen switch a žádné další zařízení v síti není, jei tato možnost nepoužitelná.
+
+V této fázi je příprava serveru dokončena, postup navázání spojení s clientem je popsán v následující kapitole \ref{sec:connection_communication}.
+
+
+
+
+\subsubsection{Příprava klient}
+Příprava probíhá obdobně jako u serveru, ale vzhledem k tomu, že použité Arduino Ethernet desky mají kontrolér WIZnet W5100, je vynechána část s kontrolou připojení kabelu. Jediná možná detekce správného připojení připojení kabelu je tak pouze v režimu, kdy je IP adresa získávána z DHCP serveru. V takovém případě se na displeji vypíše zpráva \textit{Zkontrolujte pripojeni kabelu} a klient čeká dokud IP adresu neobdrží. V opačném případě je přepnuto na úvodní obrazovku.
+
+V této fázi je klient připraven a čeká na příkaz uživatele připojit se k serveru.
+
+\subsubsection{Sestavení pojení}
+\label{sec:connection_communication}
+Pokud nastavení a spuštění serveru proběhlo správně, server v nekonečné smyčce (\texttt{void loop()\{\}}) pravidelně ověřuje, zda nějaké zařízení nevyžaduje připojení. To je realizováno metodou z knihovny \cite{EthLib} - \texttt{server.accept()}. V případě příchozího spojení vratí tato metoda objekt typu client, v opačném případě \textit{NULL}. To je uloženo do proměnné \texttt{newClient}. Metoda \texttt{server.accept()} vrací data o daném příchozího spojení pouze jednou a proto je nutné je uložit do extra proměnné.
+
+Připojení klienta spustí uivatel stisknutím příslušého tlačítka na displeji. Klient se v pravidelných intervalech pokouší o navázání spojení funkcí \mbox{\texttt{client.connect(serverAddress, localPort)}}. V případě, že je připojení k serveru úspěšné, pošle klient serveru zprávu \uv{100}. Tento kód informuje server, že se jedná k lienta pro piškvorky, pokud by server přijal jiná data, spojení zruší.
+
+Pokud server zaznamená nové příchozí spojení, spustí kontrolu nového hráče. V první zkontroluje, zda je ještě k dispozici místo pro dalšího, následně ověří, zda klient se stejnou IP adresou není již připojen a zkontroluje, zda klient poslal kód \uv{100}. Pokud klient úspěšně projde všemi testy, je zařazen do pole \texttt{clients[]} (pole aktivních klientů) a jeho IP adresa je uloženo do herního pole \textit{board} a toto pole se odešle všem hráčům. Pokud klient některému testu nevyhoví, je spojení ukončeno (\texttt{newClient.stop()}).
+
+V této fázi se čeká na připojení dalších klientů. Pravidelně je také kontrolováno, zda se nějaký klient neodpojil. V případě, že ano, jsou jeho data smazána jak z pole \texttt{clients[]} tak z herního pole \textit{board} a o této skutečnosti jsou ostatní klienti informováni zprávou (odeslání pole \textit{board}) s kódem 20x, kde \textit{x} je číslo odpojeného klienta. Tato zpráva je zobrazena na displejích klientů po dobu 4000 ms (nastaveno v proměnné \texttt{clientErrMessageLast}).
+
+Nyní se čeká na zahájení hry ze strany uživetele (stisk zeleného tlačítka na serveru nebo příkazemn přes sériovou linku, viz. kapitola \ref{sec:ovladani}).
+
+\subsection{Řízení průběhu hry}
+Po příkazu ke spuštění hry se nejdříve ověří, zda jsou k dispozici alespoň dva hráči. Pokud tomu tak není, hra se nezahájí a uživatelé jsou tímto informování indikační svítivou diodou (viz. tabulka \ref{tab:serverLED}).
+
+V případě, že je k dispozici dostatečný počet hráčů, je náhodně vybrán (funkce \texttt{random()}) první hráč a všem hráčům se rozešle pole \textit{board} s vyplněným herní kódem (1) a číslem hráče (metoda odeslání popsána v kapitole \ref{sec:comm_server-client}). Jednotliví hráči porovnají pořadí svých IP adres v poli \textit{board} a zjištěný index porovnají s číslem hráče vyplněným na pozici 91 v poli \textit{board}, hráč, který nalezne shodu, je na tahu, ostatní vyčkávají.
+
+Server nyní čeká dokud mu hrající hráč neodešle pozici, kterou si přeje vyplnit. Komunikace klienta se serverem se řídí podle pravidel popsaných v kapitole \ref{sec:comm_client-server}. Přeskočit daného hráče lze pomocí stisku zeleného tlačítka na serveru. V případě, že si hrající uživatel přeje vyplnit danou pozici, stiskne patřičné místo na displeji. Klient zkontroluje, zda je daná pozice volná a pokud ano okamžitě vyplní žeton a následně odešle informaci o vyplnění serveru. Okamžité vykreslení žetonu před potvrzení serverem je implementováno, protože při delší odezvě serveru může docházet ke zpoždění vykreslení (v poměru s dotykem), což je uživatelsky nekomfortní. Pokud by klient odeslal serveru žádost na vyplnění již obsazeného pole, server odešle všem klientům pole \textit{board} a na pozici hrajícího hráče (\texttt{board[91]}) ponechá sejného hráče. Na straně klienta se při vykreslování neobsazené pozice vykreslí žeton s barvou pozadí (černou), čímž se vymaže nesprávně umístěný žeton.
+
+Pokud výběr a obsazení pozice proběhlo v pořádku, server odešle všem pole s kódem (2) - pouze překresli obrazovku, nikdo nehraje. Následně server zkontroluje stav hry: zda je počet odehraných kolm menší než počet pozic v poli (jinak odešle kód (100) - remíza), zkontroluje zda hráč, který odehrál kolo nespojil dostatečný počet žetonů (definováno v proměnné \texttt{crossNum}, defaultně pět). V případě, že by spojil a mět tak nárok na výhru, všem se odešle pole \textit{borad} s kóde 10x (\textit{x} je číslo hráče, který vyhrál) a klient vypíše na displej danou informaci. V opačném případě hra pokračuje, server vyplní na pozici hrajícího hráče (\texttt{board[91]}) číslo dalšího hráče, zvětší počet kol o jedna (\texttt{board[93]}) a všem hráčům opět odešle pole s kódem (1).
+
+Celý tento systém se opakuje, dokud nějaký hráč nevyhrál, hra neskončila remízou nebo hra není ukončena ze strany serveru.
+
+Neustále se také ověřuje, zda se nějaký hráč během hry neodpojil, pokud ano, jeho IP adresa je smazána z pole a na straně serveru nezabírá místo v poli aktivních klientů (\texttt{clients[]}). Během hry se však žádný klient nemůže připojit ani v případě, že ve hře při jejím započetí byl. Žetony odpojených klientů zůstávají ve hře. Pokud by došlo k odpojení všech klientů, server hru ukončí.

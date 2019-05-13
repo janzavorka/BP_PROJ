@@ -5,33 +5,37 @@
 \addtolength{\titlewidth}{-1.7cm}
 \newlength{\heightofhw}
 
-\newcommand{\TitlePage}[2]{{
+\newcommand{\TitlePage}[3]{{
 	\thispagestyle{empty}
 	\parbox{0.7cm}{\color{cvutcolor}\rule{0.35cm}{\textheight}}
 	{\parbox[0][\textheight][t]{\titlewidth}{
-		\sffamily 
+		\sffamily
 		%\vspace{1pt}
-		\includegraphics[height=4.1cm]{img/ctu_logo_blue.pdf} 
-		\put(10,40){\parbox{8cm}{\Large České\\[0.3em] vysoké učení\\[0.3em] technické\\[0.3em] v Praze\\[.6em]}} \\[.1em]		
-		\textbf{\Large 
+		\includegraphics[height=4.1cm]{img/logo_CVUT.pdf}\\[0.5em]
+		%\put(10,40){\parbox{8cm}{\Large  \textbf{České}\\[0.3em] \textbf{vysoké učení}\\[0.3em] \textbf{technické}\\[0.3em] \textbf{v Praze}\\[.6em]}} \\[.1em]
+		\textbf{\Large
 			\color{cvutcolor} Fakulta Elektrotechnická \\[0.3em]
 			\color{black} Katedra radioelektroniky
 		}\\[6em]
 		\color{black}{\Large \textbf{Bakalářská práce}}\\[0.8em]
 		{\huge \textbf{#2}}\\[0.8em]
+		{\Large \textbf{#3}}\\[0.8em]
+		
+		\vspace*{1.5cm}
 		\color{cvutcolor}{\Large \textbf{#1}}\\[0.8em]
-		\vfill{}
-        
-%        \textbf{\large 
-%			\color{black} Supervisor: \\[0.3em]
-%			\color{cvutcolor} Ing. Stanislav Vítek, Ph.D.
-%		}\\[5cm]
-        
-%         \textbf{\large 
-% 			\color{black} Supervisor specialist: \\[0.3em]
-% 			\color{cvutcolor} Ing. Ladislav Sieger, CSc.
-%             \\[0.3em]
-% 		}\\[2em]
+
+		\vspace*{1cm}
+		~\vfill
+
+
+		\textbf{\large
+			\color{black} Vedoucí práce:
+		\color{cvutcolor} Ing. Stanislav Vítek Ph.D.
+		}\\[0.2cm]
+		\textbf{\large
+ 			\color{black} Studijní program:
+ 			\color{cvutcolor}  Elektronika a komunikace
+		}\\[0.2cm]
 		\textbf{\Large \color{black} Praha, \todayMonthYear}
 		\vspace{2pt}
 	}}

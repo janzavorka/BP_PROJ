@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  9 MAY 2019 00:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  14 MAY 2019 00:46
 entering extended mode
 **./main.tex
 (main.tex
@@ -1922,39 +1922,43 @@ Package glossaries Info: Writing glossary file main.glo on input line 29.
 
 Package glossaries Info: Writing glossary file main.acn on input line 29.
 )
-(main.aux (appendix.aux))
+(main.aux
+
+LaTeX Warning: Label `fig:faze1' multiply defined.
+
+(appendix.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 161.
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 161.
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 161.
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 161.
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 161.
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 161.
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 161.
-LaTeX Font Info:    Try loading font information for LGR+cmr on input line 161.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 163.
+LaTeX Font Info:    Try loading font information for LGR+cmr on input line 163.
 
  (D:\Programy\MikTex\tex\latex\cbfonts-fd\lgrcmr.fd
 File: lgrcmr.fd 2017/07/29 v1.2 Greek European Computer Regular
 )
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 161.
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 161.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 161.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 163.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 163.
 
 
 (D:\Programy\MikTex\tex\latex\base\ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 161.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 161.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 163.
 
 (D:\Programy\MikTex\tex\latex\lm\t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -1998,7 +2002,7 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Info: Redefining \degres on input line 161.
+LaTeX Info: Redefining \degres on input line 163.
 
 Package french.ldf Warning: Figures' and tables' captions might look like
 (french.ldf)                `Figure 1:' in French instead of `Figure 1 :'.
@@ -2009,10 +2013,10 @@ Package french.ldf Warning: Figures' and tables' captions might look like
 (french.ldf)                you can still add AFTER babel/french
 (french.ldf)                \usepackage[labelsep=period]{caption} or
 (french.ldf)                \usepackage[labelsep=endash]{caption} or
-(french.ldf)                ... live with it; reported on input line 161.
+(french.ldf)                ... live with it; reported on input line 163.
 
-LaTeX Info: Redefining \dots on input line 161.
-LaTeX Info: Redefining \up on input line 161.
+LaTeX Info: Redefining \dots on input line 163.
+LaTeX Info: Redefining \up on input line 163.
 (D:\Programy\MikTex\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count199
@@ -2041,17 +2045,17 @@ G,.JBIG2,.JB2,.eps]
 )
 \symgns@font=\mathgroup8
 LaTeX Font Info:    Overwriting symbol font `gns@font' in version `bold'
-(Font)                  TS1/lmr/m/n --> TS1/lmr/bx/n on input line 161.
-Package gensymb Info: Math companion symbols declared on input line 161.
-LaTeX Info: Redefining \degree on input line 161.
-LaTeX Info: Redefining \celsius on input line 161.
+(Font)                  TS1/lmr/m/n --> TS1/lmr/bx/n on input line 163.
+Package gensymb Info: Math companion symbols declared on input line 163.
+LaTeX Info: Redefining \degree on input line 163.
+LaTeX Info: Redefining \celsius on input line 163.
 Package gensymb Info: Using text companion symbols for \degree, \celsius and \p
-erthousand on input line 161.
-LaTeX Info: Redefining \ohm on input line 161.
-Package gensymb Info: Using \textohm for \ohm on input line 161.
-Package gensymb Info: Using \textmu for \micro on input line 161.
+erthousand on input line 163.
+LaTeX Info: Redefining \ohm on input line 163.
+Package gensymb Info: Using \textohm for \ohm on input line 163.
+Package gensymb Info: Using \textmu for \micro on input line 163.
 \AtBeginShipoutBox=\box73
-Package hyperref Info: Link coloring ON on input line 161.
+Package hyperref Info: Link coloring ON on input line 163.
 
 (D:\Programy\MikTex\tex\latex\hyperref\nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -2062,91 +2066,91 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 \c@section@level=\count271
 LaTeX Info: Redefining \Ref on input line 515.
 )
-LaTeX Info: Redefining \ref on input line 161.
-LaTeX Info: Redefining \pageref on input line 161.
-LaTeX Info: Redefining \nameref on input line 161.
+LaTeX Info: Redefining \ref on input line 163.
+LaTeX Info: Redefining \pageref on input line 163.
+LaTeX Info: Redefining \nameref on input line 163.
  (main.out)
 (main.out)
 \@outlinefile=\write7
 \openout7 = `main.out'.
 
-LaTeX Info: Redefining \Ref on input line 161.
+LaTeX Info: Redefining \Ref on input line 163.
  ABD: EveryShipout initializing macros
 \c@lstlisting=\count272
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 163.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 165.
 
 
 (D:\Programy\MikTex\tex\latex\lm\ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 163.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 165.
 
 
 (D:\Programy\MikTex\tex\latex\lm\omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 163
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 165
 .
 
 (D:\Programy\MikTex\tex\latex\lm\omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 163
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 165
 .
 
 (D:\Programy\MikTex\tex\latex\lm\omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 163.
+(Font)              <12> on input line 165.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 163.
+(Font)              <8> on input line 165.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 163.
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 163.
+(Font)              <6> on input line 165.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 165.
 
 (D:\Programy\MikTex\tex\latex\jknappen\ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 163.
+LaTeX Font Info:    Try loading font information for U+msa on input line 165.
 
 (D:\Programy\MikTex\tex\latex\amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 163.
+LaTeX Font Info:    Try loading font information for U+msb on input line 165.
 
 (D:\Programy\MikTex\tex\latex\amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+wasy on input line 163.
+LaTeX Font Info:    Try loading font information for U+wasy on input line 165.
 
 (D:\Programy\MikTex\tex\latex\wasysym\uwasy.fd
 File: uwasy.fd 2003/10/30 v2.0 Wasy-2 symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 163.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 165.
 
 
 (D:\Programy\MikTex\tex\latex\lm\ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for T1+lmss on input line 163.
+LaTeX Font Info:    Try loading font information for T1+lmss on input line 165.
 
 
 (D:\Programy\MikTex\tex\latex\lm\t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<img/ctu_logo_blue.pdf, id=77, 366.36874pt x 279.0425pt>
-File: img/ctu_logo_blue.pdf Graphic file (type pdf)
-<use img/ctu_logo_blue.pdf>
-Package pdftex.def Info: img/ctu_logo_blue.pdf  used on input line 163.
-(pdftex.def)             Requested size: 153.16385pt x 116.65646pt.
+<img/logo_CVUT.pdf, id=105, 291.63655pt x 142.26149pt>
+File: img/logo_CVUT.pdf Graphic file (type pdf)
+<use img/logo_CVUT.pdf>
+Package pdftex.def Info: img/logo_CVUT.pdf  used on input line 165.
+(pdftex.def)             Requested size: 239.14796pt x 116.65646pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--163
+Underfull \hbox (badness 10000) in paragraph at lines 165--165
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--163
+Underfull \hbox (badness 10000) in paragraph at lines 165--165
 
  []
 
@@ -2154,41 +2158,59 @@ Underfull \hbox (badness 10000) in paragraph at lines 163--163
 
 \openout4 = `main.ist'.
 
-{C:/Users/janza/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./img/ctu_l
-ogo_blue.pdf>] [2
+{C:/Users/janza/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./img/logo_
+CVUT.pdf>] [2
 
 ]
-<img/zadani_prace.pdf, id=91, 597.50829pt x 845.0471pt>
+<img/zadani_prace.pdf, id=118, 597.50829pt x 845.0471pt>
 File: img/zadani_prace.pdf Graphic file (type pdf)
 <use img/zadani_prace.pdf>
-Package pdftex.def Info: img/zadani_prace.pdf  used on input line 195.
+Package pdftex.def Info: img/zadani_prace.pdf  used on input line 197.
 (pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
 File: img/zadani_prace.pdf Graphic file (type pdf)
 <use img/zadani_prace.pdf>
-Package pdftex.def Info: img/zadani_prace.pdf  used on input line 195.
+Package pdftex.def Info: img/zadani_prace.pdf  used on input line 197.
 (pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
-<img/zadani_prace.pdf, id=94, page=1, 597.50829pt x 845.0471pt>
+<img/zadani_prace.pdf, id=121, page=1, 597.50829pt x 845.0471pt>
 File: img/zadani_prace.pdf Graphic file (type pdf)
 <use img/zadani_prace.pdf, page 1>
-Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 195.
+Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 197.
 (pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
 File: img/zadani_prace.pdf Graphic file (type pdf)
 <use img/zadani_prace.pdf, page 1>
-Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 195.
+Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 197.
 (pdftex.def)             Requested size: 597.53416pt x 845.08372pt.
 File: img/zadani_prace.pdf Graphic file (type pdf)
 <use img/zadani_prace.pdf, page 1>
-Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 195.
+Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 197.
 (pdftex.def)             Requested size: 597.53416pt x 845.08372pt.
 File: img/zadani_prace.pdf Graphic file (type pdf)
 <use img/zadani_prace.pdf, page 1>
-Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 195.
+Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 197.
 (pdftex.def)             Requested size: 597.53416pt x 845.08372pt.
 File: img/zadani_prace.pdf Graphic file (type pdf)
 <use img/zadani_prace.pdf, page 1>
-Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 195.
+Package pdftex.def Info: img/zadani_prace.pdf , page1 used on input line 197.
 (pdftex.def)             Requested size: 597.53416pt x 845.08372pt.
- [3 <./img/zadani_prace.pdf>] [4] (main.toc)
+ [3 <./img/zadani_prace.pdf>] [4] (declaration.tex) [0
+
+]
+(thx.tex)pdfTeX warning (ext4): destination with the same identifier (name{page
+.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.204 \newpage
+               [1] (abstract.tex
+Underfull \hbox (badness 10000) in paragraph at lines 2--3
+
+ []
+
+)pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.208 \clearpage
+                 [2] (main.toc)
 \tf@toc=\write8
 \openout8 = `main.toc'.
 
@@ -2201,10 +2223,27 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [1
 
-] [2] (introduction.tex)
+] [2] (main.lof)
+\tf@lof=\write9
+\openout9 = `main.lof'.
+
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 15.39603pt.
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[3
+
+] (main.lot)
+\tf@lot=\write10
+\openout10 = `main.lot'.
+
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
@@ -2212,10 +2251,10 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.227 \cleardoublepage
-                       [1
+l.240 \clearpage
+                 [1
 
-]
+] (introduction.tex)
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 15.39603pt.
@@ -2226,11 +2265,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.227 \cleardoublepage
+l.242 \cleardoublepage
                        [2
 
 ] (chapter_01.tex
-<img/schema_net.png, id=174, 926.46124pt x 514.92375pt>
+<img/schema_net.png, id=270, 926.46124pt x 514.92375pt>
 File: img/schema_net.png Graphic file (type png)
 <use img/schema_net.png>
 Package pdftex.def Info: img/schema_net.png  used on input line 15.
@@ -2248,9 +2287,6 @@ lmr/m/n/12 , které ob-sa-huje mi-k-ro-kon-t-ro-lér At-mel SAM3X8E
  []
 
 
-LaTeX Warning: Reference `sec:ovladani' on page 3 undefined on input line 25.
-
-
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 14.49998pt.
  We now make it that large for the rest of the document.
@@ -2261,37 +2297,29 @@ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.26 
-      [3 <./img/schema_net.png>]
-<img/server_module.png, id=196, 479.7925pt x 133.49875pt>
+      [3
+
+ <./img/schema_net.png>]
+<img/server_module.png, id=288, 479.7925pt x 133.49875pt>
 File: img/server_module.png Graphic file (type png)
 <use img/server_module.png>
 Package pdftex.def Info: img/server_module.png  used on input line 29.
 (pdftex.def)             Requested size: 341.43306pt x 95.00272pt.
-
-
-LaTeX Warning: Reference `sec:ovladani' on page 4 undefined on input line 33.
-
-<img/foto/server_navrh.png, id=201, 548.80031pt x 484.81125pt>
+<img/foto/server_navrh.png, id=294, 548.80031pt x 484.81125pt>
 File: img/foto/server_navrh.png Graphic file (type png)
 <use img/foto/server_navrh.png>
-Package pdftex.def Info: img/foto/server_navrh.png  used on input line 40.
-(pdftex.def)             Requested size: 192.05612pt x 169.65688pt.
-<img/foto/server_realizace.png, id=202, 344.28625pt x 301.125pt>
-File: img/foto/server_realizace.png Graphic file (type png)
-<use img/foto/server_realizace.png>
-Package pdftex.def Info: img/foto/server_realizace.png  used on input line 43.
-(pdftex.def)             Requested size: 192.05612pt x 167.98097pt.
+Package pdftex.def Info: img/foto/server_navrh.png  used on input line 56.
+(pdftex.def)             Requested size: 225.46176pt x 199.16928pt.
+<img/foto/server_realizace.jpg, id=295, 1321.3365pt x 1513.655pt>
+File: img/foto/server_realizace.jpg Graphic file (type jpg)
+<use img/foto/server_realizace.jpg>
+Package pdftex.def Info: img/foto/server_realizace.jpg  used on input line 62.
+(pdftex.def)             Requested size: 173.85645pt x 199.16928pt.
+
 
 Package hyperref Warning: Composite letter `\textasciicaron+r'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 55.
-
-
-LaTeX Warning: Reference `sec:knihovny' on page 4 undefined on input line 57.
-
-
-Underfull \vbox (badness 1917) has occurred while \output is active []
-
+(hyperref)                removing `\textasciicaron' on input line 67.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2303,19 +2331,26 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.58 
-      [4 <./img/server_module.png> <./img/foto/server_navrh.png> <./img/foto/se
-rver_realizace.png>]
-<img/foto/client_navrh.png, id=215, 457.10776pt x 405.9165pt>
+l.70 
+      [4 <./img/server_module.png> <./img/foto/server_navrh.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[5 <./img/foto/server_realizace.jpg>]
+<img/foto/client_navrh.png, id=310, 457.10776pt x 405.9165pt>
 File: img/foto/client_navrh.png Graphic file (type png)
 <use img/foto/client_navrh.png>
-Package pdftex.def Info: img/foto/client_navrh.png  used on input line 70.
-(pdftex.def)             Requested size: 192.05612pt x 170.5519pt.
-<img/foto/client_realizace.png, id=216, 344.28625pt x 301.125pt>
-File: img/foto/client_realizace.png Graphic file (type png)
-<use img/foto/client_realizace.png>
-Package pdftex.def Info: img/foto/client_realizace.png  used on input line 73.
-(pdftex.def)             Requested size: 192.05612pt x 167.98097pt.
+Package pdftex.def Info: img/foto/client_navrh.png  used on input line 98.
+(pdftex.def)             Requested size: 224.29164pt x 199.16928pt.
+<img/foto/client_realizace.jpg, id=311, 1462.263pt x 1335.389pt>
+File: img/foto/client_realizace.jpg Graphic file (type jpg)
+<use img/foto/client_realizace.jpg>
+Package pdftex.def Info: img/foto/client_realizace.jpg  used on input line 104.
+
+(pdftex.def)             Requested size: 218.08049pt x 199.16928pt.
 )
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2323,23 +2358,16 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[5]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 14.49998pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[6 <./img/foto/client_navrh.png> <./img/foto/client_realizace.png>]
+[6 <./img/foto/client_navrh.png> <./img/foto/client_realizace.jpg>]
 (chapter_02.tex
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 7.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 8.
  (D:\Programy\MikTex\tex\latex\lm\t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 15.
+(hyperref)                removing `\textasciicaron' on input line 16.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2385,15 +2413,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [11]) (tables/board_content.tex
-Overfull \hbox (41.47346pt too wide) in paragraph at lines 4--31
+Overfull \hbox (41.47346pt too wide) in paragraph at lines 4--32
 [][] 
  []
 
-) (tables/client_packet.tex
-Overfull \hbox (22.28574pt too wide) in paragraph at lines 4--11
-[][] 
- []
-
+)
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 14.49998pt.
@@ -2407,16 +2431,244 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[13])
+[13] (tables/client_packet.tex
+Overfull \hbox (22.28574pt too wide) in paragraph at lines 4--11
+[][] 
+ []
+
+)
+
+Package hyperref Warning: Composite letter `\textasciicaron+r'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 88.
+
+
+Package hyperref Warning: Composite letter `\textasciicaron+r'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 100.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[14]
+Overfull \hbox (104.10753pt too wide) in paragraph at lines 109--110
+\T1/lmr/m/n/12 pra-vi-del-ných in-ter-va-lech po-kou²í o na-vá-zání spo-jení fu
+nkcí [].
+ []
+
+
+Package hyperref Warning: Composite letter `\textasciicaron+R'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 117.
+
 
 Package hyperref Warning: Composite letter `\textring+u'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textring' on input line 89.
+(hyperref)                removing `\textring' on input line 117.
 
 
 Package hyperref Warning: Composite letter `\textasciicaron+e'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 89.
+(hyperref)                removing `\textasciicaron' on input line 117.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[15])
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[16] (chapter_03.tex
+<img/gameFlow/phase01.jpg, id=536, 1733.2755pt x 1403.644pt>
+File: img/gameFlow/phase01.jpg Graphic file (type jpg)
+<use img/gameFlow/phase01.jpg>
+Package pdftex.def Info: img/gameFlow/phase01.jpg  used on input line 17.
+(pdftex.def)             Requested size: 227.62204pt x 184.32205pt.
+<img/gameFlow/phase02.jpg, id=538, 1851.718pt x 1522.488pt>
+File: img/gameFlow/phase02.jpg Graphic file (type jpg)
+<use img/gameFlow/phase02.jpg>
+Package pdftex.def Info: img/gameFlow/phase02.jpg  used on input line 25.
+(pdftex.def)             Requested size: 227.62204pt x 187.15108pt.
+
+Underfull \vbox (badness 2538) has occurred while \output is active []
+
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[17
+
+ <./img/gameFlow/phase01.jpg>]
+Overfull \hbox (11.80661pt too wide) in paragraph at lines 30--31
+\T1/lmr/m/n/12 hrá£e. Neº za-po£ne hra je moºné se ze ser-veru od-po-jit stis-k
+em tla-£ítka \T1/lmr/m/it/12 ODPOJIT\T1/lmr/m/n/12 .
+ []
+
+<img/gameFlow/phase03a.jpg, id=549, 1781.4555pt x 1428.1355pt>
+File: img/gameFlow/phase03a.jpg Graphic file (type jpg)
+<use img/gameFlow/phase03a.jpg>
+Package pdftex.def Info: img/gameFlow/phase03a.jpg  used on input line 33.
+(pdftex.def)             Requested size: 199.16928pt x 159.6668pt.
+<img/gameFlow/phase03b.jpg, id=550, 1819.598pt x 1430.143pt>
+File: img/gameFlow/phase03b.jpg Graphic file (type jpg)
+<use img/gameFlow/phase03b.jpg>
+Package pdftex.def Info: img/gameFlow/phase03b.jpg  used on input line 34.
+(pdftex.def)             Requested size: 199.16928pt x 156.53061pt.
+
+Overfull \hbox (1.13881pt too wide) in paragraph at lines 42--43
+[]\T1/lmr/m/n/12 Jednotlivé £tverce mají pro tento typ dis-pleje fy-zický roz-m
+¥r p°i-bliºn¥ 0,5x0,5 mm.
+ []
+
+<img/gameFlow/phase04a.jpg, id=552, 1762.1835pt x 1484.747pt>
+File: img/gameFlow/phase04a.jpg Graphic file (type jpg)
+<use img/gameFlow/phase04a.jpg>
+Package pdftex.def Info: img/gameFlow/phase04a.jpg  used on input line 45.
+(pdftex.def)             Requested size: 199.16928pt x 167.80844pt.
+<img/gameFlow/phase04b.jpg, id=553, 1773.024pt x 1493.9815pt>
+File: img/gameFlow/phase04b.jpg Graphic file (type jpg)
+<use img/gameFlow/phase04b.jpg>
+Package pdftex.def Info: img/gameFlow/phase04b.jpg  used on input line 46.
+(pdftex.def)             Requested size: 199.16928pt x 167.80351pt.
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[18 <./img/gameFlow/phase02.jpg> <./img/gameFlow/phase03a.jpg> <./img/gameFlow/
+phase03b.jpg>]
+<img/gameFlow/phase05a.jpg, id=561, 1720.026pt x 1455.036pt>
+File: img/gameFlow/phase05a.jpg Graphic file (type jpg)
+<use img/gameFlow/phase05a.jpg>
+Package pdftex.def Info: img/gameFlow/phase05a.jpg  used on input line 56.
+(pdftex.def)             Requested size: 199.16928pt x 168.46902pt.
+<img/gameFlow/phase05b.jpg, id=562, 1737.692pt x 1483.5425pt>
+File: img/gameFlow/phase05b.jpg Graphic file (type jpg)
+<use img/gameFlow/phase05b.jpg>
+Package pdftex.def Info: img/gameFlow/phase05b.jpg  used on input line 57.
+(pdftex.def)             Requested size: 199.16928pt x 170.02655pt.
+<img/gameFlow/phase06a.jpg, id=564, 1213.7345pt x 964.8045pt>
+File: img/gameFlow/phase06a.jpg Graphic file (type jpg)
+<use img/gameFlow/phase06a.jpg>
+Package pdftex.def Info: img/gameFlow/phase06a.jpg  used on input line 65.
+(pdftex.def)             Requested size: 199.16928pt x 158.31729pt.
+<img/gameFlow/phase06b.jpg, id=565, 1116.5715pt x 862.8235pt>
+File: img/gameFlow/phase06b.jpg Graphic file (type jpg)
+<use img/gameFlow/phase06b.jpg>
+Package pdftex.def Info: img/gameFlow/phase06b.jpg  used on input line 66.
+(pdftex.def)             Requested size: 199.16928pt x 153.90598pt.
+
+Underfull \vbox (badness 2903) has occurred while \output is active []
+
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[19 <./img/gameFlow/phase04a.jpg> <./img/gameFlow/phase04b.jpg> <./img/gameFlow
+/phase05a.jpg> <./img/gameFlow/phase05b.jpg>]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 79.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 79.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 79.
+<img/manual/blue.png, id=575, 40.4712pt x 25.72812pt>
+File: img/manual/blue.png Graphic file (type png)
+<use img/manual/blue.png>
+Package pdftex.def Info: img/manual/blue.png  used on input line 81.
+(pdftex.def)             Requested size: 17.90248pt x 11.38092pt.
+<img/manual/blue_blink.png, id=576, 41.9166pt x 27.4626pt>
+File: img/manual/blue_blink.png Graphic file (type png)
+<use img/manual/blue_blink.png>
+Package pdftex.def Info: img/manual/blue_blink.png  used on input line 81.
+(pdftex.def)             Requested size: 17.37074pt x 11.38092pt.
+ (tables/serverCommands.tex)
+(tables/serverLED.tex
+<img/manual/black.png, id=577, 11.70773pt x 11.70773pt>
+File: img/manual/black.png Graphic file (type png)
+<use img/manual/black.png>
+Package pdftex.def Info: img/manual/black.png  used on input line 10.
+(pdftex.def)             Requested size: 7.82446pt x 7.82454pt.
+File: img/manual/blue.png Graphic file (type png)
+<use img/manual/blue.png>
+Package pdftex.def Info: img/manual/blue.png  used on input line 11.
+(pdftex.def)             Requested size: 24.61699pt x 15.6491pt.
+<img/manual/violet_blink.png, id=578, 41.9166pt x 27.4626pt>
+File: img/manual/violet_blink.png Graphic file (type png)
+<use img/manual/violet_blink.png>
+Package pdftex.def Info: img/manual/violet_blink.png  used on input line 12.
+(pdftex.def)             Requested size: 23.88565pt x 15.6491pt.
+<img/manual/orange_blink.png, id=579, 41.9166pt x 27.4626pt>
+File: img/manual/orange_blink.png Graphic file (type png)
+<use img/manual/orange_blink.png>
+Package pdftex.def Info: img/manual/orange_blink.png  used on input line 13.
+(pdftex.def)             Requested size: 23.88565pt x 15.6491pt.
+<img/manual/green.png, id=580, 40.4712pt x 25.72812pt>
+File: img/manual/green.png Graphic file (type png)
+<use img/manual/green.png>
+Package pdftex.def Info: img/manual/green.png  used on input line 14.
+(pdftex.def)             Requested size: 24.61699pt x 15.6491pt.
+<img/manual/green_blink.png, id=581, 41.9166pt x 27.4626pt>
+File: img/manual/green_blink.png Graphic file (type png)
+<use img/manual/green_blink.png>
+Package pdftex.def Info: img/manual/green_blink.png  used on input line 15.
+(pdftex.def)             Requested size: 23.88565pt x 15.6491pt.
+<img/manual/red_blink.png, id=582, 41.9166pt x 27.4626pt>
+File: img/manual/red_blink.png Graphic file (type png)
+<use img/manual/red_blink.png>
+Package pdftex.def Info: img/manual/red_blink.png  used on input line 16.
+(pdftex.def)             Requested size: 23.88565pt x 15.6491pt.
+File: img/manual/red_blink.png Graphic file (type png)
+<use img/manual/red_blink.png>
+Package pdftex.def Info: img/manual/red_blink.png  used on input line 17.
+(pdftex.def)             Requested size: 23.88565pt x 15.6491pt.
+))
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[20 <./img/gameFlow/phase06a.jpg> <./img/gameFlow/phase06b.jpg> <./img/manual/b
+lue.png> <./img/manual/blue_blink.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[21 <./img/manual/black.png> <./img/manual/violet_blink.png> <./img/manual/oran
+ge_blink.png> <./img/manual/green.png> <./img/manual/green_blink.png> <./img/ma
+nual/red_blink.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[22
+
+] (chapter_04.tex
+
+Package hyperref Warning: Composite letter `\textasciicaron+e'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 1.
 
 )
 
@@ -2425,32 +2677,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[14] (chapter_03.tex)
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 14.49998pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[15
-
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 14.49998pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[16
-
-] (chapter_04.tex)
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 14.49998pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[17] [18] (reference.tex
+[23] [24] (reference.tex
 Underfull \hbox (badness 10000) in paragraph at lines 6--7
 []\T1/lmr/m/n/12 Fritzing Parts: Ar-duino_Ethernet. In: \T1/lmr/m/it/12 Paul-vo
 ll-mer \T1/lmr/m/n/12 [on-
@@ -2509,7 +2736,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[19
+[25
 
 ])
 
@@ -2518,19 +2745,19 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[20
+[26
 
 ]
 \openout2 = `appendix.aux'.
 
- (appendix.tex)
+ (appendix.tex
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 14.49998pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[21
+[27
 
 ]
 
@@ -2539,7 +2766,27 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[22
+[28]
+
+Package hyperref Warning: Composite letter `\textasciicaron+c'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 10.
+
+)
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[29]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[30
 
 
 ]
@@ -2548,38 +2795,39 @@ Package glossaries Warning: No \printglossary or \printglossaries found.
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 272.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 272.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 287.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 287.
 (main.aux (appendix.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 272.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 272.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 287.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 287.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: EB39A70E0A12EF2ADC572EBAC0DA60D2;1169.
+(rerunfilecheck)             Checksum: 868B86476597E1954989BF61C016AD2D;1680.
 
 
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 31752 strings out of 493305
- 560291 string characters out of 3142790
- 1015589 words of memory out of 3000000
- 34345 multiletter control sequences out of 15000+200000
- 65206 words of font info for 60 fonts, out of 3000000 for 9000
+ 31980 strings out of 493305
+ 564712 string characters out of 3142790
+ 1015653 words of memory out of 3000000
+ 34469 multiletter control sequences out of 15000+200000
+ 88226 words of font info for 87 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,18n,95p,1992b,2019s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/Programy/MikTex/fonts/enc/dvips/lm/lm-ec.enc}{D:/Programy/MikTex/fonts/en
 c/dvips/lm/lm-rm.enc}{D:/Programy/MikTex/fonts/enc/dvips/lm/lm-ts1.enc}<D:/Prog
 ramy/MikTex/fonts/type1/public/lm/lmbx12.pfb><D:/Programy/MikTex/fonts/type1/pu
-blic/lm/lmcsc10.pfb><D:/Programy/MikTex/fonts/type1/public/lm/lmr12.pfb><D:/Pro
-gramy/MikTex/fonts/type1/public/lm/lmri12.pfb><D:/Programy/MikTex/fonts/type1/p
-ublic/lm/lmss17.pfb><D:/Programy/MikTex/fonts/type1/public/lm/lmssbx10.pfb><D:/
-Programy/MikTex/fonts/type1/public/lm/lmtk10.pfb><D:/Programy/MikTex/fonts/type
-1/public/lm/lmtt10.pfb><D:/Programy/MikTex/fonts/type1/public/lm/lmtt12.pfb><D:
-/Programy/MikTex/fonts/type1/public/lm/lmtti10.pfb>
-Output written on main.pdf (28 pages, 1469401 bytes).
+blic/lm/lmcsc10.pfb><D:/Programy/MikTex/fonts/type1/public/lm/lmr10.pfb><D:/Pro
+gramy/MikTex/fonts/type1/public/lm/lmr12.pfb><D:/Programy/MikTex/fonts/type1/pu
+blic/lm/lmr7.pfb><D:/Programy/MikTex/fonts/type1/public/lm/lmr8.pfb><D:/Program
+y/MikTex/fonts/type1/public/lm/lmri12.pfb><D:/Programy/MikTex/fonts/type1/publi
+c/lm/lmssbx10.pfb><D:/Programy/MikTex/fonts/type1/public/lm/lmtk10.pfb><D:/Prog
+ramy/MikTex/fonts/type1/public/lm/lmtt10.pfb><D:/Programy/MikTex/fonts/type1/pu
+blic/lm/lmtt12.pfb><D:/Programy/MikTex/fonts/type1/public/lm/lmtti10.pfb>
+Output written on main.pdf (40 pages, 10256762 bytes).
 PDF statistics:
- 562 PDF objects out of 1000 (max. 8388607)
- 213 named destinations out of 1000 (max. 500000)
- 212 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 767 PDF objects out of 1000 (max. 8388607)
+ 258 named destinations out of 1000 (max. 500000)
+ 358 words of extra memory for PDF output out of 10000 (max. 10000000)
 

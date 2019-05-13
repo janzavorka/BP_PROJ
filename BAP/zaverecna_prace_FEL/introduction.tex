@@ -1,4 +1,10 @@
 \section{Úvod}
-Cílem práce bylo vytvořit zařízení, které by demonstrovalo využití jednodeskových počítačů v IoT sítích. Pro realizaci byla zvolena platforma Arduino, pedevším kvůli své rozšířenosti a dostupnosti doplňujících periferií. Samotné zařízení má funkci hry pro více hráčů, kde každý hráč má mikropočítač s dotykovým displejem a celá hra je řízena serverem (také založen na platformě Arduino), komunikace pak probíhá po Ethernetové síti.  Pro toto zařízení byla implementována hra piškvorky z důvodu nízké náročnosti na výkon mikropočítače a dobré názornosti co se týče samotné komunikace.
+Cílem práce bylo vytvořit zařízení, které by demonstrovalo využití jednodeskových počítačů v IoT sítích. Pro realizaci byla zvolena platforma Arduino. Důvodem pro zvolení této platformy bylo především její rozšíření mezi uživateli a dostupnost doplňkových periferií. Samotné zařízení by mělo mít funkci hry pro více hráčů. Koncová zařízení budou vybavena budou vybavena dotykovým displejem pro interakci s uživatelem. Celá hra pak bude řízena jednou centrální jednotkou taktéž založenou na platformě Arduino. Komunikace mezi jednotlivými zařízeními pak bude probíhat po Ethernetové síti. Pro dobrou názornost a nenáročnost (co se týče složitosti implementace, tak i potřebného hardwarového výkonu) byla zvolena hra piškvorky.
+
+
+{\color{ashgrey} Nějaké obecné věci o IoT}
+
+Samotný pojem IoT (\uv{Internet of things} - Internet věcí) označuje propojení fyzických zařízení prostřednictvím internetu. Jako koncová fyzická zařízení jsou většinou používány různé vestavěné systémy vybavedené samotným řídicím mikrokontrolérem a řadou senzorů. Tato zařízení dokáží komunikovat jak mezi sebou, tak se zeřízením uživatele (mobilním telefon) nebo dokáží předávat naměřená data na cloud.
+
 
 \notFinished
