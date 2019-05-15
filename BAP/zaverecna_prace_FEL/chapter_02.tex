@@ -86,13 +86,19 @@ V případě, že klient přijal od serveru chybná data, odešle požadavek ve 
 
 \subsection{Sestavení spojení}
 \subsubsection{Příprava serveru}
-Při spuštění serveru dojde nejprve k identifikaci ethernet kontroléru. V případě, že je identifikován kontrolér WIZnet W5200 nebo WIZnet W5500, je k dispozici funkce \texttt{Ethernet.linkstatus()}, která umožňuje získat informaci v fyzickém připojení kabelu. Pokud není kabel připojen, je to signalizováno blikáním signalizační svítivé diody červenou barvou (viz. tabulka \ref{tab:LED_man}) a program nepokračuje dále, dokud není kabel připojen. Ostatní ethernet kontroléry bohužel neposkitují, jak je popsáno v kapitole \ref{sec:HWclient}, informaci o připojení kabelu, takže je celá tato sekvence přeskočena.
+Při spuštění serveru dojde nejprve k identifikaci ethernet kontroléru. V případě, že je identifikován kontrolér WIZnet W5200 nebo WIZnet W5500, je k dispozici funkce \texttt{Ethernet.linkstatus()}, která umožňuje získat informaci v fyzickém připojení kabelu. Pokud není kabel připojen, je to signalizováno blikáním signalizační svítivé diody červenou barvou (viz. tabulka \ref{tab:LED_man}) a program nepokračuje dále, dokud není kabel připojen.
 
-V případě, že server získává adresu z DHCP serveru, je možné ještě ověřit správné připojení pomocí kontroly získané adresy. V knihovně Arduino Ethernet \cite{EthLib} je toto řešeno návratovou hodnotou funkce \texttt{Ethernet.begin(mac)} (v režimu DHCP má pouze jeden parametr a to lokální MAC adresu, jinak funkce \texttt{Ethernet.begin(mac)} nemá návratovou hodnotu).
+V případě, že server získává adresu z DHCP serveru, je možné ještě ověřit správné připojení pomocí kontroly získané adresy. V knihovně Arduino Ethernet \cite{EthLib} je toto řešeno návratovou hodnotou funkce \texttt{Ethernet.begin(mac)} (v režimu DHCP má pouze jeden parametr a to lokální MAC adresu, jinak funkce \texttt{Ethernet.begin()} nemá návratovou hodnotu). Proces přípravy serveru je znázorněn na obrázku \ref{fig:flow:serverStartUp}.
 
 Pokud je však nastaven mód se statickou IP adresou a je použit shield s ethernet kontrolérem například WIZnet W5100 (jako je tomu v této práci), není zde žádná vhodná možnost kontroly správného připojení. Jedna z možností by byla, že by se server pokusil poslat zprávu \textit{Echo Request} nějakému známému zařízení v síti a očekávat odpověď \textit{Echo Reply}. Ale vzhledem k tomu, že jako centrální prvek je v tomto zapojení zvolen switch a žádné další zařízení v síti není, jei tato možnost nepoužitelná.
 
 V této fázi je příprava serveru dokončena, postup navázání spojení s clientem je popsán v následující kapitole \ref{sec:connection_communication}.
+
+\begin{figure}
+  \centering
+  \input{img/flowCharts/serverStartUp.tex}
+  \caption{\label{fig:flow:serverStartUp} Diagram naznačující proces přípravy a zapntí serveru}
+\end{figure}
 
 
 
@@ -106,9 +112,15 @@ V této fázi je klient připraven a čeká na příkaz uživatele připojit se 
 \label{sec:connection_communication}
 Pokud nastavení a spuštění serveru proběhlo správně, server v nekonečné smyčce (\texttt{void loop()\{\}}) pravidelně ověřuje, zda nějaké zařízení nevyžaduje připojení. To je realizováno metodou z knihovny \cite{EthLib} - \texttt{server.accept()}. V případě příchozího spojení vratí tato metoda objekt typu client, v opačném případě \textit{NULL}. To je uloženo do proměnné \texttt{newClient}. Metoda \texttt{server.accept()} vrací data o daném příchozího spojení pouze jednou a proto je nutné je uložit do extra proměnné.
 
-Připojení klienta spustí uivatel stisknutím příslušého tlačítka na displeji. Klient se v pravidelných intervalech pokouší o navázání spojení funkcí \mbox{\texttt{client.connect(serverAddress, localPort)}}. V případě, že je připojení k serveru úspěšné, pošle klient serveru zprávu \uv{100}. Tento kód informuje server, že se jedná k lienta pro piškvorky, pokud by server přijal jiná data, spojení zruší.
+Připojení klienta spustí uživatel stisknutím příslušého tlačítka na displeji. Klient se v pravidelných intervalech pokouší o navázání spojení funkcí  \\ \mbox{\texttt{client.connect(serverAddress, localPort)}}. V případě, že je připojení k serveru úspěšné, pošle klient serveru zprávu \uv{100}. Tento kód informuje server, že se jedná k lienta pro piškvorky, pokud by server přijal jiná data, spojení zruší.
 
-Pokud server zaznamená nové příchozí spojení, spustí kontrolu nového hráče. V první zkontroluje, zda je ještě k dispozici místo pro dalšího, následně ověří, zda klient se stejnou IP adresou není již připojen a zkontroluje, zda klient poslal kód \uv{100}. Pokud klient úspěšně projde všemi testy, je zařazen do pole \texttt{clients[]} (pole aktivních klientů) a jeho IP adresa je uloženo do herního pole \textit{board} a toto pole se odešle všem hráčům. Pokud klient některému testu nevyhoví, je spojení ukončeno (\texttt{newClient.stop()}).
+Pokud server zaznamená nové příchozí spojení, spustí kontrolu nového hráče. Celý proces připojení nového hráče je naznačen na obrázku \ref{fig:flow:newClientServer}.
+
+\begin{figure}
+  \centering
+  \input{img/flowCharts/newClientConnection.tex}
+  \caption{\label{fig:flow:newClientServer} Diagram naznačující proces příjmu nového klienta na straně serveru}
+\end{figure}
 
 V této fázi se čeká na připojení dalších klientů. Pravidelně je také kontrolováno, zda se nějaký klient neodpojil. V případě, že ano, jsou jeho data smazána jak z pole \texttt{clients[]} tak z herního pole \textit{board} a o této skutečnosti jsou ostatní klienti informováni zprávou (odeslání pole \textit{board}) s kódem 20x, kde \textit{x} je číslo odpojeného klienta. Tato zpráva je zobrazena na displejích klientů po dobu 4000 ms (nastaveno v proměnné \texttt{clientErrMessageLast}).
 

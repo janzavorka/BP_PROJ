@@ -13,14 +13,14 @@
 \contentsline {subsection}{\numberline {3.5}Sestaven\IeC {\'\i } spojen\IeC {\'\i }}{14}{subsection.3.5}
 \contentsline {subsubsection}{\numberline {3.5.1}P\IeC {\v r}\IeC {\'\i }prava serveru}{14}{subsubsection.3.5.1}
 \contentsline {subsubsection}{\numberline {3.5.2}P\IeC {\v r}\IeC {\'\i }prava klient}{14}{subsubsection.3.5.2}
-\contentsline {subsubsection}{\numberline {3.5.3}Sestaven\IeC {\'\i } pojen\IeC {\'\i }}{15}{subsubsection.3.5.3}
-\contentsline {subsection}{\numberline {3.6}\IeC {\v R}\IeC {\'\i }zen\IeC {\'\i } pr\IeC {\r u}b\IeC {\v e}hu hry}{15}{subsection.3.6}
-\contentsline {section}{\numberline {4}O\IeC {\v z}iven\IeC {\'\i } a obsluha}{17}{section.4}
-\contentsline {subsection}{\numberline {4.1}Ovl\IeC {\'a}d\IeC {\'a}n\IeC {\'\i } klienta}{17}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Ovl\IeC {\'a}d\IeC {\'a}n\IeC {\'\i } serveru}{20}{subsection.4.2}
-\contentsline {section}{\numberline {5}Z\IeC {\'a}v\IeC {\v e}r}{23}{section.5}
-\contentsline {section}{Reference}{25}{section.5}
-\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{26}{section*.24}
-\contentsline {section}{\numberline {A}Zdrojov\IeC {\'y} k\IeC {\'o}d server}{27}{appendix.A}
-\contentsline {section}{\numberline {B}Zdrojov\IeC {\'y} k\IeC {\'o}d klient}{28}{appendix.B}
-\contentsline {section}{\numberline {C}STL soubory krabi\IeC {\v c}ek}{29}{appendix.C}
+\contentsline {subsubsection}{\numberline {3.5.3}Sestaven\IeC {\'\i } pojen\IeC {\'\i }}{16}{subsubsection.3.5.3}
+\contentsline {subsection}{\numberline {3.6}\IeC {\v R}\IeC {\'\i }zen\IeC {\'\i } pr\IeC {\r u}b\IeC {\v e}hu hry}{16}{subsection.3.6}
+\contentsline {section}{\numberline {4}O\IeC {\v z}iven\IeC {\'\i } a obsluha}{19}{section.4}
+\contentsline {subsection}{\numberline {4.1}Ovl\IeC {\'a}d\IeC {\'a}n\IeC {\'\i } klienta}{19}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Ovl\IeC {\'a}d\IeC {\'a}n\IeC {\'\i } serveru}{22}{subsection.4.2}
+\contentsline {section}{\numberline {5}Z\IeC {\'a}v\IeC {\v e}r}{25}{section.5}
+\contentsline {section}{Reference}{27}{section.5}
+\contentsline {section}{Seznam pou\IeC {\v z}it\IeC {\'e}ho softwaru}{28}{section*.26}
+\contentsline {section}{\numberline {A}Zdrojov\IeC {\'y} k\IeC {\'o}d server}{29}{appendix.A}
+\contentsline {section}{\numberline {B}Zdrojov\IeC {\'y} k\IeC {\'o}d klient}{30}{appendix.B}
+\contentsline {section}{\numberline {C}STL soubory krabi\IeC {\v c}ek}{31}{appendix.C}

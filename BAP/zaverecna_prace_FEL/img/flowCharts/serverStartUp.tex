@@ -1,0 +1,46 @@
+\begin{tikzpicture}[scale=2, node distance = 2cm, auto]
+    % Place nodes
+  \node (start) [decision] {Jaký je Ethernet kontrolér?};
+  \node (link) [decision,below left of = start,text width = 6em, xshift = -5cm, yshift=-3cm] {Je kabel připojen?};
+
+
+  \node (wait1) [block, below of = start, text width = 10em, yshift=-1cm, xshift = -1cm] {Čekej 1 sekundu.};
+  \node (blink1) [block, below of = wait1, text width = 10em] {Upozorni uživatele blikáním svítivé diody};
+
+  \node (mode) [decision, below of = start, yshift = -6cm] {Ethernetový mód?};
+
+  \node (static) [block, below left of = mode, text width = 18em, yshift=-3cm, xshift = -4cm] {Spusť server \\ \texttt{Ethernet.begin(mac, serverAddress)}};
+
+  \node (dhcp) [decision, below right of = mode, yshift=-2.5cm, text width = 10em, xshift = +1cm] {Spusť server \\ \texttt{Ethernet.begin(mac)} \\ Přiřazena IP adresa?};
+
+  \node (finish) [block, below  of = mode, yshift=-7cm, text width = 10em] {Sever je připraven};
+
+
+  \draw [arrow] (start) -| node[anchor=south west] {W5200, W5500} (link);
+
+  \draw [line] (start.east) -| node[anchor=south east] {W5100} ([xshift = 2.5cm, yshift=0.7cm] mode.north);
+  \draw [arrow] ([xshift = 2.5cm, yshift=0.7cm] mode.north) -| node[anchor=south east] {} ( mode.north);
+
+  \draw [line] (link.south) -- node[anchor=east] {} ([xshift = 0cm, yshift=-.1cm] link.south);
+  \draw [line] ([xshift = 0cm, yshift=-.1cm] link.south) -- node[anchor=south east] {ANO} ([xshift = 0cm, yshift=.7cm] mode.north);
+
+  \draw [arrow] (link) -- node[anchor=south] {NE} (blink1);
+  \draw [arrow] (blink1) -- node[anchor=south] {} (wait1);
+  \draw [arrow] (wait1) -- node[anchor=south] {} ([yshift=.5cm] link.north);
+
+  \draw [arrow] (mode.west) -| node[anchor=south] {ETHMODE\_STATIC} (static.north);
+
+  \draw [arrow] (mode.east) -| node[anchor=south west] {ETHMODE\_DHCP} (dhcp.north);
+
+  \draw [line] (dhcp.west) -| node[anchor=south east] {NE} ([yshift = 1.2cm] dhcp.west);
+  \draw [arrow] ([yshift = 1.2cm] dhcp.west) -- node[anchor=east] {} ([yshift = 0.4cm] dhcp.north);
+
+  \draw [line] (dhcp.south) -- node[anchor=west] {ANO} ([xshift = 0.5cm]finish.east);
+  \draw [arrow] ([xshift = 0.5cm]finish.east) -- node[anchor=west] {}  (finish.east);
+
+  \draw [line] (static.south) -- node[anchor=south] {} ([xshift = -1.6cm]finish.west);
+  \draw [arrow] ([xshift = -1.6cm]finish.west) -- node[anchor=west] {}  (finish.west);
+
+
+  \draw [arrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
+\end{tikzpicture}

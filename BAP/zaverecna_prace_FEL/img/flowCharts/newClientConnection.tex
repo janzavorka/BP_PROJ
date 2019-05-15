@@ -1,0 +1,39 @@
+\begin{tikzpicture}[scale=2, node distance = 2cm, auto]
+    % Place nodes
+  \node (start) [decision] {Běží hra?};
+  \node (saving) [block, below of=start, text width=6cm, yshift=-0.5cm] {Ulož příchozího klienta do pomocné proměnné \texttt{newClient}.};
+  \node (test1) [decision,below of=saving, yshift=-.5cm, text width = 12em] {Bylo do proměnné \texttt{newClient} něco uloženo?};
+  \node (test2) [decision,below of=test1, yshift=-1.2cm, text width = 10em] {Je pro nového klienta volná pozice v poli \texttt{clients[]}?};
+  \node (test3) [decision,below of=test2, yshift=-1.2cm, text width = 10em] {Je už připojen nějaký klient se stejnou IP adresou?};
+  \node (test4) [decision,below of=test3, yshift=-1.2cm, text width = 7em] {Poslal nový klient správný kód (\uv{100})?};
+
+  \node (not) [block, right of=start, text width=10em, xshift=5cm] {Nic nedělej.};
+  \node (disconnect) [block, right of=test2, text width=15em, xshift=6cm] {Ukonči spojení s novým klientem (\texttt{newClient.stop()}).};
+  \node (resend) [block, right of=test3, text width=15em, xshift=6cm] {Odešli aktivnímu klientovi (pole \texttt{clients[]}) herní pole \texttt{board[]} znovu.};
+  \node (end) [block,right of=test4, text width=20em, xshift=6.5cm] {
+      \begin{enumerate}
+        \item Zařaď nového klienta do pole aktivních klientů (pole \texttt{clients[]}).
+        \item Aktualizuj IP adresy v poli  \texttt{board[]}.
+        \item Odešli všem aktivním klientům aktualizované pole \texttt{board[]}.
+        \item Informuj uživatele o nově připojeném klientovi blikáním svítivou diodou.
+      \end{enumerate}
+  };
+
+  \draw [arrow] (start) -- node[anchor=east] {NE} (saving);
+  \draw [arrow] (start) -- node[anchor=south] {ANO} (not);
+  \draw [arrow] (saving) -- node[anchor=east] {ANO} (test1);
+  \draw [arrow] (test1) -- node[anchor=east] {ANO} (test2);
+  \draw [arrow] (test2) -- node[anchor=east] {ANO} (test3);
+  \draw [arrow] (test3) -- node[anchor=east] {NE} (test4);
+  \draw [arrow] (test4) -- node[anchor=south] {ANO} (end);
+  \draw [arrow] (test3) -- node[anchor=south] {ANO} (resend);
+  \draw [arrow] (resend) -- node[anchor=east] {} (disconnect);
+  \draw [arrow] (test2) -- node[anchor=south] {NE} (disconnect);
+  \draw [arrow] (test1) -| node[anchor=south east] {NE} (not);
+
+  \draw [line] (test4) -- node[anchor=south east] {NE} ([yshift=-1cm] test4.south);
+  \draw [line] ([yshift=-1cm] test4.south) -| node[anchor=south east] {} ([xshift=1.0cm, yshift=0cm] disconnect.east);
+  \draw [arrow] ([xshift=1.0cm, yshift=0cm] disconnect.east) -- node[anchor=south east] {NE} (disconnect);
+
+  \draw [arrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
+\end{tikzpicture}
