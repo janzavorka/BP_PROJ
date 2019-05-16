@@ -76,7 +76,7 @@ Pokud je stisknuto červené tlačítko, dojde k přerušení hry aktuálně bě
 Pokud je stisknuto zelené tlačítko a neběží hra (indikační LED svítí modře) - stiskem tlačítka dojde ke spuštění hry (s ověřením zda je k dispozici dostatek hráčů).
 Pokud hra již běží (indikační LED svítí zeleně) stiskem zeleného tlačítka dojde k posunutí tahu na dalšího hráče.
 
-Druhým způsobem ovládání je posílání příkazů přes sériovou linku. V tomto případě je nutné serverm připojit k počítači pomocí micro USB kabelu (konektor z přední strany serveru). K zobrazení dat lze použít nástorj \textit{Serial monitor} přímo v Arduino~IDE nebo například sériový terminál \textit{RealTerm \footnote{Domovská stránka: https://realterm.sourceforge.io/}}. Nastavení je následují: rychlost 9600 baudů, Data  Každý příkaz musí být zakončen novým řádkem (LF). Seznam příkazů je v tabulce \ref{tab:server_prikazy}.
+Druhým způsobem ovládání je posílání příkazů přes sériovou linku. V tomto případě je nutné serverm připojit k počítači pomocí micro USB kabelu (konektor z přední strany serveru). K zobrazení dat lze použít nástorj \textit{Serial monitor} přímo v Arduino~IDE nebo například sériový terminál \textit{RealTerm \footnote{Domovská stránka: https://realterm.sourceforge.io/}}. Nastavení je následují: rychlost = 9600 baudů, Data bits = 8, Stop bits = 1, Flow control = none.  Každý příkaz musí být zakončen novým řádkem (LF). Seznam příkazů je v tabulce \ref{tab:server_prikazy}.
 
 Informování uživatele o stavu serveru je realizovano pomocí barevné svítivé diody. Význa jednotlivých stavů je v tabulce \ref{tab:serverLED}. Symboly: \includegraphics[height=.4cm]{img/manual/blue.png} svítivá dioda svítí, \includegraphics[height=.4cm]{img/manual/blue_blink.png} svítivá dioda bliká.
 

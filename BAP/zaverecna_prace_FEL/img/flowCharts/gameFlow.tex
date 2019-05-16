@@ -1,0 +1,56 @@
+\begin{tikzpicture}[scale=2, node distance = 2cm, auto]
+    % Place nodes
+  \node (start) [decision] {Přijata data od klienta?};
+  \node (codeTest) [decision, below of = start] {Řídicí kód?};
+
+  \node (sendBlock) [block,  right of = codeTest, yshift = 0cm, xshift = 4cm] {Odešli část pole \texttt{board[]}};
+
+  \node (play) [decision, below of = codeTest] {Je daný hráč na tahu?};
+  \node (inBoard) [decision, below of = play] {Je pozice mimo herní plán?};
+  \node (free) [decision, below of = inBoard] {Je pozice volná?};
+  \node (roundsUp) [block, below of = free, text width = 12 em] {počet kol ++ \\ Odešli \texttt{board[]}, kód \uv{2}};
+  %\node (1send2) [block, below of = roundsUp] {Odešli \texttt{board[]}, kód \uv{2} };
+  \node (playerCheck) [decision, below of = roundsUp, yshift = .5cm] {Spojil hráč daný počet žetonů?};
+  \node (roundsCheck) [decision, below of = playerCheck, yshift =- .5cm] {Počet kol >= počet pozic?};
+
+
+  \node (playerWin) [block, right of = playerCheck, text width = 15 em, xshift = 5cm, yshift = -2cm] {Blikej svítivou diodou \\ Odešli \texttt{board[]}, kód \uv{10x}};
+
+  \node (playerWin) [block, right of = roundsCheck, text width = 15 em, xshift = 5cm] {Blikej svítivou diodou \\ Odešli \texttt{board[]}, kód \uv{100}};
+
+    \node (end) [startstop, right of = roundsUp, text width = 15em, xshift = 5cm, , yshift = -2.5cm] {Ukonči hru \\ Odešli \texttt{board[]}, kód \uv{3}
+    };
+
+  \node (resend) [block, right of = play, text width = 12 em, xshift = 4.5cm] {Odešli \texttt{board[]} \\ kód \uv{1}};
+
+  \node (nextP) [block, right of = roundsUp, text width = 12 em, xshift = 4.5cm] {Další hráč na tahu, \\ vyplň jeho číslo};
+  %\node (1send1) [block, right of = inBoard, text width = 12 em, xshift = 4.5cm] {Odešli \texttt{board[]}, kód \uv{1}};
+
+
+
+  \draw [Startarrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
+  \draw [arrow] (start) -- node[anchor=east] {ANO} (codeTest);
+  \draw [arrow] (codeTest) -- node[anchor=east] {10} (play);
+  \draw [arrow] (play) -- node[anchor=east] {ANO} (inBoard);
+  \draw [arrow] (inBoard) -- node[anchor=east] {NE} (free);
+  \draw [arrow] (free) -- node[anchor=east] {ANO} (roundsUp);
+  \draw [arrow] (roundsUp) -- node[anchor=east] {} (playerCheck);
+  \draw [arrow] (playerCheck) -- node[anchor=east] {NE} (roundsCheck);
+
+  \draw [line] (roundsCheck.west) -- node[anchor=south] {NE} ([xshift = -.5cm]roundsCheck.west);
+  \draw [line] ([xshift = -.5cm]roundsCheck.west) -- node[anchor=south] {} ([xshift = -.5cm, yshift = +.9cm]start.west);
+  \draw [arrow] ([xshift = -.5cm, yshift = +.9cm]start.west) -- node[anchor=south] {} ([xshift = +.0cm, yshift = 0.3cm]start.north);
+
+  \draw [line] (start.east) -- node[anchor=south] {NE} ([xshift = +.5cm]start.east);
+  \draw [line] ([xshift = +.5cm]start.east) -- node[anchor=south] {} ([yshift = +.9cm, xshift = +.5cm]start.east);
+  \draw [arrow] ([yshift = +.9cm, xshift = +.5cm]start.east) -- node[anchor=south] {} ([xshift = +.0cm, yshift = 0.3cm]start.north);
+
+  \draw [arrow] (codeTest) -- node[anchor=south] {20} (sendBlock);
+  \draw [line] (sendBlock.north) -- node[anchor=south] {} ([yshift = +.9cm, xshift = +1.8cm]start.east);
+  \draw [arrow] ([yshift = +.9cm, xshift = +1.8cm]start.east) -- node[anchor=south] {} ([yshift = +.9cm, xshift = +.5cm]start.east);
+
+    \draw [arrow] (play) -- node[anchor=south] {NE} (resend);
+
+
+  %\draw [Startarrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
+\end{tikzpicture}

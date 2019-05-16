@@ -1,25 +1,24 @@
 \BOOKMARK [1][-]{section.1}{\332vod}{}% 1
 \BOOKMARK [1][-]{section.2}{Hardware}{}% 2
 \BOOKMARK [2][-]{subsection.2.1}{Zar\355zen\355 typu server}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Zar\355zen\355 typu klient}{section.2}% 4
-\BOOKMARK [1][-]{section.3}{Popis softwaru}{}% 5
-\BOOKMARK [2][-]{subsection.3.1}{Knihovny}{section.3}% 6
-\BOOKMARK [2][-]{subsection.3.2}{Konfiguracn\355 hodnoty}{section.3}% 7
-\BOOKMARK [3][-]{subsubsection.3.2.1}{Konfigurace serveru}{subsection.3.2}% 8
-\BOOKMARK [3][-]{subsubsection.3.2.2}{Konfigurace klienta}{subsection.3.2}% 9
-\BOOKMARK [2][-]{subsection.3.3}{Komunikace server - klient}{section.3}% 10
-\BOOKMARK [2][-]{subsection.3.4}{Komunikace klient - server}{section.3}% 11
-\BOOKMARK [2][-]{subsection.3.5}{Sestaven\355 spojen\355}{section.3}% 12
-\BOOKMARK [3][-]{subsubsection.3.5.1}{Pr\355prava serveru}{subsection.3.5}% 13
-\BOOKMARK [3][-]{subsubsection.3.5.2}{Pr\355prava klient}{subsection.3.5}% 14
-\BOOKMARK [3][-]{subsubsection.3.5.3}{Sestaven\355 pojen\355}{subsection.3.5}% 15
-\BOOKMARK [2][-]{subsection.3.6}{R\355zen\355 prubehu hry}{section.3}% 16
-\BOOKMARK [1][-]{section.4}{O\236iven\355 a obsluha}{}% 17
-\BOOKMARK [2][-]{subsection.4.1}{Ovl\341d\341n\355 klienta}{section.4}% 18
-\BOOKMARK [2][-]{subsection.4.2}{Ovl\341d\341n\355 serveru}{section.4}% 19
-\BOOKMARK [1][-]{section.5}{Z\341ver}{}% 20
-\BOOKMARK [1][-]{section.5}{Reference}{}% 21
-\BOOKMARK [1][-]{section*.26}{Seznam pou\236it\351ho softwaru}{}% 22
-\BOOKMARK [1][-]{appendix.A}{Zdrojov\375 k\363d server}{}% 23
-\BOOKMARK [1][-]{appendix.B}{Zdrojov\375 k\363d klient}{}% 24
-\BOOKMARK [1][-]{appendix.C}{STL soubory krabicek}{}% 25
+\BOOKMARK [2][-]{subsection.2.2}{\332prava Ethernet shieldu}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Zar\355zen\355 typu klient}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Popis softwaru}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Knihovny}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Konfiguracn\355 hodnoty}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Konfigurace serveru}{subsection.3.2}% 9
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Konfigurace klienta}{subsection.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.3}{Komunikace server - klient}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.4}{Komunikace klient - server}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.5}{Sestaven\355 spojen\355}{section.3}% 13
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Pr\355prava serveru}{subsection.3.5}% 14
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Pr\355prava klient}{subsection.3.5}% 15
+\BOOKMARK [3][-]{subsubsection.3.5.3}{Sestaven\355 pojen\355}{subsection.3.5}% 16
+\BOOKMARK [2][-]{subsection.3.6}{R\355zen\355 prubehu hry}{section.3}% 17
+\BOOKMARK [1][-]{section.4}{O\236iven\355 a obsluha}{}% 18
+\BOOKMARK [2][-]{subsection.4.1}{Ovl\341d\341n\355 klienta}{section.4}% 19
+\BOOKMARK [2][-]{subsection.4.2}{Ovl\341d\341n\355 serveru}{section.4}% 20
+\BOOKMARK [1][-]{section.5}{Z\341ver}{}% 21
+\BOOKMARK [1][-]{section.5}{Reference}{}% 22
+\BOOKMARK [1][-]{section*.26}{Seznam pou\236it\351ho softwaru}{}% 23
+\BOOKMARK [1][-]{appendix.A}{Soubor s daty}{}% 24

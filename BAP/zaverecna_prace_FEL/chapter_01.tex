@@ -20,7 +20,7 @@ Celá demonstrační sestava se pak skládá z:
 \label{sec:HWserver}
 Zařízení je založeno na desce \textit{Arduino Due}, které obsahuje mikrokontrolér Atmel SAM3X8E ARM Cortex-M3 s 512 kB flash paměti a nabízí dostatečný výkon pro správné fungování serveru. Původní varianta totiž počítala s nasazením desky \textit{Arduino Ethernet} i jako serveru. To se ovšem vzhledem k omezeným prostředkům ukázalo jako problematické, proto byla zvolena právě deska \textit{Arduino Due}.
 
-Pro připojení do sítě je použit Ethernetový shield s čipem Wiznet W5100, který je přímo napojen na Arduino. Tímto je dána ona limitace maximálně na 4 hráče, protože dle datasheetu výrobce čipu~\cite{datasheet_w5100} je maximální počet spojení právě čtyři. Ethernetový shield komunikuje s Arduinem pomocí SPI sběrnice
+Pro připojení do sítě je použit Ethernetový shield s čipem Wiznet W5100, který je přímo napojen na Arduino. Tímto je dána ona limitace maximálně na 4 hráče, protože dle datasheetu výrobce čipu~\cite{datasheet_w5100} je maximální počet spojení právě čtyři. Ethernetový shield komunikuje s Arduinem pomocí SPI sběrnice. V některých verzích Arduino Ethernet shieldu (především neoficiálních klonů) se objevují problémy se startem samotného shiledu. Stejným problémem trpěl i shiled použitý v této práci, podrobný popis problému a použité funkční řešení je popsané v kapitole \ref{sec:ArdShiel_mod}.
 
 Pro pohodlné ovládání jsou k serveru připojena dvě tlačítka a jedna barevná svítivá dioda. Význam jednotlivých stavů svítivé diody a funkce tlačítek je popsána v kapitole~\ref{sec:ovladani}. Propojení těchto periferií s Arduinem je realizováno pomocí jednostrané DPS, schéma zapojení je pak na obrázku~\ref{fig:server_module}.
 
@@ -34,36 +34,44 @@ Napájení je řešeno externím adaptérem, dle stránek výrobce~\cite{ArdDue_
 
 Celé zařízení je pak umístěno v krabičce jejíž návrh je na obrázku~\ref{fig:server_navrh} a realizace na obrázku~\ref{fig:server_realizace}. Krabička byla navrhnuta v programu Autodesk Inventor Professional 2019 Student Edition a realizovaná 3D tiskem na tiskárně Original Prusa i3 MK3S. Krabička je osazena červeným a zeleným tlačítkem, barevnou sívitvou 5~mm diodou (se společnou anodou) a souosým napájecím konektorem 5,5x2,1~mm. Pro upevnění Arduina jsou použity šrouby M2,5x10 a závitové vložky M2,5x6 vtavené do připravených otvorů v krabičce. Arduino deska sice nabízí montážní otvory o průměru 3~mm, ale vzhledem k rozložení součástek zde není dostatek místa pro hlavu šroubu~M3.
 
+\subsection{Úprava Ethernet shieldu}
+\label{sec:ArdShiel_mod}
+Některé Arduino shieldy založené na kontroléru WIZnet (především neoficiální klony) mají problém se správný startem. Problém se projevuje tak, že při zapnutí napájení nedojde ke správnému připojení do sítě (indikační svítivé diody na shiledu sice blikají, ale Ethernet shield není k síti připojen). Tento problém se projevil pouze pokud bylo Arduino napájeno externím zdrojem (při připojení přes USB k počítači vše fungovalo normálně). Správné připojení k síti pak nastalo pouze pokud bylo stisknuto tlačítko \textit{RESET} na Ethernet shieldu.
+
+Dle webu \cite{EthShieldError} je problém způsoben krátký resetovacím časem Arduina. Existuje několik způsobů, jak tento problém vyřešit. Pro Ethernet shield použitý v této práci byla použita metoda popsaná v \cite{EthShieldModification}. Nejdříve bylo potřeba izolovat reset shieldu od resetu Arduina. To bylo provedeno odstřihnutím pinu \textit{Reset} na Ethernet shieldu a odvrtáním prokovky, která vede resetovací signál z ICSP konektoru. Dále byl připojen $10 \ \mathrm{k\Omega}$ mezi pin \textit{Reset} a napájecí pin 3,3 V. Nakonec byl připojen kondenzátor o kapacitě $1 \ \mathrm{\mu F}$ mezi pin \textit{Reset} a zem (pin \textit{Gnd}). Tímto byl problém vyřešen.
+
+\begin{figure}[hbtp]
+\centering
+\begin{minipage}[c]{\textwidth/2-.7cm}
+\includegraphics[width=\textwidth]{img/foto/server_navrh.png}
+\end{minipage}
+\begin{minipage}[c]{\textwidth/2-.7cm}
+\includegraphics[width=\textwidth]{img/foto/server_realizace.jpg}
+\end{minipage}
+\\
+\begin{minipage}[c]{\textwidth/2-0.5cm}
+\caption{\label{fig:server_navrh}Návrh krabičky pro server}
+\end{minipage}
+\begin{minipage}[c]{\textwidth/2-.5cm}
+\caption{\label{fig:server_realizace}Zkompletovaná krabička pro server}
+\end{minipage}
+\end{figure}
+
 %\begin{figure}[hbtp]
-%\centering
-%\begin{minipage}[c]{\textwidth/2-1cm}
-%\includegraphics[width=\textwidth]{img/foto/server_navrh.png}
-%\end{minipage}
-%\begin{minipage}[c]{\textwidth/2-1cm}
-%\includegraphics[width=\textwidth]{img/foto/server_realizace.png}
-%\end{minipage}
-%\\
-%\begin{minipage}[c]{\textwidth/2-0.5cm}
-%\caption{\label{fig:server_navrh}Návrh krabičky pro server}
-%\end{minipage}
-%\begin{minipage}[c]{\textwidth/2-.5cm}
-%\caption{\label{fig:server_realizace}Zkompletovaná krabička pro server}
-%\end{minipage}
-%end{figure}
+%  \centering
+%  \includegraphics[height=7cm]{img/foto/server_navrh.png}
+%  \caption{\label{fig:server_navrh}Návrh krabičky pro server}
+%\end{figure}
 
-\begin{figure}[hbtp]
-  \centering
-  \includegraphics[height=7cm]{img/foto/server_navrh.png}
-  \caption{\label{fig:server_navrh}Návrh krabičky pro server}
-\end{figure}
-
-\begin{figure}[hbtp]
-  \centering
-  \includegraphics[height=7cm]{img/foto/server_realizace.jpg}
-  \caption{\label{fig:server_realizace}Zkompletovaná krabička pro server}
-\end{figure}
+%\begin{figure}[hbtp]
+%  \centering
+%  \includegraphics[height=7cm]{img/foto/server_realizace.jpg}
+%  \caption{\label{fig:server_realizace}Zkompletovaná krabička pro server}
+%\end{figure}
 
 
+
+%\newpage
 \subsection{Zařízení typu klient}
 \label{sec:HWclient}
 Zařízení je založeno na desce Arduino Ethernet, která je vybavena mikrokontrolérem ATmega328 s 32 kB flash paměti. Tato deska byla zvolena především kvůli tomu, že má vestavěný ethernetový kontrolér, který tak nezabírá piny pro připojení shieldu s displejem. Malá flash paměť se však během vývoje ukázala jako značně limitující, protože při nahrání všech potřebných knihoven (popsáno v kapitole~\ref{sec:knihovny}) zůstalo k dispozici 30~\% programové paměti. I z tohoto důvodu byla zvolena jako hra piškvorky, která není programově příliš složitá a také bylo nutné vynechat složitější menu například s nastavením barvy nebo změny IP adresy serveru (to se nyní musí provádět změnou v kódu a přeprogramováním Arduina, více v kapitole \ref{sec:client-nastaveni}).
@@ -76,31 +84,31 @@ Pro napájení byl zvolen externí napájecí adaptér, avšak připojení na in
 
 Stejně jako v případě serveru je celé zařízení umístěno ve vytištěné krabičce, návrh a realizovaná krabička jsou na obrázcích \ref{fig:client_navrh}, \ref{fig:client_realizace}. Princpi uchycení Arduina je stejný jako v případě serveru, pro napájení je opět osazen souosý napájecí konektor 5,5x2,1~mm. Dále je z boku výřez por konektor RJ-45 pro připojení do ethernetové sítě a na vrchu se nachází výřez pro displej vedle kterého se je umístěn otvor pro přístup k resetovacímu tlačítku.
 
+\begin{figure}[hbtp]
+\centering
+\begin{minipage}[c]{\textwidth/2-1cm}
+\includegraphics[width=\textwidth]{img/foto/client_navrh.png}
+\end{minipage}
+\begin{minipage}[c]{\textwidth/2-1cm}
+\includegraphics[width=\textwidth]{img/foto/client_realizace.jpg}
+\end{minipage}
+\\
+\begin{minipage}[c]{\textwidth/2-0.5cm}
+\caption{\label{fig:client_navrh}Návrh krabičky pro klienta}
+\end{minipage}
+\begin{minipage}[c]{\textwidth/2-.5cm}
+\caption{\label{fig:client_realizace}Zkompletovaná krabička pro klienta}
+\end{minipage}
+\end{figure}
+
 %\begin{figure}[hbtp]
-%\centering
-%\begin{minipage}[c]{\textwidth/2-1cm}
-%\includegraphics[width=\textwidth]{img/foto/client_navrh.png}
-%\end{minipage}
-%\begin{minipage}[c]{\textwidth/2-1cm}
-%\includegraphics[width=\textwidth]{img/foto/client_realizace.png}
-%\end{minipage}
-%\\
-%\begin{minipage}[c]{\textwidth/2-0.5cm}
-%\caption{\label{fig:client_navrh}Návrh krabičky pro klienta}
-%\end{minipage}
-%\begin{minipage}[c]{\textwidth/2-.5cm}
-%\caption{\label{fig:client_realizace}Zkompletovaná krabička pro klienta}
-%\end{minipage}
+%  \centering
+%  \includegraphics[height=7cm]{img/foto/client_navrh.png}
+%  \caption{\label{fig:client_navrh}Návrh krabičky pro klienta}
 %\end{figure}
 
-\begin{figure}[hbtp]
-  \centering
-  \includegraphics[height=7cm]{img/foto/client_navrh.png}
-  \caption{\label{fig:client_navrh}Návrh krabičky pro klienta}
-\end{figure}
-
-\begin{figure}[hbtp]
-  \centering
-  \includegraphics[height=7cm]{img/foto/client_realizace.jpg}
-  \caption{\label{fig:client_realizace}Zkompletovaná krabička pro klienta}
-\end{figure}
+%\begin{figure}[hbtp]
+%  \centering
+%  \includegraphics[height=7cm]{img/foto/client_realizace.jpg}
+%  \caption{\label{fig:client_realizace}Zkompletovaná krabička pro klienta}
+%\end{figure}

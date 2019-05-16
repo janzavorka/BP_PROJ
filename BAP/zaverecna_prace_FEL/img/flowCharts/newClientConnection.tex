@@ -8,9 +8,9 @@
   \node (test4) [decision,below of=test3, yshift=-1.2cm, text width = 7em] {Poslal nový klient správný kód (\uv{100})?};
 
   \node (not) [block, right of=start, text width=10em, xshift=5cm] {Nic nedělej.};
-  \node (disconnect) [block, right of=test2, text width=15em, xshift=6cm] {Ukonči spojení s novým klientem (\texttt{newClient.stop()}).};
+  \node (disconnect) [startstop, right of=test2, text width=15em, xshift=6cm] {Ukonči spojení s novým klientem (\texttt{newClient.stop()}).};
   \node (resend) [block, right of=test3, text width=15em, xshift=6cm] {Odešli aktivnímu klientovi (pole \texttt{clients[]}) herní pole \texttt{board[]} znovu.};
-  \node (end) [block,right of=test4, text width=20em, xshift=6.5cm] {
+  \node (end) [startstop,right of=test4, text width=20em, xshift=6.5cm] {
       \begin{enumerate}
         \item Zařaď nového klienta do pole aktivních klientů (pole \texttt{clients[]}).
         \item Aktualizuj IP adresy v poli  \texttt{board[]}.
@@ -35,5 +35,5 @@
   \draw [line] ([yshift=-1cm] test4.south) -| node[anchor=south east] {} ([xshift=1.0cm, yshift=0cm] disconnect.east);
   \draw [arrow] ([xshift=1.0cm, yshift=0cm] disconnect.east) -- node[anchor=south east] {NE} (disconnect);
 
-  \draw [arrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
+  \draw [Startarrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
 \end{tikzpicture}

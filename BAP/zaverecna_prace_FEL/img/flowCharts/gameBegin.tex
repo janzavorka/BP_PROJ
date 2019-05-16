@@ -1,0 +1,45 @@
+\begin{tikzpicture}[scale=2, node distance = 2cm, auto]
+    % Place nodes
+  \node (startB) [io] {Stisknuto zelené tlačítko};
+  \node (startC) [io, right of = startB, xshift = 3cm] {Zadán příkaz \uv{start}};
+
+  \node (game1) [decision, below of=startB, yshift = 0.5cm] {Běží hra?};
+  \node (game2) [decision, below of=startC, yshift = 0.5cm, xshift=-.5cm] {Běží hra?};
+  \node (shift) [block, left of = game1, xshift = -2.3cm] {Přesuň tah na dalšího hráče};
+  \node (error1) [startstop, right of = game2, text width = 1.5cm, xshift = 2.4cm] {Chybová hláška:  běží hra};
+
+  \node (players) [decision, below of=game1, yshift =- 0.5cm] {Alespoň 2 hráči k dispozici?};
+  \node (endGame) [startstop, right of = players, text width = 17em, xshift = 5cm] {
+      \begin{enumerate}
+       \item Blikni svítivou diodou
+       \item Ukonči hru
+       \item Rozešli \texttt{board[]} s kódem \uv{3}
+      \end{enumerate}
+};
+
+  \node (startGame) [block, below of=players, yshift =- 2.5cm, text width = 20em] {
+      \begin{enumerate}
+          \item Vyber náhodně prvního hráče
+          \item Doplň jeho číslo do pole \texttt{board[]}
+          \item Rozešli \texttt{board[]} s kódem \uv{1}
+          \item Změň svítivou diodu -> svítí zeleně
+      \end{enumerate}
+  };
+
+  \node (prepared) [startstop, right of=startGame, xshift =5.5cm] {Nová hra spuštěna};
+
+
+  \draw [arrow] (startB) -- node[anchor=south] {} (game1);
+  \draw [arrow] ([xshift = -.24cm]startC.south) -- node[anchor=south] {} (game2.north);
+
+  \draw [arrow] (game1) -- node[anchor=south] {ANO} (shift);
+  \draw [arrow] (game2) -- node[anchor=south] {ANO} (error1);
+
+  \draw [arrow] (game1) -- node[anchor=east] {NE} (players);
+  \draw [arrow] (game2.south) -- node[anchor=south east] {NE} (players.north);
+
+  \draw [arrow] (players) -- node[anchor=east] {ANO} (startGame);
+  \draw [arrow] (startGame) -- node[anchor=east] {} (prepared);
+
+  \draw [arrow] (players) -- node[anchor=south] {NE} (endGame);
+\end{tikzpicture}

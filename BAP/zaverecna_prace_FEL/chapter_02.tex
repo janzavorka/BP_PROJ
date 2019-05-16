@@ -65,13 +65,12 @@ calibr\_kbv)}. V ukázkovém programu je třeba upravit podle použitého shiled
 
 \subsection{Komunikace server - klient}
 \label{sec:comm_server-client}
-Server komunikuje s klienty pomocí pole \textit{board}. Jedná se o jednorozměrné pole typu \textit{byte} o velikosti 136 (velikost musí být dělitelná osmi). V tomto poli jsou vyplněné všechny důležité informace o stavu hry i jednotlivých hráčích, význam jednotlivých hodnot v poli \textit{board} je popsán v tabulce \ref{tab:packet_server-client}.
+Server komunikuje s klienty pomocí pole \textit{board}. Jedná se o jednorozměrné pole typu \textit{byte}\footnote{Dle webu Arduina \cite{ard_unsignedChar} se jedná o stejný typ jako \textit{unsigned char}. Kvůli konzistentnosti stylu programování Arduina je však doporučeno používat datový typ \textit{byte}.} o velikosti 136 (velikost musí být dělitelná osmi). V tomto poli jsou vyplněné všechny důležité informace o stavu hry i jednotlivých hráčích, význam jednotlivých hodnot v poli \textit{board} je popsán v tabulce \ref{tab:packet_server-client}.
 
 Při odesílání je toto pole rozděleno na části po osmi bajtech. Každá tato část je vybavena pořadovým číslem a dvoubajtovým kontrolním součtem (v něm je zahrnuto i pořadové číslo) a následně odeslána připojeným klientům.
 
 Klienti postupně přijímají všechny části a v případě bezchybného příjmu data vyhodnotí. V případě, že klient na základě kontrolního součtu identifikoval chybnou část, odešle podle pravidel komunikace klient - server (popsáno v kapitole \ref{sec:comm_client-server}). Server pak v případě přijetí požadavku odešle danému klientovi vyžadovanou část pole.
 
-\input{tables/board_content.tex}
 
 \subsection{Komunikace klient - server}
 \label{sec:comm_client-server}
@@ -79,11 +78,13 @@ Klient komunikuje se serverem, až na výjimku při sestavení spojení, prostř
 
 Pokud při porovnání server zjistí, že přijeté zprávy nejsou stejné, odešle danému klientovi znovu herní desku. V případě, že byl daný hráč na tahu a přenos požadavku na vyplnění pole se nezdařil, je mu prostřednictvím znovuodeslání pole znovu aktivován tah.
 
-V případě, že klient přijal od serveru chybná data, odešle požadavek ve tvaru \mbox{\{20, x\}}, kde \textit{x} je číslo chybně přijaté části pole. Pokud je toto serverem správně přiato, odešle požadovanou část znovu (dle pravide komunikace server  -klient, kapitola \ref{sec:comm_server-client})
+V případě, že klient přijal od serveru chybná data, odešle požadavek ve tvaru \mbox{\{20, x\}}, kde \textit{x} je číslo chybně přijaté části pole. Pokud je toto serverem správně přiato, odešle požadovanou část znovu (dle pravide komunikace server - klient, kapitola \ref{sec:comm_server-client})
+
+\input{tables/board_content.tex}
 
 \input{tables/client_packet.tex}
 
-
+\newpage
 \subsection{Sestavení spojení}
 \subsubsection{Příprava serveru}
 Při spuštění serveru dojde nejprve k identifikaci ethernet kontroléru. V případě, že je identifikován kontrolér WIZnet W5200 nebo WIZnet W5500, je k dispozici funkce \texttt{Ethernet.linkstatus()}, která umožňuje získat informaci v fyzickém připojení kabelu. Pokud není kabel připojen, je to signalizováno blikáním signalizační svítivé diody červenou barvou (viz. tabulka \ref{tab:LED_man}) a program nepokračuje dále, dokud není kabel připojen.
@@ -97,7 +98,7 @@ V této fázi je příprava serveru dokončena, postup navázání spojení s cl
 \begin{figure}
   \centering
   \input{img/flowCharts/serverStartUp.tex}
-  \caption{\label{fig:flow:serverStartUp} Diagram naznačující proces přípravy a zapntí serveru}
+  \caption{\label{fig:flow:serverStartUp} Diagram procesu přípravy a zapnutí serveru}
 \end{figure}
 
 
@@ -119,7 +120,7 @@ Pokud server zaznamená nové příchozí spojení, spustí kontrolu nového hr�
 \begin{figure}
   \centering
   \input{img/flowCharts/newClientConnection.tex}
-  \caption{\label{fig:flow:newClientServer} Diagram naznačující proces příjmu nového klienta na straně serveru}
+  \caption{\label{fig:flow:newClientServer} Diagram procesu příjmu nového klienta na straně serveru}
 \end{figure}
 
 V této fázi se čeká na připojení dalších klientů. Pravidelně je také kontrolováno, zda se nějaký klient neodpojil. V případě, že ano, jsou jeho data smazána jak z pole \texttt{clients[]} tak z herního pole \textit{board} a o této skutečnosti jsou ostatní klienti informováni zprávou (odeslání pole \textit{board}) s kódem 20x, kde \textit{x} je číslo odpojeného klienta. Tato zpráva je zobrazena na displejích klientů po dobu 4000 ms (nastaveno v proměnné \texttt{clientErrMessageLast}).
@@ -129,12 +130,30 @@ Nyní se čeká na zahájení hry ze strany uživetele (stisk zeleného tlačít
 \subsection{Řízení průběhu hry}
 Po příkazu ke spuštění hry se nejdříve ověří, zda jsou k dispozici alespoň dva hráči. Pokud tomu tak není, hra se nezahájí a uživatelé jsou tímto informování indikační svítivou diodou (viz. tabulka \ref{tab:serverLED}).
 
-V případě, že je k dispozici dostatečný počet hráčů, je náhodně vybrán (funkce \texttt{random()}) první hráč a všem hráčům se rozešle pole \textit{board} s vyplněným herní kódem (1) a číslem hráče (metoda odeslání popsána v kapitole \ref{sec:comm_server-client}). Jednotliví hráči porovnají pořadí svých IP adres v poli \textit{board} a zjištěný index porovnají s číslem hráče vyplněným na pozici 91 v poli \textit{board}, hráč, který nalezne shodu, je na tahu, ostatní vyčkávají.
+V případě, že je k dispozici dostatečný počet hráčů, je náhodně vybrán (funkce \texttt{random()}) první hráč a všem hráčům se rozešle pole \texttt{board[]} s vyplněným herní kódem (1) a číslem hráče (metoda odeslání popsána v kapitole \ref{sec:comm_server-client}). Jednotliví hráči porovnají pořadí svých IP adres v poli \texttt{board[]} a zjištěný index porovnají s číslem hráče vyplněným na pozici 91 v poli \texttt{board[]}, hráč, který nalezne shodu, je na tahu, ostatní vyčkávají. Proces startu hry je na obrázku \ref{fig:flow:gameBegin}.
 
-Server nyní čeká dokud mu hrající hráč neodešle pozici, kterou si přeje vyplnit. Komunikace klienta se serverem se řídí podle pravidel popsaných v kapitole \ref{sec:comm_client-server}. Přeskočit daného hráče lze pomocí stisku zeleného tlačítka na serveru. V případě, že si hrající uživatel přeje vyplnit danou pozici, stiskne patřičné místo na displeji. Klient zkontroluje, zda je daná pozice volná a pokud ano okamžitě vyplní žeton a následně odešle informaci o vyplnění serveru. Okamžité vykreslení žetonu před potvrzení serverem je implementováno, protože při delší odezvě serveru může docházet ke zpoždění vykreslení (v poměru s dotykem), což je uživatelsky nekomfortní. Pokud by klient odeslal serveru žádost na vyplnění již obsazeného pole, server odešle všem klientům pole \textit{board} a na pozici hrajícího hráče (\texttt{board[91]}) ponechá sejného hráče. Na straně klienta se při vykreslování neobsazené pozice vykreslí žeton s barvou pozadí (černou), čímž se vymaže nesprávně umístěný žeton.
 
-Pokud výběr a obsazení pozice proběhlo v pořádku, server odešle všem pole s kódem (2) - pouze překresli obrazovku, nikdo nehraje. Následně server zkontroluje stav hry: zda je počet odehraných kolm menší než počet pozic v poli (jinak odešle kód (100) - remíza), zkontroluje zda hráč, který odehrál kolo nespojil dostatečný počet žetonů (definováno v proměnné \texttt{crossNum}, defaultně pět). V případě, že by spojil a mět tak nárok na výhru, všem se odešle pole \textit{borad} s kóde 10x (\textit{x} je číslo hráče, který vyhrál) a klient vypíše na displej danou informaci. V opačném případě hra pokračuje, server vyplní na pozici hrajícího hráče (\texttt{board[91]}) číslo dalšího hráče, zvětší počet kol o jedna (\texttt{board[93]}) a všem hráčům opět odešle pole s kódem (1).
+Server nyní čeká dokud mu hrající hráč neodešle pozici, kterou si přeje vyplnit. Komunikace klienta se serverem se řídí podle pravidel popsaných v kapitole \ref{sec:comm_client-server}. Přeskočit daného hráče lze pomocí stisku zeleného tlačítka na serveru. V případě, že si hrající uživatel přeje vyplnit danou pozici, stiskne patřičné místo na displeji. Klient zkontroluje, zda je daná pozice volná a pokud ano okamžitě vyplní žeton a následně odešle informaci o vyplnění serveru. Okamžité vykreslení žetonu před potvrzení serverem je implementováno, protože při delší odezvě serveru může docházet ke zpoždění vykreslení (v poměru s dotykem), což je uživatelsky nekomfortní. Celý proces zpracování a vyhodnocení tahu je znázorněn na obrázku \ref{fig:flow:gameFlow}.
 
-Celý tento systém se opakuje, dokud nějaký hráč nevyhrál, hra neskončila remízou nebo hra není ukončena ze strany serveru.
+Během hry se také ověřuje, zda se nějaký hráč neodpojil, pokud ano, jeho IP adresa je smazána z pole \texttt{board[]} a na straně serveru je smazán z pole aktivních klientů (\texttt{clients[]}). Všem připojeným klientům je odesláním pole \texttt{board[]} s kódem \uv{20x} (hlášení o odpojení klienta). Během hry se však žádný klient nemůže připojit ani v případě, že ve hře při jejím započetí byl. Žetony odpojených klientů zůstávají ve hře. Pokud by došlo k odpojení všech klientů, server hru ukončí.
 
-Neustále se také ověřuje, zda se nějaký hráč během hry neodpojil, pokud ano, jeho IP adresa je smazána z pole a na straně serveru nezabírá místo v poli aktivních klientů (\texttt{clients[]}). Během hry se však žádný klient nemůže připojit ani v případě, že ve hře při jejím započetí byl. Žetony odpojených klientů zůstávají ve hře. Pokud by došlo k odpojení všech klientů, server hru ukončí.
+V případě, že je hra ukončena, dojde k resetu pole \texttt{board[]}: vymaže se obsazenost herní desky, vynuluje se aktuální hráč a počet kol, znovu se vyplní IP adresy aktivních klientů a znovu se přiřadí barvy. Klientům je poslán \texttt{board[]} s kódem \uv{3}, který u nich vyvolá překreslení na úvodní obrazovku (viz. obrázek \ref{fig:faze3}).
+
+\begin{figure}
+  \centering
+  \input{img/flowCharts/gameBegin.tex}
+  \caption{\label{fig:flow:gameBegin} Diagram procesu spuštění hry}
+\end{figure}
+
+
+\begin{figure}
+  \centering
+  \input{img/flowCharts/gameFlow.tex}
+  \caption{\label{fig:flow:gameFlow} Diagram procesu řízení a ukončení hry}
+\end{figure}
+
+ %Pokud by klient odeslal serveru žádost na vyplnění již obsazeného pole, server odešle všem klientům pole \textit{board} a na pozici hrajícího hráče (\texttt{board[91]}) ponechá sejného hráče. Na straně klienta se při vykreslování neobsazené pozice vykreslí žeton s barvou pozadí (černou), čímž se vymaže nesprávně umístěný žeton.
+
+%Pokud výběr a obsazení pozice proběhlo v pořádku, server odešle všem pole s kódem (2) - pouze překresli obrazovku, nikdo nehraje. Následně server zkontroluje stav hry: zda je počet odehraných kolm menší než počet pozic v poli (jinak odešle kód (100) - remíza), zkontroluje zda hráč, který odehrál kolo nespojil dostatečný počet žetonů (definováno v proměnné \texttt{crossNum}, defaultně pět). V případě, že by spojil a mět tak nárok na výhru, všem se odešle pole \textit{borad} s kóde 10x (\textit{x} je číslo hráče, který vyhrál) a klient vypíše na displej danou informaci. V opačném případě hra pokračuje, server vyplní na pozici hrajícího hráče (\texttt{board[91]}) číslo dalšího hráče, zvětší počet kol o jedna (\texttt{board[93]}) a všem hráčům opět odešle pole s kódem (1).
+
+%Celý tento systém se opakuje, dokud nějaký hráč nevyhrál, hra neskončila remízou nebo hra není ukončena ze strany serveru.
