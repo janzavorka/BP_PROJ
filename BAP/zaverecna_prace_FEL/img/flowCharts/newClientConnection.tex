@@ -35,5 +35,9 @@
   \draw [line] ([yshift=-1cm] test4.south) -| node[anchor=south east] {} ([xshift=1.0cm, yshift=0cm] disconnect.east);
   \draw [arrow] ([xshift=1.0cm, yshift=0cm] disconnect.east) -- node[anchor=south east] {NE} (disconnect);
 
+  \draw [line] (not.north) -- node[anchor=south east] {} ([yshift=.5cm]not.north);
+  \draw [arrow] ([yshift=.5cm]not.north) -- node[anchor=south east] {} ([yshift=.2cm]start.north);
+
+
   \draw [Startarrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
 \end{tikzpicture}

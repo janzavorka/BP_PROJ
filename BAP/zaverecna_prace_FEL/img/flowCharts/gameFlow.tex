@@ -16,7 +16,7 @@
 
   \node (playerWin) [block, right of = playerCheck, text width = 15 em, xshift = 5cm, yshift = -2cm] {Blikej svítivou diodou \\ Odešli \texttt{board[]}, kód \uv{10x}};
 
-  \node (playerWin) [block, right of = roundsCheck, text width = 15 em, xshift = 5cm] {Blikej svítivou diodou \\ Odešli \texttt{board[]}, kód \uv{100}};
+  \node (noWin) [block, right of = roundsCheck, text width = 15 em, xshift = 5cm] {Blikej svítivou diodou \\ Odešli \texttt{board[]}, kód \uv{100}};
 
     \node (end) [startstop, right of = roundsUp, text width = 15em, xshift = 5cm, , yshift = -2.5cm] {Ukonči hru \\ Odešli \texttt{board[]}, kód \uv{3}
     };
@@ -24,7 +24,8 @@
   \node (resend) [block, right of = play, text width = 12 em, xshift = 4.5cm] {Odešli \texttt{board[]} \\ kód \uv{1}};
 
   \node (nextP) [block, right of = roundsUp, text width = 12 em, xshift = 4.5cm] {Další hráč na tahu, \\ vyplň jeho číslo};
-  %\node (1send1) [block, right of = inBoard, text width = 12 em, xshift = 4.5cm] {Odešli \texttt{board[]}, kód \uv{1}};
+
+  \node (button) [io, right of = inBoard, text width = 8 em, xshift = 6cm] {Stisknuto zelené tlačítko};
 
 
 
@@ -37,9 +38,9 @@
   \draw [arrow] (roundsUp) -- node[anchor=east] {} (playerCheck);
   \draw [arrow] (playerCheck) -- node[anchor=east] {NE} (roundsCheck);
 
-  \draw [line] (roundsCheck.west) -- node[anchor=south] {NE} ([xshift = -.5cm]roundsCheck.west);
-  \draw [line] ([xshift = -.5cm]roundsCheck.west) -- node[anchor=south] {} ([xshift = -.5cm, yshift = +.9cm]start.west);
-  \draw [arrow] ([xshift = -.5cm, yshift = +.9cm]start.west) -- node[anchor=south] {} ([xshift = +.0cm, yshift = 0.3cm]start.north);
+  %\draw [line] (roundsCheck.west) -- node[anchor=south] {NE} ([xshift = -.5cm]roundsCheck.west);
+  %\draw [line] ([xshift = -.5cm]roundsCheck.west) -- node[anchor=south] {} ([xshift = -.5cm, yshift = +.9cm]start.west);
+  %\draw [arrow] ([xshift = -.5cm, yshift = +.9cm]start.west) -- node[anchor=south] {} ([xshift = +.0cm, yshift = 0.3cm]start.north);
 
   \draw [line] (start.east) -- node[anchor=south] {NE} ([xshift = +.5cm]start.east);
   \draw [line] ([xshift = +.5cm]start.east) -- node[anchor=south] {} ([yshift = +.9cm, xshift = +.5cm]start.east);
@@ -49,7 +50,33 @@
   \draw [line] (sendBlock.north) -- node[anchor=south] {} ([yshift = +.9cm, xshift = +1.8cm]start.east);
   \draw [arrow] ([yshift = +.9cm, xshift = +1.8cm]start.east) -- node[anchor=south] {} ([yshift = +.9cm, xshift = +.5cm]start.east);
 
-    \draw [arrow] (play) -- node[anchor=south] {NE} (resend);
+  \draw [arrow] (play) -- node[anchor=south] {NE} (resend);
+
+  \draw [arrow] (roundsCheck) -- node[anchor=south] {ANO} (noWin);
+
+  \draw [arrow] (playerCheck) -- node[anchor=south west] {ANO} (playerWin.west);
+  \draw [arrow] (playerWin) -- node[anchor=south west] {} (end);
+
+  \draw [arrow] (inBoard) -| node[anchor=south east] {ANO} ([xshift = -1.1cm]resend.south);
+  \draw [arrow] (free) -| node[anchor=south east] {NE} ([xshift = -0.8cm]resend.south);
+  \draw [arrow] (nextP.north) -| node[anchor=south east] {} ([xshift = -0.5cm]resend.south);
+
+  \draw [line] (noWin.east) -- node[anchor=south] {} ([xshift = 0.3cm]noWin.east);
+  \draw [line] ([xshift = 0.3cm]noWin.east) -- node[anchor=south] {} ([xshift = 0.3cm]end.east);
+  \draw [arrow] ([xshift = 0.3cm]end.east) -- node[anchor=south] {} (end.east);
+
+  \draw [arrow] (button) -- node[anchor=south] {} ([xshift = 0.7cm]nextP.north);
+
+  \draw [line] (roundsCheck.south) -- node[anchor=west] {NE} ([yshift = -0.2cm]roundsCheck.south);
+  \draw [line] ([yshift = -0.2cm]roundsCheck.south) -- node[anchor=south] {} ([yshift = -.8cm, xshift = 0.6cm]noWin.east);
+  \draw [line] ([yshift = -.8cm, xshift = 0.6cm]noWin.east) -- node[anchor=south] {} ([yshift = 0cm, xshift = 1.2cm]nextP.east);
+  \draw [arrow] ([yshift = 0cm, xshift = 1.2cm]nextP.east) -- node[anchor=south] {} ([yshift = 0cm, xshift = 0cm]nextP.east);
+
+  \draw [line] ([xshift = .8cm]resend.north) -- node[anchor=west] {} ([yshift = +.9cm, xshift = +2.8cm]start.east);
+  \draw [arrow] ([yshift = +.9cm, xshift = +2.8cm]start.east) -- node[anchor=west] {} ([yshift = +.9cm, xshift = +1.8cm]start.east);
+
+
+
 
 
   %\draw [Startarrow] ([yshift=.5cm]start.north) -- node[anchor=east] {} (start.north);
