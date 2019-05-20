@@ -62,7 +62,7 @@ byte mac [] = {
   #endif
 #endif
 IPAddress serverAddress(10,0,0,8);  //Nastaveni IP adresy serveru
-unsigned int localPort = 3333;      //Port
+unsigned int localPort = 55555;      //Port
 /* ---------- KONEC - nastaveni site ----------*/
 
 /* ---------- KONFIGURACE - kalibrace displeje ----------*/

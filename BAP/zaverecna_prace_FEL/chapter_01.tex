@@ -1,11 +1,11 @@
 \section{Hardware}
-Celá platforma se skládá z jednoho řídicího prvku (viz. kapitola \ref{sec:HWserver}) a třech (maximální počet klientů je hardwarově limitován na čtyři) klientských zařízení (viz. kapitola \ref{sec:HWclient}). Datové spojení je realizováno hvězdicovou topologií (schéma na obrázku \ref{fig:schema_net}). Jako centrální prvek byl použit switch D-Link DGS-105.
-Celá demonstrační sestava se pak skládá z:
+Celá platforma se skládá z jednoho řídicího prvku (viz. kapitola~\ref{sec:HWserver}) a třech klientských zařízení (viz. kapitola~\ref{sec:HWclient}), přičemž maximální počet je softwarově omezen na pět. Při~použití s WIZnet W5100 kontrolérem na straně serveru lze maximálně připojit čtyři klienty. Datové spojení je realizováno hvězdicovou topologií (schéma na obrázku~\ref{fig:schema_net}). Jako centrální prvek byl použit switch \mbox{D-Link DGS-105}.
+Celá demonstrační sestava se~pak skládá z:
 \begin{itemize}
   \item 1x switch D-Link DGS-105
   \item 1x server s Arduino DUE
   \item 3x klient s Arduino Ethernet a dotykovým displejem
-  \item 4x propojuvací UTP kabel
+  \item 4x propojovací UTP kabel
   \item 1x napájecí adaptér pro switch (5 V/1 A součástí balení)
   \item 4x napájecí adaptér 12 V/1500 mA
 \end{itemize}
@@ -18,11 +18,11 @@ Celá demonstrační sestava se pak skládá z:
 
 \subsection{Zařízení typu server}
 \label{sec:HWserver}
-Zařízení je založeno na desce \textit{Arduino Due}, které obsahuje mikrokontrolér Atmel SAM3X8E ARM Cortex-M3 s 512 kB flash paměti a nabízí dostatečný výkon pro správné fungování serveru. Původní varianta totiž počítala s nasazením desky \textit{Arduino Ethernet} i jako serveru. To se ovšem vzhledem k omezeným prostředkům ukázalo jako problematické, proto byla zvolena právě deska \textit{Arduino Due}.
+Zařízení je založeno na desce \textit{Arduino Due}. Tato deska  obsahuje mikrokontrolér\linebreak\mbox{Atmel SAM3X8E ARM Cortex-M3} s 512 kB flash paměti a nabízí dostatečný výkon pro správné fungování serveru. Původní varianta totiž počítala s nasazením desky \mbox{\textit{Arduino Ethernet}} i jako serveru. To se ovšem vzhledem k omezeným prostředkům ukázalo jako problematické, proto byla zvolena právě deska \textit{Arduino Due}.
 
 Pro připojení do sítě je použit Ethernetový shield s čipem Wiznet W5100, který je přímo napojen na Arduino. Tímto je dána ona limitace maximálně na 4 hráče, protože dle datasheetu výrobce čipu~\cite{datasheet_w5100} je maximální počet spojení právě čtyři. Ethernetový shield komunikuje s Arduinem pomocí SPI sběrnice. V některých verzích Arduino Ethernet shieldu (především neoficiálních klonů) se objevují problémy se startem samotného shiledu. Stejným problémem trpěl i shiled použitý v této práci, podrobný popis problému a použité funkční řešení je popsané v kapitole \ref{sec:ArdShiel_mod}.
 
-Pro pohodlné ovládání jsou k serveru připojena dvě tlačítka a jedna barevná svítivá dioda. Význam jednotlivých stavů svítivé diody a funkce tlačítek je popsána v kapitole~\ref{sec:ovladani}. Propojení těchto periferií s Arduinem je realizováno pomocí jednostrané DPS, schéma zapojení je pak na obrázku~\ref{fig:server_module}.
+Pro pohodlné ovládání jsou k serveru připojena dvě tlačítka a jedna barevná svítivá dioda. Význam jednotlivých stavů svítivé diody a funkce tlačítek je popsána v kapitole~\ref{sec:ovladani}. Propojení těchto periferií s Arduinem je realizováno pomocí jednostranné DPS, schéma zapojení je pak na obrázku~\ref{fig:server_module}.
 
 \begin{figure}[hbtp]
   \centering
@@ -30,15 +30,15 @@ Pro pohodlné ovládání jsou k serveru připojena dvě tlačítka a jedna bare
   \caption{\label{fig:server_module} Schéma zapojení periferií u serveru}
 \end{figure}
 
-Napájení je řešeno externím adaptérem, dle stránek výrobce~\cite{ArdDue_web} je možné pužít napětí 6 - 16 V (využívá se interní stabilizátor), přižemž odběr je kolem 140 mA při napájení 12 V. V případě, že je pro ovládání použita sériová linka (server je připojen USB kabelem k počítači, ovládání tímto způsobem je popsáno v kapitole~\ref{sec:ovladani}), postačuje napájení dodané přes USB kabel a není potřeba připojovat externí napájecí zdroj.
+Napájení je řešeno externím adaptérem. Dle stránek výrobce~\cite{ArdDue_web} je možné použít napětí 6~-~16~V (využívá se interní stabilizátor), přičemž odběr je kolem 140~mA při~napájení 12~V. V případě, že je pro ovládání použita sériová linka (server je připojen USB kabelem k počítači, ovládání tímto způsobem je popsáno v~kapitole~\ref{sec:ovladani}), postačuje napájení dodané přes USB kabel a není potřeba připojovat externí napájecí zdroj.
 
-Celé zařízení je pak umístěno v krabičce jejíž návrh je na obrázku~\ref{fig:server_navrh} a realizace na obrázku~\ref{fig:server_realizace}. Krabička byla navrhnuta v programu Autodesk Inventor Professional 2019 Student Edition a realizovaná 3D tiskem na tiskárně Original Prusa i3 MK3S. Krabička je osazena červeným a zeleným tlačítkem, barevnou sívitvou 5~mm diodou (se společnou anodou) a souosým napájecím konektorem 5,5x2,1~mm. Pro upevnění Arduina jsou použity šrouby M2,5x10 a závitové vložky M2,5x6 vtavené do připravených otvorů v krabičce. Arduino deska sice nabízí montážní otvory o průměru 3~mm, ale vzhledem k rozložení součástek zde není dostatek místa pro hlavu šroubu~M3.
+Celé zařízení je pak umístěno v krabičce, jejíž návrh je na~obrázku~\ref{fig:server_navrh} a realizace na~obrázku~\ref{fig:server_realizace}. Krabička byla navržena v programu Autodesk Inventor Professional 2019 Student Edition a realizovaná 3D tiskem na tiskárně Original Prusa i3 MK3S. Krabička je osazena červeným a zeleným tlačítkem, barevnou svítivou 5~mm diodou (se společnou anodou) a souosým napájecím konektorem 5,5x2,1~mm. Pro upevnění Arduina jsou použity šrouby M2,5x10 a závitové vložky M2,5x6 vtavené do připravených otvorů v~krabičce. Arduino deska sice nabízí montážní otvory o~průměru 3~mm, ale vzhledem k~rozložení součástek zde není dostatek místa pro hlavu šroubu~M3.
 
 \subsection{Úprava Ethernet shieldu}
 \label{sec:ArdShiel_mod}
-Některé Arduino shieldy založené na kontroléru WIZnet (především neoficiální klony) mají problém se správný startem. Problém se projevuje tak, že při zapnutí napájení nedojde ke správnému připojení do sítě (indikační svítivé diody na shiledu sice blikají, ale Ethernet shield není k síti připojen). Tento problém se projevil pouze pokud bylo Arduino napájeno externím zdrojem (při připojení přes USB k počítači vše fungovalo normálně). Správné připojení k síti pak nastalo pouze pokud bylo stisknuto tlačítko \textit{RESET} na Ethernet shieldu.
+Některé Arduino shieldy založené na kontroléru WIZnet (především neoficiální klony) mají problém se správný startem. Problém se projevuje tak, že při zapnutí napájení nedojde ke správnému připojení do sítě (indikační svítivé diody na shiledu sice blikají, ale Ethernet shield není k síti připojen). Tento problém se projevil pouze v případě, kdy bylo Arduino napájeno externím zdrojem (při připojení přes USB k počítači vše fungovalo normálně). Správné připojení k síti pak nastalo pouze pokud bylo stisknuto tlačítko \textit{RESET} na Ethernet shieldu.
 
-Dle webu \cite{EthShieldError} je problém způsoben krátký resetovacím časem Arduina. Existuje několik způsobů, jak tento problém vyřešit. Pro Ethernet shield použitý v této práci byla použita metoda popsaná v \cite{EthShieldModification}. Nejdříve bylo potřeba izolovat reset shieldu od resetu Arduina. To bylo provedeno odstřihnutím pinu \textit{Reset} na Ethernet shieldu a odvrtáním prokovky, která vede resetovací signál z ICSP konektoru. Dále byl připojen $10 \ \mathrm{k\Omega}$ mezi pin \textit{Reset} a napájecí pin 3,3 V. Nakonec byl připojen kondenzátor o kapacitě $1 \ \mathrm{\mu F}$ mezi pin \textit{Reset} a zem (pin \textit{Gnd}). Tímto byl problém vyřešen.
+Dle webu~\cite{EthShieldError} je problém způsoben krátkým resetovacím časem Arduina. Existuje několik způsobů, jak tento problém vyřešit. Pro Ethernet shield použitý v této práci byla aplikována metoda popsaná~v~\cite{EthShieldModification}. Nejdříve bylo potřeba izolovat reset shieldu od resetu Arduina. To bylo provedeno odstřihnutím pinu \textit{Reset} na Ethernet shieldu a~odvrtáním prokovky, která vede resetovací signál z ICSP konektoru. Dále byl připojen rezistor $10 \ \mathrm{k\Omega}$ mezi pin \textit{Reset} a napájecí pin 3,3 V. Nakonec byl připojen kondenzátor o kapacitě $1 \ \mathrm{\mu F}$ mezi pin \textit{Reset} a zem (pin \textit{Gnd}). Tímto způsobem byl daný problém vyřešen.
 
 \begin{figure}[hbtp]
 \centering
@@ -50,7 +50,7 @@ Dle webu \cite{EthShieldError} je problém způsoben krátký resetovacím čase
 \end{minipage}
 \\
 \begin{minipage}[c]{\textwidth/2-0.5cm}
-\caption{\label{fig:server_navrh}Návrh krabičky pro server}
+\caption{\label{fig:server_navrh}Návrh krabičky pro server\newline}
 \end{minipage}
 \begin{minipage}[c]{\textwidth/2-.5cm}
 \caption{\label{fig:server_realizace}Zkompletovaná krabička pro server}
@@ -74,15 +74,15 @@ Dle webu \cite{EthShieldError} je problém způsoben krátký resetovacím čase
 %\newpage
 \subsection{Zařízení typu klient}
 \label{sec:HWclient}
-Zařízení je založeno na desce Arduino Ethernet, která je vybavena mikrokontrolérem ATmega328 s 32 kB flash paměti. Tato deska byla zvolena především kvůli tomu, že má vestavěný ethernetový kontrolér, který tak nezabírá piny pro připojení shieldu s displejem. Malá flash paměť se však během vývoje ukázala jako značně limitující, protože při nahrání všech potřebných knihoven (popsáno v kapitole~\ref{sec:knihovny}) zůstalo k dispozici 30~\% programové paměti. I z tohoto důvodu byla zvolena jako hra piškvorky, která není programově příliš složitá a také bylo nutné vynechat složitější menu například s nastavením barvy nebo změny IP adresy serveru (to se nyní musí provádět změnou v kódu a přeprogramováním Arduina, více v kapitole \ref{sec:client-nastaveni}).
+Zařízení je založeno na desce Arduino Ethernet, která je vybavena mikrokontrolérem ATmega328 s 32 kB flash pamětí. Tato deska byla zvolena především kvůli tomu, že má vestavěný ethernetový kontrolér, který tak nezabírá piny pro připojení shieldu s displejem. Malá flash paměť se však během vývoje ukázala jako značně limitující, protože při nahrání všech potřebných knihoven (popsáno v kapitole~\ref{sec:knihovny}) zůstalo k dispozici 30~\% programové paměti. I z tohoto důvodu byla zvolena jako hra piškvorky, která není programově příliš složitá a také bylo nutné vynechat složitější menu například s~nastavením barvy nebo změny IP adresy serveru (to se nyní musí provádět změnou v kódu a přeprogramováním Arduina, více v~kapitole~\ref{sec:client-nastaveni}).
 
-Jak už bylo zméněno výše, tato deska má věstavěný ethernet kontrolér WIZnet, konkrétně typ W5100. U klienta není maximální počet spojení limitující (klient drží pouze jedno spojení se serverem), jedinou nevýhodou kontroléru W5100 tak zůstává, že neobsahuje registr, ve kterém je uložena informace o fyzickém připojení ethernetového kabelu k desce \cite{datasheet_w5100}. Tím je zkomplikována detekce připojení a odpojení kabelu a zůstává tak pouze možnost vizuální kontroly pomocí svítivých diod na konektoru RJ-45.
+Jak už bylo zmíněno výše, tato deska má vestavěný ethernet kontrolér WIZnet, konkrétně typ W5100. U klienta není maximální počet spojení limitující, klient drží pouze jedno spojení se serverem. Jedinou nevýhodou kontroléru W5100 tak zůstává, že~neobsahuje registr, ve kterém je uložena informace o fyzickém připojení ethernetového kabelu k desce~\cite{datasheet_w5100}. Tím je zkomplikována detekce připojení a odpojení kabelu a zůstává tak pouze možnost vizuální kontroly pomocí svítivých diod na konektoru RJ-45.
 
-Pro interakci s uživatelem je klient vybaven 2,4" barevným TFT LCD displej s rozlišením 320x240 pixelů s rezistivní dotykovou plochou. Displej je vybaven  řadičem SUM74HC245T. Vzhledem k rozměrům (výšce) RJ-45 konektoru, který je umístěn na desce, je nutné pro správné připojení použít lištu oboustrannými kolíky o délce kolíku minimálně 15~mm. Protože u displejů použitých v tomto projektu byly kolíky připájeny už od výrobce, byla dodatečně vyrobená patice s dutinkové lišty a lišty s oboustrannými kolíky.
+Pro interakci s uživatelem je klient vybaven $2,4^{\prime\prime}$ barevným TFT LCD displej s~rozlišením 320x240 pixelů s~rezistivní dotykovou plochou. Displej je vybaven  řadičem SUM74HC245T. Vzhledem k rozměrům (výšce) RJ-45 konektoru, který je umístěn na~desce, je nutné pro správné připojení použít lištu s oboustrannými kolíky o délce kolíku minimálně 15~mm. Protože u displejů použitých v tomto projektu byly kolíky připájeny už od výrobce, byla dodatečně vyrobena patice z dutinkové lišty a lišty s~oboustrannými kolíky.
 
-Pro napájení byl zvolen externí napájecí adaptér, avšak připojení na integrovaný stabilizátor není možné, protože Arduino s displejem při 5~V odebírá přibližně 400~mA, což integrovaný stabilizátor nedokáže poskytnout (vlivem velého ztrátového výkonu dochází k jeho značnému zahřívání). Napájení přímo napětím 5~V není také příliš vhodné, protože vlivem například ztrát přívodních vodičů může dojít ke kolísání napětí, tím dojde i k pohybu reference AD převodníku připojenému k dotykové vrstvě displeje a tak může docházet k nesprávnému vyhodnocení stisku (může se lišit reálné místo stisku od toh, které vyhodnotil mikrokontrolér). Jako nejlepší varianta se ukázalo použití modulu se snižujícím DC-DC měničem. Modul obsahuje spínací regulátor MP1584 a dle dodavatele je schopen pracovat s napětím 6~-~25~V (při výstupním napětí 5~V) a dodat proud až 1,5~A, což je pro tuto aplikaci dostačující.
+Pro napájení byl zvolen externí napájecí adaptér. Připojení na integrovaný stabilizátor není možné, protože Arduino s displejem při 5~V odebírá přibližně 400~mA, což integrovaný stabilizátor nedokáže poskytnout (vlivem velkého ztrátového výkonu dochází k jeho značnému zahřívání). Napájení přímo napětím 5~V není také příliš vhodné, neboť vlivem například ztrát přívodních vodičů může dojít ke kolísání napětí, čímž dojde i k pohybu reference AD převodníku připojenému k dotykové vrstvě displeje a~tak~může docházet k nesprávnému vyhodnocení stisku (může se lišit reálné místo stisku od~toho, které vyhodnotil mikrokontrolér). Jako nejlepší varianta se ukázalo použití modulu se snižujícím DC-DC měničem. Modul obsahuje spínací regulátor MP1584 a~dle dodavatele je schopen pracovat s napětím 6~-~25~V (při výstupním napětí 5~V) a~dodat proud až 1,5~A, což je pro tuto aplikaci dostačující.
 
-Stejně jako v případě serveru je celé zařízení umístěno ve vytištěné krabičce, návrh a realizovaná krabička jsou na obrázcích \ref{fig:client_navrh}, \ref{fig:client_realizace}. Princpi uchycení Arduina je stejný jako v případě serveru, pro napájení je opět osazen souosý napájecí konektor 5,5x2,1~mm. Dále je z boku výřez por konektor RJ-45 pro připojení do ethernetové sítě a na vrchu se nachází výřez pro displej vedle kterého se je umístěn otvor pro přístup k resetovacímu tlačítku.
+Stejně jako v případě serveru je celé zařízení umístěno ve vytištěné krabičce, návrh a realizovaná krabička jsou na obrázcích \ref{fig:client_navrh}, \ref{fig:client_realizace}. Princip uchycení Arduina je stejný jako v případě serveru, pro napájení je opět osazen souosý napájecí konektor 5,5x2,1~mm. Dále je z boku výřez pro konektor RJ-45 pro připojení do ethernetové sítě a na vrchu se nachází výřez pro displej, vedle kterého je umístěn otvor pro přístup k resetovacímu tlačítku.
 
 \begin{figure}[hbtp]
 \centering
@@ -94,7 +94,7 @@ Stejně jako v případě serveru je celé zařízení umístěno ve vytištěn�
 \end{minipage}
 \\
 \begin{minipage}[c]{\textwidth/2-0.5cm}
-\caption{\label{fig:client_navrh}Návrh krabičky pro klienta}
+\caption{\label{fig:client_navrh}Návrh krabičky pro klienta\newline}
 \end{minipage}
 \begin{minipage}[c]{\textwidth/2-.5cm}
 \caption{\label{fig:client_realizace}Zkompletovaná krabička pro klienta}

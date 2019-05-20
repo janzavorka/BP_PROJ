@@ -1,5 +1,36 @@
 \appendix
 \section{Soubor s daty}
 Součástí této práce je i soubor \uv{zavorja4\_BP\_priloha.zip} s zdrojovými kódy a dalšími daty. Soubor má následující strukturu:
-
-\notFinished
+\vspace*{.5cm}
+\noindent
+%
+\setlength{\DTbaselineskip}{20pt}
+\DTsetlength{1em}{2em}{0.1em}{1pt}{4pt}
+\dirtree{%
+.1 zavorja4\_BP\_priloha  .
+.2 {bakalarska\_prace\_JanZavorka.pdf}.
+.2 soubory\_krabicek.
+.3 klient.
+.4 {case\_bottom.stl}.
+.4 {case\_top.stl}.
+.3 server.
+.4 {case\_bottom.stl}.
+.4 {case\_top.stl}.
+.2 zdrojove\_kody.
+.3 piskvorky\_MP\_client \makebox[1cm]{\dotfill} \begin{minipage}[t]{5cm}\fontfamily{cmr}\selectfont\textit{Zdrojové kódy pro klienta, pro správné fungování musí být zachován název složky a souborů uvnitř}{.}
+\end{minipage}
+.
+.4 {piskvorky\_MP\_client.ino}.
+.4 {displayControl.ino}.
+.4 {gameControl.ino}.
+.4 {communication.ino}.
+.3 piskvorky\_MP\_server\makebox[1cm]{\dotfill} \begin{minipage}[t]{5cm}\fontfamily{cmr}\selectfont\textit{Zdrojové kódy pro server, pro správné fungování musí být zachován název složky a souborů uvnitř}{.}
+\end{minipage}.
+.4 {piskvorky\_MP\_server.ino}.
+.4 {boardControl.ino}.
+.4 {gameControl.ino}.
+.4 {communication.ino}.
+.4 {indicationLED.ino}.
+.4 {SerialControl.ino}.
+}%
+%

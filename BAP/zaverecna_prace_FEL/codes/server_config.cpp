@@ -1,10 +1,10 @@
 /* !!! ---------- KONFIGURACE - nastaveni ethernetu ---------- !!! */
 #define ETHMODE_STATIC //Varianty: ETHMODE_DHCP; ETHMODE_STATIC
 byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0x00
+  0x54, 0xAB, 0x3A, 0x5B, 0x6F, 0x47
 };
 IPAddress serverAddress(10,0,0,8);
-unsigned int localPort = 3333;
+unsigned int localPort = 55555;
 /* !!! ---------- KONEC nastaveni ethernetu ---------- !!! */
 
 /* !!! ---------- KONFIGURACE - nastaveni pinu a LED ---------- !!! */

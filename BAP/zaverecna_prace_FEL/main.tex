@@ -7,6 +7,12 @@
 \usepackage[a4paper,top=3.0cm,bottom=3.0cm,left=3.0cm,right=2.5cm]{geometry}
 
 %\usepackage{natbib}
+\clubpenalty 10000  %kontrolovat sirotky
+\widowpenalty 10000 %kontrolovat vdovy
+%\tolerance=1
+%\emergencystretch=\maxdimen
+%\hyphenpenalty=5000
+%\hbadness=5000
 
 %\usepackage{acro}
 \usepackage[acronym,section=section]{glossaries}
@@ -40,6 +46,8 @@
 \usepackage{varioref} % reference "on page #" \vref \vpageref
 \usepackage{wasysym} % provides many symbol e.g. rthmale, female, astronomical symbols
 \usepackage{wrapfig}
+
+\usepackage{dirtree} %Easy directory trees
 
 %%%Colored source codes
 \usepackage{listings}
@@ -125,6 +133,15 @@
     tabsize=2,
 }
 
+%%%URL line breaks
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks%  save the current one
+  \do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j%
+  \do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t%
+  \do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D%
+  \do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N%
+  \do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X%
+  \do\Y\do\Z}
+
 
 %%%FLOWCHARTS settings
 \input{img/flowCharts/flowChartsSettings.tex}
@@ -209,7 +226,8 @@ Prosinec\fi \ \number \year
 
 \newpage
 \input{abstract.tex}
-\clearpage
+\blankpage
+
 
 \pagestyle{fancy}
 
@@ -225,10 +243,11 @@ Prosinec\fi \ \number \year
  %\blankpage
  %\cleardoublepage
 
-\clearpage
- \listoftables
+\newpage
+\listoftables
  %\blankpage
  %\cleardoublepage
+ \clearpage
 
 % \printglossary[type=\acronymtype,title=Abbreviations,nonumberlist]
 % \blankpage

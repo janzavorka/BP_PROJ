@@ -1,19 +1,19 @@
 \babel@toc {czech}{}
 \babel@toc {english}{}
 \babel@toc {czech}{}
-\contentsline {figure}{\numberline {1}{\ignorespaces Sch\IeC {\'e}ma zapojen\IeC {\'\i } jednotliv\IeC {\'y}ch za\IeC {\v r}\IeC {\'\i }zen\IeC {\'\i } do s\IeC {\'\i }t\IeC {\v e}, zdroj \cite {fig_ArdEthernet, fig_ArdEthShield, fig_switchIco, fig_ArdDue}\relax }}{5}{figure.caption.7}
-\contentsline {figure}{\numberline {2}{\ignorespaces Sch\IeC {\'e}ma zapojen\IeC {\'\i } periferi\IeC {\'\i } u serveru\relax }}{6}{figure.caption.8}
-\contentsline {figure}{\numberline {3}{\ignorespaces N\IeC {\'a}vrh krabi\IeC {\v c}ky pro server\relax }}{7}{figure.caption.9}
-\contentsline {figure}{\numberline {4}{\ignorespaces Zkompletovan\IeC {\'a} krabi\IeC {\v c}ka pro server\relax }}{7}{figure.caption.9}
-\contentsline {figure}{\numberline {5}{\ignorespaces N\IeC {\'a}vrh krabi\IeC {\v c}ky pro klienta\relax }}{8}{figure.caption.10}
-\contentsline {figure}{\numberline {6}{\ignorespaces Zkompletovan\IeC {\'a} krabi\IeC {\v c}ka pro klienta\relax }}{8}{figure.caption.10}
-\contentsline {figure}{\numberline {7}{\ignorespaces Diagram procesu p\IeC {\v r}\IeC {\'\i }pravy a zapnut\IeC {\'\i } serveru\relax }}{17}{figure.caption.13}
-\contentsline {figure}{\numberline {8}{\ignorespaces Diagram procesu p\IeC {\v r}\IeC {\'\i }jmu nov\IeC {\'e}ho klienta na stran\IeC {\v e} serveru\relax }}{19}{figure.caption.14}
-\contentsline {figure}{\numberline {9}{\ignorespaces Diagram procesu spu\IeC {\v s}t\IeC {\v e}n\IeC {\'\i } hry\relax }}{20}{figure.caption.15}
-\contentsline {figure}{\numberline {10}{\ignorespaces Diagram procesu \IeC {\v r}\IeC {\'\i }zen\IeC {\'\i } a ukon\IeC {\v c}en\IeC {\'\i } hry\relax }}{21}{figure.caption.16}
-\contentsline {figure}{\numberline {11}{\ignorespaces Obrazovka dvou klient\IeC {\r u} po \IeC {\'u}sp\IeC {\v e}\IeC {\v s}n\IeC {\'e}m spu\IeC {\v s}t\IeC {\v e}n\IeC {\'\i }\relax }}{23}{figure.caption.17}
-\contentsline {figure}{\numberline {12}{\ignorespaces Obrazovka dvou klient\IeC {\r u} p\IeC {\v r}i p\IeC {\v r}ipojov\IeC {\'a}n\IeC {\'\i } k serveru\relax }}{24}{figure.caption.18}
-\contentsline {figure}{\numberline {13}{\ignorespaces Obrazovky dvou r\IeC {\r u}zn\IeC {\'y}ch klient\IeC {\r u} po \IeC {\'u}sp\IeC {\v e}\IeC {\v s}n\IeC {\'e}m p\IeC {\v r}ipojen\IeC {\'\i } k pi\IeC {\v s}kvorkov\IeC {\'e}mu serveru\relax }}{24}{figure.caption.19}
-\contentsline {figure}{\numberline {14}{\ignorespaces Obrazovka klienta po zapo\IeC {\v c}at\IeC {\'e} h\IeC {\v r}e (a) \IeC {\v c}ekaj\IeC {\'\i }c\IeC {\'\i } hr\IeC {\'a}\IeC {\v c}, (b) hraj\IeC {\'\i }c\IeC {\'\i } hr\IeC {\'a}\IeC {\v c}\relax }}{25}{figure.caption.20}
-\contentsline {figure}{\numberline {15}{\ignorespaces Rozehran\IeC {\'a} hra dvou hr\IeC {\'a}\IeC {\v c}\IeC {\r u}\relax }}{25}{figure.caption.21}
-\contentsline {figure}{\numberline {16}{\ignorespaces Zobrazen\IeC {\'a} hl\IeC {\'a}\IeC {\v s}ka na displeji v\IeC {\'y}herce (a) a ostatn\IeC {\'\i }ch hr\IeC {\'a}\IeC {\v c}\IeC {\r u} (b), barva textu se shoduje s barvou v\IeC {\'\i }t\IeC {\v e}zn\IeC {\'e}ho hr\IeC {\'a}\IeC {\v c}e\relax }}{26}{figure.caption.22}
+\contentsline {figure}{\numberline {1}{\ignorespaces Sch\IeC {\'e}ma zapojen\IeC {\'\i } jednotliv\IeC {\'y}ch za\IeC {\v r}\IeC {\'\i }zen\IeC {\'\i } do s\IeC {\'\i }t\IeC {\v e}, zdroj \cite {fig_ArdEthernet, fig_ArdEthShield, fig_switchIco, fig_ArdDue}\relax }}{3}{figure.caption.7}
+\contentsline {figure}{\numberline {2}{\ignorespaces Sch\IeC {\'e}ma zapojen\IeC {\'\i } periferi\IeC {\'\i } u serveru\relax }}{4}{figure.caption.8}
+\contentsline {figure}{\numberline {3}{\ignorespaces N\IeC {\'a}vrh krabi\IeC {\v c}ky pro server\newline \relax }}{5}{figure.caption.9}
+\contentsline {figure}{\numberline {4}{\ignorespaces Zkompletovan\IeC {\'a} krabi\IeC {\v c}ka pro server\relax }}{5}{figure.caption.9}
+\contentsline {figure}{\numberline {5}{\ignorespaces N\IeC {\'a}vrh krabi\IeC {\v c}ky pro klienta\newline \relax }}{6}{figure.caption.10}
+\contentsline {figure}{\numberline {6}{\ignorespaces Zkompletovan\IeC {\'a} krabi\IeC {\v c}ka pro klienta\relax }}{6}{figure.caption.10}
+\contentsline {figure}{\numberline {7}{\ignorespaces Diagram procesu p\IeC {\v r}\IeC {\'\i }pravy a zapnut\IeC {\'\i } serveru\relax }}{16}{figure.caption.13}
+\contentsline {figure}{\numberline {8}{\ignorespaces Diagram procesu p\IeC {\v r}\IeC {\'\i }jmu nov\IeC {\'e}ho klienta na stran\IeC {\v e} serveru\relax }}{18}{figure.caption.14}
+\contentsline {figure}{\numberline {9}{\ignorespaces Diagram procesu spu\IeC {\v s}t\IeC {\v e}n\IeC {\'\i } hry\relax }}{19}{figure.caption.15}
+\contentsline {figure}{\numberline {10}{\ignorespaces Diagram procesu \IeC {\v r}\IeC {\'\i }zen\IeC {\'\i } a ukon\IeC {\v c}en\IeC {\'\i } hry\relax }}{20}{figure.caption.16}
+\contentsline {figure}{\numberline {11}{\ignorespaces Obrazovka dvou klient\IeC {\r u} po \IeC {\'u}sp\IeC {\v e}\IeC {\v s}n\IeC {\'e}m spu\IeC {\v s}t\IeC {\v e}n\IeC {\'\i }\relax }}{21}{figure.caption.17}
+\contentsline {figure}{\numberline {12}{\ignorespaces Obrazovka dvou klient\IeC {\r u} p\IeC {\v r}i p\IeC {\v r}ipojov\IeC {\'a}n\IeC {\'\i } k serveru\relax }}{22}{figure.caption.18}
+\contentsline {figure}{\numberline {13}{\ignorespaces Obrazovky dvou r\IeC {\r u}zn\IeC {\'y}ch klient\IeC {\r u} po \IeC {\'u}sp\IeC {\v e}\IeC {\v s}n\IeC {\'e}m p\IeC {\v r}ipojen\IeC {\'\i } k pi\IeC {\v s}kvorkov\IeC {\'e}mu serveru\relax }}{22}{figure.caption.19}
+\contentsline {figure}{\numberline {14}{\ignorespaces Obrazovka klienta po zapo\IeC {\v c}at\IeC {\'e} h\IeC {\v r}e (a) \IeC {\v c}ekaj\IeC {\'\i }c\IeC {\'\i } hr\IeC {\'a}\IeC {\v c}, (b) hraj\IeC {\'\i }c\IeC {\'\i } hr\IeC {\'a}\IeC {\v c}\relax }}{23}{figure.caption.20}
+\contentsline {figure}{\numberline {15}{\ignorespaces Rozehran\IeC {\'a} hra dvou hr\IeC {\'a}\IeC {\v c}\IeC {\r u}\relax }}{23}{figure.caption.21}
+\contentsline {figure}{\numberline {16}{\ignorespaces Zobrazen\IeC {\'a} hl\IeC {\'a}\IeC {\v s}ka na displeji (a) v\IeC {\'y}herce a (b) ostatn\IeC {\'\i }ch hr\IeC {\'a}\IeC {\v c}\IeC {\r u}, barva textu se shoduje s barvou v\IeC {\'\i }t\IeC {\v e}zn\IeC {\'e}ho hr\IeC {\'a}\IeC {\v c}e\relax }}{24}{figure.caption.22}

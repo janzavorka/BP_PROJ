@@ -2,16 +2,16 @@
 \label{sec:ovladani}
 Příprava ke spuštění probíhá v několika krocích:
 \begin{enumerate}
-  \item Připraví se centrální jednotka (v tomto případě switch) a k ní se pomocí síťového kabelu připojí všechna zařízení (klienti i server). Zapojení znázorněno na obrázku \ref{fig:schema_net}.
+  \item Připraví se centrální jednotka (v tomto případě switch) a k ní se pomocí síťového kabelu připojí všechna zařízení (klienti i server). Zapojení je znázorněno na obrázku~\ref{fig:schema_net}.
 
   \item Připojit napájení k serveru i klientům, pro server napájení 6~-~16~V~DC schopné dodat alespoň 250~mA, pro klienty 6~-~25~V~DC alespoň 500~mA.
 
-  \item Pokud je vše v pořádku, na serveru svítí svítivá dioda modrou barvou a na displejích klientů je úvodní obrazovka s tlačítkem \uv{\textit{PRIPOJIT}} (viz. obrázek \label{fig:faze1}).
+  \item Pokud je vše v pořádku, na serveru svítí svítivá dioda modrou barvou a na displejích klientů je úvodní obrazovka s tlačítkem \uv{\textit{PRIPOJIT}} (viz. obrázek~\ref{fig:faze1}).
 \end{enumerate}
 
 \subsection{Ovládání klienta}
 \begin{enumerate}
-\item Po úspěšném zapnutí se vykreslí úvodní obazovka. (obrázek:~\ref{fig:faze1}).  Zobrazeny jsou informace o nastavené IP adrese serveru a o IP adrese klienta (podle režimu přiřazena DHCP serverem nebo ručně).
+\item Po úspěšném zapnutí se vykreslí úvodní obrazovka (obrázek~\ref{fig:faze1}).  Zobrazeny jsou informace o nastavené IP adrese serveru a o IP adrese klienta (podle režimu přiřazena DHCP serverem nebo ručně).
 \begin{figure}[H]
 \centering
 \includegraphics[width=7cm]{img/gameFlow/phase01a.jpg}
@@ -29,7 +29,7 @@ Příprava ke spuštění probíhá v několika krocích:
 \end{figure}
 
 %%%
-\item Pokud připojení proběhlo úspěšně, klient má od serveru přiřazené číslo a barvu. To je indikováno pomocí displeje (obrázek~\ref{fig:faze3}), kde barva textu odpovídá barvě hráče. Než započne hra je možné se ze serveru odpojit stiskem tlačítka \uv{\textit{ODPOJIT}}. Nyní se čeká na zahájení hry.
+\item Pokud připojení proběhlo úspěšně, klient má od serveru přiřazené číslo a barvu. To je indikováno pomocí displeje (obrázek~\ref{fig:faze3}), kde barva textu odpovídá barvě hráče. Než započne hra je možné se ze serveru odpojit stiskem tlačítka \uv{\textit{ODPOJIT}}. Jinak se čeká na zahájení hry.
 \begin{figure}[H]
 \centering
 \includegraphics[width=7cm, angle=0]{img/gameFlow/phase03a.jpg}
@@ -39,9 +39,9 @@ Příprava ke spuštění probíhá v několika krocích:
 \label{item:faze3}
 
 %%%
-\item V případě, že ze strany serveru byla započata hra (příkazem nebo stiskem zeleného tlačítka), vykreslí se na obrazovce herní pole (obrázek~\ref{fig:faze4}).
+\item V případě, že ze strany serveru byla započata hra (příkazem nebo stiskem zeleného tlačítka na serveru), vykreslí se na obrazovce herní pole (obrázek~\ref{fig:faze4}).
 
-Jednotlivé čtverce mají pro tento typ displeje fyzický rozměr přibližně 0,5x0,5~mm. Tato velikost byla zvolena proto, že je možné na takto malý displej umístit dostatečně velké pole (11x8 čtverců) a zárověň je možné jej bez problém ovládat stylusem a případně i prstem.
+Jednotlivé čtverce mají pro tento typ displeje fyzický rozměr přibližně 0,5x0,5~mm. Tato velikost byla zvolena proto, že je možné na takto malý displej umístit dostatečně velké pole (11x8 čtverců) a zároveň je možné jej bez problémů ovládat stylusem a případně i prstem.
 \begin{figure}[H]
 \centering
 \includegraphics[width=7cm, angle=0]{img/gameFlow/phase04a.jpg}
@@ -50,9 +50,9 @@ Jednotlivé čtverce mají pro tento typ displeje fyzický rozměr přibližně 
 \end{figure}
 
 %%
-\item Během hry: pokud je mřížky šedá, hraje jiný hráč, pokud má mřížka nějakou barvu (barva se shoduje s barvou hráče) je na tahu daný hráč. Ten má za úkol stiskem libovolného volného čtverečku umístit svůj žeton.
+\item Během hry: pokud je mřížka šedá, hraje jiný hráč; pokud má mřížka nějakou barvu (barva se shoduje s barvou hráče), je na tahu daný hráč. Ten má za úkol stiskem libovolného volného čtverečku umístit svůj žeton.
 
-Když uživatel stiskne čtverec, dojde k jeho vyplnění příslušným žetonem (barevným kruhem), mříž zešedne a je na řadě další hráč. Rozehraná hra je vidět na obrázku~\ref{fig:faze5}.
+Když uživatel stiskne čtverec, dojde k jeho vyplnění příslušným žetonem (barevným kruhem), mříž zešedne a je na řadě další hráč. Rozehraná hra je vidět na~obrázku~\ref{fig:faze5}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=7cm, angle=0]{img/gameFlow/phase05a.jpg}
@@ -61,26 +61,26 @@ Když uživatel stiskne čtverec, dojde k jeho vyplnění příslušným žetone
 \end{figure}
 
 %%
-\item Hráči se střídají do té doby než: jsou všechna pole vyplněna (ukončeno remízou) nebo některý hráč spojil požadovaný počet žetonů (v základní nastavení pět). O výsledku hry jsou hráči informováni hláškou na displeji (obrázek~\ref{fig:faze6}). Tato hláška po deseti sekundách zmizí (nastaveno v proměnné \texttt{clientMessageLast} v milisekundách) a hra přechází do fáze~3.
+\item Hráči se střídají do té doby než: jsou všechna pole vyplněna (ukončeno remízou) nebo některý hráč spojil požadovaný počet žetonů (v základním nastavení pět~žetonů). O výsledku hry jsou hráči informováni hláškou na displeji (obrázek~\ref{fig:faze6}). Tato hláška po deseti sekundách zmizí (nastaveno v proměnné \texttt{clientMessageLast} v milisekundách) a hra přechází do fáze~3.
 \begin{figure}[H]
 \centering
 \includegraphics[width=7cm, angle=0]{img/gameFlow/phase06a.jpg}
 \includegraphics[width=7cm, angle=0]{img/gameFlow/phase06b.jpg}
-\caption{\label{fig:faze6} Zobrazená hláška na displeji výherce (a) a ostatních hráčů (b), barva textu se shoduje s barvou vítězného hráče}
+\caption{\label{fig:faze6} Zobrazená hláška na displeji (a) výherce a (b) ostatních hráčů, barva textu se shoduje s barvou vítězného hráče}
 \end{figure}
 \end{enumerate}
 %\notFinished
 \subsection{Ovládání serveru}
 Server lze ovládat dvěma způsoby. Prvním z nich je ovládání pomocí dvou tlačítek.
 
-Pokud je stisknuto červené tlačítko, dojde k přerušení hry aktuálně běžící hry (dosavadní stav hry je resetován).
+Pokud je stisknuto červené tlačítko, dojde k přerušení aktuálně běžící hry (dosavadní stav hry je resetován).
 
 Pokud je stisknuto zelené tlačítko a neběží hra (indikační LED svítí modře) - stiskem tlačítka dojde ke spuštění hry (s ověřením zda je k dispozici dostatek hráčů).
 Pokud hra již běží (indikační LED svítí zeleně) stiskem zeleného tlačítka dojde k posunutí tahu na dalšího hráče.
 
-Druhým způsobem ovládání je posílání příkazů přes sériovou linku. V tomto případě je nutné serverm připojit k počítači pomocí micro USB kabelu (konektor z přední strany serveru). K zobrazení dat lze použít nástorj \textit{Serial monitor} přímo v Arduino~IDE nebo například sériový terminál \textit{RealTerm \footnote{Domovská stránka: https://realterm.sourceforge.io/}}. Nastavení je následují: rychlost = 9600 baudů, Data bits = 8, Stop bits = 1, Flow control = none.  Každý příkaz musí být zakončen novým řádkem (LF). Seznam příkazů je v tabulce \ref{tab:server_prikazy}.
+Druhým způsobem ovládání je posílání příkazů přes sériovou linku. V tomto případě je nutné servem připojit k počítači pomocí microUSB kabelu (konektor z přední strany serveru). K zobrazení dat lze použít nástroj \textit{Serial monitor} přímo v~Arduino~IDE nebo například sériový terminál \textit{RealTerm \footnote{Domovská stránka: https://realterm.sourceforge.io/}}. Nastavení je následují: rychlost = 9600 baudů, Data bits = 8, Stop bits = 1, Flow control = none.  Každý příkaz musí být zakončen novým řádkem (LF). Seznam příkazů je v tabulce \ref{tab:server_prikazy}.
 
-Informování uživatele o stavu serveru je realizovano pomocí barevné svítivé diody. Význa jednotlivých stavů je v tabulce \ref{tab:serverLED}. Symboly: \includegraphics[height=.4cm]{img/manual/blue.png} svítivá dioda svítí, \includegraphics[height=.4cm]{img/manual/blue_blink.png} svítivá dioda bliká.
+Informování uživatele o stavu serveru je realizováno pomocí barevné svítivé diody. Význam jednotlivých stavů je v tabulce \ref{tab:serverLED}. Symboly: \includegraphics[height=.4cm]{img/manual/blue.png} svítivá dioda svítí, \includegraphics[height=.4cm]{img/manual/blue_blink.png} svítivá dioda bliká.
 
 \input{tables/serverCommands.tex}
 
