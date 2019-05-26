@@ -59,7 +59,7 @@
 #include <SimpleTimer.h> //Časovače
 
 /* ----------Datum změny----------*/
-char makeDate[] = "05.05.2019";
+char makeDate[] = "20.05.2019";
 
 /* !!! ---------- KONFIGURACE - nastavení ethernetu ---------- !!! */
 //Režimy sítě: ETHMODE_DHCP=server získá IP adresu z DHCP serveru; ETHMODE_STATIC=použije se nastavená IP adresa
@@ -68,7 +68,7 @@ char makeDate[] = "05.05.2019";
 
 // Nastavení MAC adresy (měla by být unikátní)
 byte mac[] = {
-  0x00, 0x9A, 0xCD, 0x6C, 0xCA, 0xCA
+  0x54, 0xAB, 0x3A, 0x5B, 0x6F, 0x47
 };
 //
 //Nastavení IP adresy serveru, pokud je nastaveno 0.0.0.0 bude IP přiřazena DHCP serverem
