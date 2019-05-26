@@ -533,7 +533,7 @@ void buttonPressed(int x, int y){
         }
       }
       if(board[meshX*row + column]==0){ //Pokud je pole volné (není tam jiný hráč)
-      //Vyplní ihned daný žeton na obraovku (jinak by docházelo k vykreslení až po zpracování serverem, zpoždění několik stovek ms, uživatelsky nepříjemné)
+      //Vyplní ihned daný žeton na obrazovku (jinak by docházelo k vykreslení až po zpracování serverem, zpoždění několik stovek ms, uživatelsky nepříjemné)
       LCD.setColor(getPlayerColor(getMyPlayerNumber())); //Nastaví barvu hráče podle čísla v poli
       LCD.fillCircle(column * resX/meshX + (resX/meshX)/2, row * resY/meshY + (resY/meshY)/2, 10);
       //Odesíláni vybraného pole

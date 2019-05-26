@@ -66,9 +66,11 @@ void stopGame (){
 //>>>>> Vrátí šíslo dalšího hráče <<<<<
  /*   Princip:
   *    - zkontroluje pole clients, aby se jednalo o hráče, který je připojen
-  *    - hrac1 je číslo předchozího (aktuálně hrajícího hráče)
+  *    - player1 je číslo předchozího (aktuálně hrajícího hráče)
+  *    - Pokud cyklus projde všechyn z pole "clients[]" a dalšího hráče nenalazne, znamená to, že se všichni odpojili a server ukončí hru
   */
 byte getNextPlayerNumber(byte player1){
+  byte runIndex = 0;
   do{
     player1++;
     if(player1 > maxPlayers){
@@ -77,6 +79,10 @@ byte getNextPlayerNumber(byte player1){
     if(player1 < 1){
       player1 = maxPlayers;
     }
+    if(runIndex > maxPlayers*2){ //Pokud není hráč k dispozici, hra se ukončí
+      stopGame();
+    }
+    runIndex++;
   }while(!clients[player1-1]);
   return player1;
 }
@@ -89,13 +95,7 @@ byte getNextPlayerNumber(byte player1){
   *    - automaticky zapíše do kódu v boardu
   */
 void checkGame(byte cross, byte player){
-  if(board[gb_round] >= meshX*meshY){ //Pokud hra skončila remízou (jsou obsazena všechna pole)
-    board[gb_actPlayer] = 0;
-    sendBoard(100);
-    signalLED.changeBlinkColor(LEDcol_green, clientMessageLast/400); //Délka signalizace LED dopočtena z délky zobrazení chybové zprávy
-    timer.setTimeout(clientMessageLast, stopGame); //Zpráva o remíze se zobrazí na určitou dobu, pak se resetuje hra
-  }
-  else{ //Vyhodnocení žetonů v poli (děje se pro naposled vyplněný žeton daného hráče)
+//Vyhodnocení žetonů v poli (děje se pro naposled vyplněný žeton daného hráče)
     byte row = 0;
     byte column = 0;
     byte count = 0; //počet puntíků za sebou
@@ -172,6 +172,12 @@ void checkGame(byte cross, byte player){
       timer.setTimeout(clientMessageLast, stopGame);
 
     }
+    else if(board[gb_round] >= meshX*meshY){ //Pokud hra skončila remízou (jsou obsazena všechna pole)
+      board[gb_actPlayer] = 0;
+      sendBoard(100);
+      signalLED.changeBlinkColor(LEDcol_green, clientMessageLast/400); //Délka signalizace LED dopočtena z délky zobrazení chybové zprávy
+      timer.setTimeout(clientMessageLast, stopGame); //Zpráva o remíze se zobrazí na určitou dobu, pak se resetuje hra
+    }
     else{ //Jinak pokračuje další hráč
       #ifdef DEBUG
       Serial.println("Nikdo nevyhral, pokracuji");
@@ -179,7 +185,6 @@ void checkGame(byte cross, byte player){
 
       shiftPlayer();
     }
-  }
 }
 //------------------------------------------------------------------------------------------------------
 //>>>>> Posune (předá) hru dalšímu hráči <<<<<

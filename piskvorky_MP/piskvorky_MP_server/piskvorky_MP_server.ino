@@ -59,7 +59,7 @@
 #include <SimpleTimer.h> //Časovače
 
 /* ----------Datum změny----------*/
-char makeDate[] = "05.05.2019";
+char makeDate[] = "20.05.2019";
 
 /* !!! ---------- KONFIGURACE - nastavení ethernetu ---------- !!! */
 //Režimy sítě: ETHMODE_DHCP=server získá IP adresu z DHCP serveru; ETHMODE_STATIC=použije se nastavená IP adresa
@@ -68,7 +68,7 @@ char makeDate[] = "05.05.2019";
 
 // Nastavení MAC adresy (měla by být unikátní)
 byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEE, 0xFE, 0x00
+  0x54, 0xAB, 0x3A, 0x5B, 0x6F, 0x47
 };
 //
 //Nastavení IP adresy serveru, pokud je nastaveno 0.0.0.0 bude IP přiřazena DHCP serverem
@@ -76,11 +76,11 @@ byte mac[] = {
 IPAddress serverAddress(10,0,0,8);
 //
 //Port na kterém bude probíhat komunikace
-unsigned int localPort = 55555;
+unsigned int localPort = 55555; //Defaultně 55555
 /* !!! ---------- KONEC nastavení ethernetu ---------- !!! */
 
 EthernetServer server = EthernetServer(localPort);
-const byte  maxPlayers = 5;
+const byte  maxPlayers = 4; //Softwarové maximum 5, pro WIZnet W5100 max 4
 EthernetClient clients [maxPlayers];
 bool clientConnected = false;
 bool serverReady = false;
@@ -110,7 +110,7 @@ const byte LED_br = 40;
 const int buttonOff = 1000; //Po jakou dobu bude dotyková plocha deaktivována (zabrání multidotykům)
 unsigned long long refresh_buttonOff = 0;
 
-const long clientMessageLast = 8000; //Doba zobrazení zprávy na straně clienta (v milisekundách)
+const long clientMessageLast = 10000; //Doba zobrazení zprávy na straně clienta (v milisekundách)
 const long clientErrMessageLast = 4000; //Doba zobrazení chybového hlášení na straně clienta
 
 
@@ -279,6 +279,7 @@ void printLine(byte, byte); //Vypíše několik zadaných znaků za sebou (pro v
  * >>>>>>>>>> SETUP <<<<<<<<<<
  */
 void setup() {
+  delay(100);
   //Sériová linka
   Serial.begin(9600);
   //Alokace paměti pro string buffik
@@ -287,11 +288,14 @@ void setup() {
   pinMode(startPIN, INPUT_PULLUP);
   pinMode(resetPIN, INPUT_PULLUP);
   randomSeed(analogRead(0)); //Seed pro funkci random()
-  delay(10);
+  delay(400);
 
+  //Ethernet.init(10);
   //Nastavení LED
   signalLED = RGB_LED(LED_red, LED_green, LED_blue, 100);
-  delay(700);
+  delay(200);
+  signalLED.LEDoff();
+  delay(400);
 
 
   Serial.println(" >>>>> Startuji piskvorkovy server <<<<< ");
@@ -330,16 +334,22 @@ void setup() {
     }
 #elif defined(ETHMODE_STATIC)
  //Pouzije se daná IP adresa
+ delay(200);
  Ethernet.begin(mac, serverAddress);
+ delay(200);
 #else
   #error "Error - je nutne vybrat sitovy rezim (viz. KONFIGURACE - nastavení sítě)"
 #endif
 
-
+  delay(500);
   Serial.print("Server IP adresa: ");
   Serial.println(Ethernet.localIP());
   delay(200);
-  server.begin();
+  do{
+    server.begin();
+    delay(500);
+    Serial.println("Spoustim server");
+  }while(!server);
   Serial.println("Server spusten!");
   delay(200);
 
@@ -349,7 +359,9 @@ void setup() {
     resetClientData(i);
   }
 
+  delay(100);
   signalLED.changeStaticColor (LEDcol_blue);
+  delay(50);
 }
 
 /*
@@ -464,5 +476,5 @@ void loop() {
       stopGame();
     }
   }
-  delay(20);
+  delay(30);
 }

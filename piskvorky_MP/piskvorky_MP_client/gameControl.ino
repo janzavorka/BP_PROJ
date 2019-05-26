@@ -21,7 +21,8 @@ void processBoard(){
     switch(board[gb_code]){
       case 0: //Nic se neděje
         break;
-      case 1: //Podle čísla hráče překreslit nebo hrát
+      case 1:
+      case 2: //Podle čísla hráče překreslit nebo hrát
         drawPage(3);
         break;
       case 3:
