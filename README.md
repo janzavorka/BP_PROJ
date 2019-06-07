@@ -47,6 +47,7 @@
 
 ### BAP [➥](BAP/zaverecna_prace_FEL/)
 -  Bakalářská práce, předmět BBAP15	 [(pdf)](BAP/zaverecna_prace_FEL/main.pdf)
+- Prezentace k obhajobě [(pdf)](BAP/prezentace_obhajoba/zavorja4_BAP_prezentace.pdf)
 ---
 
 ### Zprava_BPROJ [➥](Zprava_BPROJ/)
