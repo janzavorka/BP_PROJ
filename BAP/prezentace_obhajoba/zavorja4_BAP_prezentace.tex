@@ -14,6 +14,9 @@
 \usepackage{lmodern} % fonts in a LaTeX document
 \usepackage{color}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{CVUTblue}{cmyk}{1, 0.43, 0, 0} % CVUT blue
+
+%\usecolortheme[named=CVUTblue]{structure}
 
 \usepackage{movie15} %Pro video
 \usepackage{geometry}
@@ -80,7 +83,7 @@
 \addtocounter{framenumber}{-1}
 }
 %
-\section{Obsah}
+\section*{Obsah}
 \begin{frame}[allowframebreaks]
 \frametitle{Obsah}
 \tableofcontents
@@ -94,6 +97,7 @@ Demonstrační zařízení:
 \item Energeticky nenáročná zařízení
 \item Forma jednoduché hry
 \item Komunikace po síti 
+\item Využití při propagačních akcích
 \end{itemize}
 \end{frame}
 
@@ -105,7 +109,7 @@ Demonstrační zařízení:
  \item Platforma Arduino \includegraphics[height=0.4cm]{img/Arduino.png}
  	\begin{itemize}
  		\item Server - řízení hry
- 		\item Klient - interakce s uživatelem
+ 		\item Klient - interakce s uživatelem (3x)
  	\end{itemize}
  \item 3D tisk krabiček (PLA)
  \item Komunikace po lokální síti (centrální prvek switch)
@@ -136,7 +140,7 @@ Demonstrační zařízení:
  			\item RJ-45 konektor
  			\item Souosý napájecí konektor (6~-~16~V)
  			\item Indikace stavu pomocí svítivé diody
- 			\item Ovládání pomocí tlačítek a sériového rozhraní
+ 			\item Ovládání pomocí tlačítek a sériového rozhraní (microUSB)
  		\end{itemize}
 	} 	
  	\only<2>{
@@ -170,7 +174,7 @@ Demonstrační zařízení:
  		\begin{itemize}
  			\item Arduino Ethernet
  			\item RJ-45 konektor
- 			\item Souosý napájecí konektor (6~-~20~V)
+ 			\item Souosý napájecí konektor (6~-~20~V), modul s DC-DC měničem
  			\item $2,4^{\prime\prime}$ barevný displej
  			\item Rezistivní dotyková plocha
  		\end{itemize}	
@@ -178,22 +182,33 @@ Demonstrační zařízení:
 \end{frame}
 
 \begin{frame}
-\frametitle{Video ukázka}
-%\includemedia[
-%     width=6cm,height=6cm,
-%     activate=pageopen,
-%     addresource=video/Guinness.mp4,
-%     flashvars={
-%         source=video/Guinness.mp4
-%        &autoPlay=true
-%     } 
-%]{}{VPlayer.swf}
-%\includemovie[poster,text={\small(Loading Video...)}]{6cm}{4cm}{video/Guinness.mp4}
-Video přidat sem
+\frametitle{Realizace - klient}
+\begin{columns}[c]
+ \column{.5\textwidth}
+	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{img/gameStart.jpg}
+		\caption{Obrazovka klienta po spuštění}
+	\end{figure}
+	
+	Hl. obrazovka -> připojování -> připojeno -> hra -> oznámení o~ukončení -> připojeno
+	
+%
+ \column{.5\textwidth}
+ 	\begin{figure}
+		\centering
+		\includegraphics[width= \textwidth]{img/gameEnd.jpg}
+		\caption{Obrazovka klienta - konec hry}
+	\end{figure}
+	
+	Políčka 5x5 mm - stylus i prst
+	\vspace{.9cm}
+ 		
+\end{columns}
 \end{frame}
 
 
-\section{Diskuze}
+\section{Diskuze a ukázka}
 \begin{frame}
 \begin{center}
 \vspace*{1cm}
@@ -246,14 +261,14 @@ Problémy:
 }
 \end{frame}
 
-\begin{frame}
-\frametitle{Využití PoE (Power over Ethernet)}
-Pro server:
-\begin{itemize}
-	\item Ethernet shield s PoE
-	\item Nutný switch s podporou PoE
-	\item PoE čistě pro server zbytečné
-\end{itemize}
-\end{frame}
+%\begin{frame}
+%\frametitle{Využití PoE (Power over Ethernet)}
+%Pro server:
+%\begin{itemize}%
+%	\item Ethernet shield s PoE
+%	\item Nutný switch s podporou PoE
+%	\item PoE čistě pro server zbytečné
+%\end{itemize}
+%\end{frame}
 
 \end{document}
