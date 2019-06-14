@@ -102,6 +102,7 @@ Demonstrační zařízení:
 \end{frame}
 
 \section{Realizace}
+\subsection{Návrh}
 \begin{frame}
 \frametitle{Realizace}
  \begin{itemize}
@@ -123,6 +124,7 @@ Demonstrační zařízení:
  \end{itemize}
 \end{frame}
 
+\subsection{Zařízení typu server}
 \begin{frame}
 \frametitle{Realizace - server}
 \begin{columns}[c]
@@ -160,6 +162,7 @@ Demonstrační zařízení:
 \end{columns}
 \end{frame}
 
+\subsection{Zařízení typu klient}
 \begin{frame}
 \frametitle{Realizace - klient}
 \begin{columns}[c]
@@ -205,6 +208,47 @@ Demonstrační zařízení:
 	\vspace{.9cm}
  		
 \end{columns}
+\end{frame}
+
+
+\subsection{Komunikace}
+\begin{frame}
+\frametitle{Komunikace server - klient}
+\begin{itemize}
+	\item Přenos pomocí pole (136 bajtů)
+	\item Obsah:
+	\begin{itemize}
+		\item obsazenost jednotlivých políček
+		\item řídicí kód
+		\item počet odehraných kol
+		\item číslo klienta na tahu
+		\item barvy klientů
+		\item IP adresy klientů
+	\end{itemize}
+	 \item Odesílání: 
+	 \begin{itemize}
+	 	\item rozděleno na pole po 8 bajtech
+	 	\item vybaveno pořadovým číslem
+	 	\item zabezpečeno kontrolním součtem
+	 \end{itemize}
+	 \item Pokud nesedí kontrolní součet, klient si může vyžádat znovuodeslání
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Komunikace klient - server}
+\begin{itemize}
+	\item Přenos pole (2 bajty)
+	\item Řídicí kód a daná informace
+	\item Pole se odesílá 2x, na straně serveru se porovnává
+\end{itemize}
+
+\begin{table}
+	\centering
+	\caption{Rozložení pole pro komunikaci klient - server}
+	\includegraphics[width=\textwidth]{img/clientComm.png}
+\end{table}
 \end{frame}
 
 
